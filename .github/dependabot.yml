@@ -19,3 +19,9 @@ updates:
     groups:
       dev-tooling:
         dependency-type: development
+    ignore:
+      # Preset majors must match the changelog writer semantic-release bundles
+      # (preset 10 needs writer 9; semantic-release 25 ships writer 8).
+      # test/release-config.test.js fails if they drift. Bump both together by hand.
+      - dependency-name: conventional-changelog-conventionalcommits
+        update-types: [version-update:semver-major]
