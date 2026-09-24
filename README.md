@@ -35,6 +35,15 @@ paceline uninstall
 
 That removes paceline and restores whatever status line it replaced. If you move the binary, run `paceline install` again from the new location.
 
+### Update
+
+Claude Code runs whatever binary is at the installed path, so updating is replacing that file. There's nothing to uninstall or reinstall, and your `paceline.json` config and today's budget carry over.
+
+- **Built with Go:** run `go install github.com/rogadev/paceline/cmd/paceline@latest` again.
+- **Downloaded a release:** extract the new archive over the old binary.
+
+The next status line refresh uses the new version. Run `paceline --version` to check which one you have. paceline never touches the network, so it can't tell you when a new release is out: watch the [releases page](https://github.com/rogadev/paceline/releases) for that. On Windows, if replacing the file fails because it's in use, try again; paceline only runs for a moment on each refresh.
+
 ### Verify a download
 
 Every release archive has a signed build provenance attestation: proof that GitHub Actions built it from this repository. With the [GitHub CLI](https://cli.github.com):
