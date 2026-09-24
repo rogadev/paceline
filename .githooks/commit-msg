@@ -1,0 +1,4 @@
+#!/bin/sh
+# Reject commit messages that semantic-release cannot read. CI checks the same
+# rule on every pull request; this catches it before the commit exists.
+exec npx --no -- commitlint --edit "$1"

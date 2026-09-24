@@ -1,0 +1,43 @@
+name: Release
+
+# Every merge to main runs semantic-release, which reads the commits since the
+# last tag and decides the version (see release.config.js and CONTRIBUTING.md).
+# No releasable commits means no release; the run just ends.
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # tag and GitHub release
+      issues: write # comment on issues a release fixes
+      pull-requests: write # comment on PRs a release ships
+      id-token: write # npm provenance: a signed link from the package to this build
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --ignore-scripts
+      # Main is protected by CI, but the release re-runs the suite on the exact
+      # commit it is about to publish.
+      - run: npm test
+      - run: npm audit signatures
+      - run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
