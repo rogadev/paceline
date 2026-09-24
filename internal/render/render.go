@@ -23,6 +23,10 @@ const (
 	hourglass = "\u23f3"
 )
 
+// mutedRed is Windows Terminal's default red (#C50F1F) with 15% less OKLCH
+// chroma, so a warning that stays on screen is easier on the eyes.
+var mutedRed = color.RGB{185, 47, 47}
+
 var (
 	arrows       = map[pace.Direction]string{pace.Up: "\u25b2", pace.Even: "\u25cf", pace.Down: "\u25bc"}
 	modelSuffix  = regexp.MustCompile(`\s*\(.*\)$`)
@@ -50,7 +54,7 @@ func (s style) wrap(code, text string) string {
 	return "\x1b[" + code + "m" + text + "\x1b[0m"
 }
 
-func (s style) red(t string) string    { return s.wrap("31", t) }
+func (s style) red(t string) string    { return s.rgb(mutedRed, t) }
 func (s style) green(t string) string  { return s.wrap("32", t) }
 func (s style) yellow(t string) string { return s.wrap("33", t) }
 func (s style) cyan(t string) string   { return s.wrap("36", t) }
@@ -203,9 +207,11 @@ func renderToday(usedPct, resetsAt float64, ctx Context, st style, headroom func
 	}
 
 	arrow, budget := arrows[r.Pace], round(r.Budget)
-	// Past the budget, flip from "% left" to "% used" so the overshoot shows (102%).
+	// Past the budget, flip from "% left" to "% used" so the overshoot shows
+	// (102%), and point the arrow down: whatever today's budget was, the advice
+	// now is to ease off.
 	if r.Over {
-		return st.red(fmt.Sprintf("%s %d%% used of today's %d%% budget", arrow, round(r.PctUsed), budget))
+		return st.red(fmt.Sprintf("%s %d%% used of today's %d%% budget", arrows[pace.Down], round(r.PctUsed), budget))
 	}
 	left := round(r.PctLeft)
 	return headroom(left, fmt.Sprintf("%s %d%% left of today's %d%% budget", arrow, left, budget))

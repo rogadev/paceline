@@ -1,5 +1,5 @@
-// Command paceline is a Claude Code status line that paces your weekly usage
-// limit across the days you have left.
+// Command paceline is a Claude Code status line that paces your usage limits
+// and shows, at a glance, where every session stands.
 //
 // With no arguments it reads Claude Code's status JSON on stdin and prints
 // the status line; install and uninstall edit settings.json.

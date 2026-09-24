@@ -1,12 +1,14 @@
 # paceline
 
-A Claude Code status line that paces your weekly usage limit across the days you have left.
+A Claude Code status line that paces your usage limits and shows, at a glance, where every session stands.
 
 ```
 Opus 5.5 · techcentral (dev) · 84% session · 96% week · ▲ 54% left of today's 28% budget · 16m
 ```
 
 Your weekly limit resets on a fixed schedule, but the status line only tells you how much is left, not whether that's a lot or a little for the days remaining. paceline divides what's left by the days until the reset and gives you **today's budget**, then counts it down as you work. A light week shows a big budget and a ▲; a heavy one shows a small budget and a ▼. It's most useful on weekends, when you're deciding whether to go hard on side projects or save the rest for Monday.
+
+The rest of the line tells your sessions apart and shows where each one stands: the model and effort, the project in its own color with its git branch, your session and weekly limits, and warnings when the context window fills up or the prompt cache goes cold.
 
 ## Install
 
@@ -33,6 +35,15 @@ paceline uninstall
 
 That removes paceline and restores whatever status line it replaced. If you move the binary, run `paceline install` again from the new location.
 
+### Update
+
+Claude Code runs whatever binary is at the installed path, so updating is replacing that file. There's nothing to uninstall or reinstall, and your `paceline.json` config and today's budget carry over.
+
+- **Built with Go:** run `go install github.com/rogadev/paceline/cmd/paceline@latest` again.
+- **Downloaded a release:** extract the new archive over the old binary.
+
+The next status line refresh uses the new version. Run `paceline --version` to check which one you have. paceline never touches the network, so it can't tell you when a new release is out: watch the [releases page](https://github.com/rogadev/paceline/releases) for that. On Windows, if replacing the file fails because it's in use, try again; paceline only runs for a moment on each refresh.
+
 ### Verify a download
 
 Every release archive has a signed build provenance attestation: proof that GitHub Actions built it from this repository. With the [GitHub CLI](https://cli.github.com):
@@ -58,7 +69,7 @@ gh attestation verify paceline_1.1.0_linux_amd64.tar.gz --repo rogadev/paceline
 | Cache | `cache cold: 82k @ ~2x` | Only when the prompt cache has expired. |
 | Duration | `16m` | Session wall-clock time. |
 
-**Today's budget** is the weekly percentage left at the start of the day, divided by the days from midnight to the reset. It stays fixed all day, so you can watch it count down. Whatever you don't spend spreads over the remaining days, so a light week gives you bigger budgets later on. The arrow compares today's budget to an even pace of 100% ÷ 7 per day: ▲ means you have more than even pace, ▼ means less, and ● means about even. On the final day before the reset, the segment shows `⏳ last day, resets 9pm` instead.
+**Today's budget** is the weekly percentage left at the start of the day, divided by the days from midnight to the reset. It stays fixed all day, so you can watch it count down. Whatever you don't spend spreads over the remaining days, so a light week gives you bigger budgets later on. The arrow is your pace advice. It compares today's budget to an even pace of 100% ÷ 7 per day: ▲ means you have room to push, ▼ means ease off, and ● means about even. Once you go over today's budget, the arrow always shows ▼. On the final day before the reset, the segment shows `⏳ last day, resets 9pm` instead.
 
 **Project colors** come from a hash of the project folder name, mapped to one of 12 evenly spaced hues in the OKLCH color space. Every color is equally bright and easy to read on a dark terminal. Each project keeps its color everywhere, including in subfolders.
 
