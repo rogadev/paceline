@@ -19,26 +19,66 @@ concurrency:
 
 jobs:
   test:
-    name: test (${{ matrix.os }}, node ${{ matrix.node }})
+    name: test (${{ matrix.os }}, go ${{ matrix.go }})
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        node: [22, 24, 26]
+        # The go.mod minimum and the latest release.
+        go: ["1.26.x", stable]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
         with:
-          node-version: ${{ matrix.node }}
-      # No npm install: the runtime has zero dependencies and the tests use
-      # only node:test, so this also proves the package runs with nothing installed.
-      - run: node --test
+          go-version: ${{ matrix.go }}
+          cache: false # no dependencies to cache
+      - run: go test ./...
+      # The race detector needs cgo, which the Linux runner has.
+      - if: runner.os == 'Linux'
+        run: go test -race ./...
 
   quality:
-    name: lint, coverage, and supply chain
+    name: lint, coverage, vulnerabilities, and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # GoReleaser reads tags
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: stable
+          cache: false
+      - name: gofmt
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then echo "Run gofmt on:"; echo "$unformatted"; exit 1; fi
+      - run: go vet ./...
+      - uses: golangci/golangci-lint-action@ba0d7d2ec06a0ea1cb5fa41b2e4a3ab91d21278a # v9.3.0
+        with:
+          version: v2.14.0
+      # Known vulnerabilities in the Go standard library that paceline actually calls.
+      - uses: golang/govulncheck-action@032d45514ae346b1db93c04b0c90b841c370344f # v1.1.0
+        with:
+          go-version-input: stable
+      - name: Coverage (90% minimum)
+        run: |
+          go test -coverprofile=coverage.out ./cmd/... ./internal/...
+          total=$(go tool cover -func=coverage.out | awk '/^total:/ {sub("%", "", $3); print $3}')
+          echo "Total coverage: ${total}%" | tee -a "$GITHUB_STEP_SUMMARY"
+          awk -v t="$total" 'BEGIN { exit (t >= 90) ? 0 : 1 }'
+      # Builds every release platform, so a packaging problem fails the PR,
+      # not the release after the merge.
+      - uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3
+        with:
+          version: v2.18.2
+          args: release --snapshot --clean
+
+  tooling:
+    name: release tooling
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -48,13 +88,11 @@ jobs:
         with:
           node-version: 24
           cache: npm
-      # --ignore-scripts: dev dependencies never get to run install hooks in CI.
+      # --ignore-scripts: dependencies never get to run install hooks in CI.
       - run: npm ci --ignore-scripts
-      - run: npm run lint
-      - run: npm run test:coverage
-      # Fails on a known vulnerability at high severity or above in any dependency.
+      # Renders release notes through the real semantic-release plugins.
+      - run: npm test
       - run: npm audit --audit-level=high
-      # Verifies registry signatures and provenance attestations for installed packages.
       - run: npm audit signatures
 
   commits:
@@ -70,6 +108,10 @@ jobs:
         with:
           node-version: 24
           cache: npm
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: stable
+          cache: false
       - run: npm ci --ignore-scripts
       # Commit messages set the version, so a message semantic-release cannot
       # read is a build failure, not a style nit.
@@ -84,13 +126,13 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_SHA: ${{ github.event.pull_request.head.sha }}
         run: |
-          git fetch --tags --quiet
-          node scripts/next-bump.js "$(git describe --tags --abbrev=0 --match 'v[0-9]*' "$BASE_SHA" 2>/dev/null || echo "")" "$HEAD_SHA"
+          tag=$(git tag --list 'v[0-9]*' --sort=-v:refname --merged "$BASE_SHA" | head -n 1)
+          go run ./tools/nextbump "$tag" "$HEAD_SHA"
 
   ci-ok:
     name: ci-ok
     if: always()
-    needs: [test, quality, commits]
+    needs: [test, quality, tooling, commits]
     runs-on: ubuntu-latest
     steps:
       - name: All required jobs passed

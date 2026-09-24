@@ -1,0 +1,29 @@
+version: "2"
+
+linters:
+  enable:
+    - gosec # security: file permissions, path handling, weak crypto
+    - errorlint # wrapped errors compared with errors.Is/As
+    - misspell
+    - unconvert
+    - gocritic
+  settings:
+    errcheck:
+      # A failed write to the terminal has nowhere better to be reported.
+      exclude-functions: [fmt.Fprint, fmt.Fprintf, fmt.Fprintln]
+    gosec:
+      # G104 duplicates errcheck.
+      excludes: [G104]
+  exclusions:
+    rules:
+      # Tests create throwaway files and run `go build`; gosec's file-mode and
+      # subprocess rules are about shipped code.
+      - path: _test\.go
+        linters: [gosec]
+      # The bump preview is a dev tool that runs git by design.
+      - path: tools/
+        linters: [gosec]
+
+formatters:
+  enable:
+    - gofmt

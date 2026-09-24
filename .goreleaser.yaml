@@ -1,0 +1,44 @@
+# GoReleaser builds the release binaries. semantic-release decides the version,
+# tags it, and creates the GitHub release with notes; then it runs
+# `goreleaser release`, which builds every platform and uploads the archives
+# and checksums to that existing release (see release.config.js).
+version: 2
+
+project_name: paceline
+
+builds:
+  - main: ./cmd/paceline
+    binary: paceline
+    env:
+      - CGO_ENABLED=0
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.version={{ .Version }}
+    # Reproducible builds: the same commit always produces the same bytes.
+    mod_timestamp: "{{ .CommitTimestamp }}"
+
+archives:
+  - formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - README.md
+      - LICENSE
+
+checksum:
+  name_template: checksums.txt
+
+# semantic-release writes the notes; GoReleaser only adds files.
+changelog:
+  disable: true
+
+release:
+  mode: keep-existing
+
+snapshot:
+  version_template: "{{ incpatch .Version }}-snapshot"

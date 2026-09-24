@@ -1,50 +1,20 @@
 {
-  "name": "paceline",
-  "version": "0.0.0-development",
-  "description": "A Claude Code status line that paces your weekly usage limit across the days you have left.",
-  "keywords": [
-    "claude",
-    "claude-code",
-    "statusline",
-    "status-line",
-    "usage",
-    "rate-limit"
-  ],
-  "homepage": "https://github.com/rogadev/paceline#readme",
-  "bugs": "https://github.com/rogadev/paceline/issues",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rogadev/paceline.git"
-  },
+  "name": "paceline-release-tooling",
+  "private": true,
+  "description": "Release tooling for paceline. paceline itself is Go (see go.mod); Node runs only commitlint and semantic-release.",
   "license": "MIT",
-  "author": "rogadev",
   "type": "module",
-  "bin": {
-    "paceline": "bin/paceline.js"
-  },
-  "files": [
-    "bin/",
-    "src/"
-  ],
   "engines": {
     "node": ">=22"
   },
   "scripts": {
-    "test": "node --test",
-    "test:coverage": "node --test --experimental-test-coverage --test-coverage-lines=90 --test-coverage-branches=85 --test-coverage-functions=90",
-    "lint": "biome check .",
-    "format": "biome check --write .",
-    "bump": "node scripts/next-bump.js",
+    "test": "node --test \"test/*.test.js\"",
     "prepare": "git config core.hooksPath .githooks || exit 0"
   },
-  "publishConfig": {
-    "access": "public",
-    "provenance": true
-  },
   "devDependencies": {
-    "@biomejs/biome": "2.5.14",
     "@commitlint/cli": "21.2.3",
     "@commitlint/config-conventional": "21.2.3",
+    "@semantic-release/exec": "7.1.0",
     "conventional-changelog-conventionalcommits": "9.3.1",
     "semantic-release": "25.0.9"
   }
