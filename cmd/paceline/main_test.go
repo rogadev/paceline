@@ -117,7 +117,13 @@ func TestEndToEnd(t *testing.T) {
 	if err := json.Unmarshal(settings, &s); err != nil {
 		t.Fatal(err)
 	}
-	if want := `"` + filepath.ToSlash(bin) + `"`; !strings.EqualFold(s.StatusLine.Command, want) {
+	// install records the canonical path: macOS temp dirs sit behind the
+	// /var -> /private/var symlink, and Windows runners use 8.3 short names.
+	canonical, err := filepath.EvalSymlinks(bin)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if want := `"` + filepath.ToSlash(canonical) + `"`; !strings.EqualFold(s.StatusLine.Command, want) {
 		t.Errorf("command = %s, want %s", s.StatusLine.Command, want)
 	}
 	if out, _ := cli(`{"model":{"display_name":"Opus 5.5"},"workspace":{"current_dir":"/r/app"}}`); out != "Opus 5.5 "+string(rune(0x00b7))+" app" {
