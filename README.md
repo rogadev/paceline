@@ -58,7 +58,7 @@ gh attestation verify paceline_1.1.0_linux_amd64.tar.gz --repo rogadev/paceline
 | Cache | `cache cold: 82k @ ~2x` | Only when the prompt cache has expired. |
 | Duration | `16m` | Session wall-clock time. |
 
-**Today's budget** is the weekly percentage left at the start of the day, divided by the days from midnight to the reset. It stays fixed all day, so you can watch it count down. Whatever you don't spend spreads over the remaining days, so a light week gives you bigger budgets later on. The arrow compares today's budget to an even pace of 100% ÷ 7 per day: ▲ means you have more than even pace, ▼ means less, and ● means about even. On the final day before the reset, the segment shows `⏳ last day, resets 9pm` instead.
+**Today's budget** is the weekly percentage left at the start of the day, divided by the days from midnight to the reset. It stays fixed all day, so you can watch it count down. Whatever you don't spend spreads over the remaining days, so a light week gives you bigger budgets later on. The arrow is your pace advice. It compares today's budget to an even pace of 100% ÷ 7 per day: ▲ means you have room to push, ▼ means ease off, and ● means about even. Once you go over today's budget, the arrow always shows ▼. On the final day before the reset, the segment shows `⏳ last day, resets 9pm` instead.
 
 **Project colors** come from a hash of the project folder name, mapped to one of 12 evenly spaced hues in the OKLCH color space. Every color is equally bright and easy to read on a dark terminal. Each project keeps its color everywhere, including in subfolders.
 

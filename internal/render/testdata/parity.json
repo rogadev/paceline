@@ -75,7 +75,7 @@
             }
           }
         },
-        "want": "\u001b[32m86% week\u001b[0m \u001b[2m·\u001b[0m \u001b[31m● 2% left of today's 14% budget\u001b[0m"
+        "want": "\u001b[32m86% week\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47m● 2% left of today's 14% budget\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -87,7 +87,7 @@
             }
           }
         },
-        "want": "\u001b[32m85% week\u001b[0m \u001b[2m·\u001b[0m \u001b[31m● 105% used of today's 14% budget\u001b[0m"
+        "want": "\u001b[32m85% week\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47m▼ 105% used of today's 14% budget\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -99,7 +99,7 @@
             }
           }
         },
-        "want": "\u001b[32m80% week\u001b[0m \u001b[2m·\u001b[0m \u001b[31m● 140% used of today's 14% budget\u001b[0m"
+        "want": "\u001b[32m80% week\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47m▼ 140% used of today's 14% budget\u001b[0m"
       }
     ]
   },
@@ -147,7 +147,7 @@
             }
           }
         },
-        "want": "\u001b[31m12% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m▼ 100% left of today's 5% budget\u001b[0m"
+        "want": "\u001b[38;2;185;47;47m12% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m▼ 100% left of today's 5% budget\u001b[0m"
       }
     ]
   },
@@ -165,7 +165,7 @@
             }
           }
         },
-        "want": "\u001b[31m8% week\u001b[0m \u001b[2m·\u001b[0m \u001b[36m⏳ last day, resets 9pm\u001b[0m"
+        "want": "\u001b[38;2;185;47;47m8% week\u001b[0m \u001b[2m·\u001b[0m \u001b[36m⏳ last day, resets 9pm\u001b[0m"
       }
     ]
   },
@@ -255,7 +255,7 @@
             }
           }
         },
-        "want": "\u001b[31m10% session (resets 12:52pm)\u001b[0m"
+        "want": "\u001b[38;2;185;47;47m10% session (resets 12:52pm)\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -267,7 +267,7 @@
             }
           }
         },
-        "want": "\u001b[31m0% session (resets 12:52pm)\u001b[0m"
+        "want": "\u001b[38;2;185;47;47m0% session (resets 12:52pm)\u001b[0m"
       }
     ]
   },
@@ -310,7 +310,7 @@
             "used_percentage": 90
           }
         },
-        "want": "\u001b[31mctx 90%\u001b[0m"
+        "want": "\u001b[38;2;185;47;47mctx 90%\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -320,7 +320,7 @@
             "recache_tokens_if_cold": 82336
           }
         },
-        "want": "\u001b[31mcache cold: 82k @ ~2x\u001b[0m"
+        "want": "\u001b[38;2;185;47;47mcache cold: 82k @ ~2x\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -329,7 +329,7 @@
             "expires_at": 1790240400
           }
         },
-        "want": "\u001b[31mcache cold: ~2x\u001b[0m"
+        "want": "\u001b[38;2;185;47;47mcache cold: ~2x\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
