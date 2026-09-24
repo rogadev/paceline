@@ -1,0 +1,526 @@
+[
+  {
+    "name": "full line",
+    "config": null,
+    "steps": [
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "model": {
+            "display_name": "Opus 5.5 (1M context)"
+          },
+          "effort": {
+            "level": "medium"
+          },
+          "workspace": {
+            "current_dir": "/r/techcentral",
+            "project_dir": "/r/techcentral"
+          },
+          "rate_limits": {
+            "five_hour": {
+              "used_percentage": 16,
+              "resets_at": 1790254800
+            },
+            "seven_day": {
+              "used_percentage": 4,
+              "resets_at": 1790499600
+            }
+          },
+          "context_window": {
+            "used_percentage": 8
+          },
+          "cost": {
+            "total_duration_ms": 960000
+          }
+        },
+        "want": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;73;207;252mtechcentral\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32m84% session\u001b[0m \u001b[2m·\u001b[0m \u001b[32m96% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m▲ 100% left of today's 28% budget\u001b[0m \u001b[2m·\u001b[0m \u001b[2m16m\u001b[0m"
+      }
+    ]
+  },
+  {
+    "name": "today counts down then goes over",
+    "config": null,
+    "steps": [
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "seven_day": {
+              "used_percentage": 0,
+              "resets_at": 1790812800
+            }
+          }
+        },
+        "want": "\u001b[32m100% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m● 100% left of today's 14% budget\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "seven_day": {
+              "used_percentage": 10,
+              "resets_at": 1790812800
+            }
+          }
+        },
+        "want": "\u001b[32m90% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m● 30% left of today's 14% budget\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "seven_day": {
+              "used_percentage": 14,
+              "resets_at": 1790812800
+            }
+          }
+        },
+        "want": "\u001b[32m86% week\u001b[0m \u001b[2m·\u001b[0m \u001b[31m● 2% left of today's 14% budget\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "seven_day": {
+              "used_percentage": 15,
+              "resets_at": 1790812800
+            }
+          }
+        },
+        "want": "\u001b[32m85% week\u001b[0m \u001b[2m·\u001b[0m \u001b[31m● 105% used of today's 14% budget\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "seven_day": {
+              "used_percentage": 20,
+              "resets_at": 1790812800
+            }
+          }
+        },
+        "want": "\u001b[32m80% week\u001b[0m \u001b[2m·\u001b[0m \u001b[31m● 140% used of today's 14% budget\u001b[0m"
+      }
+    ]
+  },
+  {
+    "name": "rollover to next day",
+    "config": null,
+    "steps": [
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "seven_day": {
+              "used_percentage": 0,
+              "resets_at": 1790812800
+            }
+          }
+        },
+        "want": "\u001b[32m100% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m● 100% left of today's 14% budget\u001b[0m"
+      },
+      {
+        "now": "2026-09-25T09:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "seven_day": {
+              "used_percentage": 5,
+              "resets_at": 1790812800
+            }
+          }
+        },
+        "want": "\u001b[32m95% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m● 100% left of today's 16% budget\u001b[0m"
+      }
+    ]
+  },
+  {
+    "name": "heavy week",
+    "config": null,
+    "steps": [
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "seven_day": {
+              "used_percentage": 88,
+              "resets_at": 1790413200
+            }
+          }
+        },
+        "want": "\u001b[31m12% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m▼ 100% left of today's 5% budget\u001b[0m"
+      }
+    ]
+  },
+  {
+    "name": "last day",
+    "config": null,
+    "steps": [
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "seven_day": {
+              "used_percentage": 92,
+              "resets_at": 1790283600
+            }
+          }
+        },
+        "want": "\u001b[31m8% week\u001b[0m \u001b[2m·\u001b[0m \u001b[36m⏳ last day, resets 9pm\u001b[0m"
+      }
+    ]
+  },
+  {
+    "name": "last day into tomorrow",
+    "config": null,
+    "steps": [
+      {
+        "now": "2026-09-24T23:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "seven_day": {
+              "used_percentage": 60,
+              "resets_at": 1790296200
+            }
+          }
+        },
+        "want": "\u001b[32m40% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m▲ 100% left of today's 39% budget\u001b[0m"
+      }
+    ]
+  },
+  {
+    "name": "reset passed",
+    "config": null,
+    "steps": [
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "seven_day": {
+              "used_percentage": 50,
+              "resets_at": 1790121600
+            }
+          }
+        },
+        "want": "\u001b[32m50% week\u001b[0m"
+      }
+    ]
+  },
+  {
+    "name": "session levels and reset time",
+    "config": null,
+    "steps": [
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "five_hour": {
+              "used_percentage": 18,
+              "resets_at": 1790254320
+            }
+          }
+        },
+        "want": "\u001b[32m82% session\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "five_hour": {
+              "used_percentage": 50,
+              "resets_at": 1790254320
+            }
+          }
+        },
+        "want": "\u001b[32m50% session\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "five_hour": {
+              "used_percentage": 82,
+              "resets_at": 1790254320
+            }
+          }
+        },
+        "want": "\u001b[33m18% session (resets 12:52pm)\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "five_hour": {
+              "used_percentage": 90,
+              "resets_at": 1790254320
+            }
+          }
+        },
+        "want": "\u001b[31m10% session (resets 12:52pm)\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "five_hour": {
+              "used_percentage": 100.5,
+              "resets_at": 1790254320
+            }
+          }
+        },
+        "want": "\u001b[31m0% session (resets 12:52pm)\u001b[0m"
+      }
+    ]
+  },
+  {
+    "name": "effort and fast mode",
+    "config": null,
+    "steps": [
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "model": {
+            "display_name": "Fable 5.1"
+          },
+          "effort": {
+            "level": "max"
+          },
+          "fast_mode": true
+        },
+        "want": "\u001b[36mFable 5.1\u001b[0m \u001b[2m·\u001b[0m \u001b[2mmax effort\u001b[0m \u001b[2m·\u001b[0m \u001b[33mfast mode\u001b[0m"
+      }
+    ]
+  },
+  {
+    "name": "context and cache",
+    "config": null,
+    "steps": [
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "context_window": {
+            "used_percentage": 72
+          }
+        },
+        "want": "\u001b[33mctx 72%\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "context_window": {
+            "used_percentage": 90
+          }
+        },
+        "want": "\u001b[31mctx 90%\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "prompt_cache": {
+            "expires_at": 1790240400,
+            "recache_tokens_if_cold": 82336
+          }
+        },
+        "want": "\u001b[31mcache cold: 82k @ ~2x\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "prompt_cache": {
+            "expires_at": 1790240400
+          }
+        },
+        "want": "\u001b[31mcache cold: ~2x\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "prompt_cache": {
+            "expires_at": 1790247600
+          }
+        },
+        "want": ""
+      }
+    ]
+  },
+  {
+    "name": "durations",
+    "config": null,
+    "steps": [
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "cost": {
+            "total_duration_ms": 40000
+          }
+        },
+        "want": "\u001b[2m40s\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "cost": {
+            "total_duration_ms": 3900000
+          }
+        },
+        "want": "\u001b[2m1h5m\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "cost": {
+            "total_duration_ms": 0
+          }
+        },
+        "want": ""
+      }
+    ]
+  },
+  {
+    "name": "project colors and subfolders",
+    "config": null,
+    "steps": [
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "workspace": {
+            "current_dir": "/r/techcentral/src",
+            "project_dir": "/r/techcentral"
+          }
+        },
+        "want": "\u001b[38;2;73;207;252msrc\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "workspace": {
+            "current_dir": "C:\\Users\\me\\tctools\\"
+          }
+        },
+        "want": "\u001b[38;2;203;194;74mtctools\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "cwd": "/r/orc-pack"
+        },
+        "want": "\u001b[38;2;81;218;167morc-pack\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "workspace": {
+            "current_dir": "/r/long"
+          }
+        },
+        "want": "\u001b[38;2;203;194;74mlong\u001b[0m \u001b[2m(\u001b[0mxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\u001b[2m)\u001b[0m"
+      }
+    ]
+  },
+  {
+    "name": "config overrides",
+    "config": {
+      "segments": {
+        "duration": false
+      },
+      "thresholds": {
+        "headroomGreen": 50
+      },
+      "quietEfforts": [
+        "low"
+      ],
+      "projectSlots": {
+        "techcentral": 4
+      }
+    },
+    "steps": [
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "effort": {
+            "level": "medium"
+          },
+          "workspace": {
+            "current_dir": "/r/techcentral"
+          },
+          "rate_limits": {
+            "five_hour": {
+              "used_percentage": 55,
+              "resets_at": 1790251200
+            }
+          },
+          "cost": {
+            "total_duration_ms": 60000
+          }
+        },
+        "want": "\u001b[2mmedium effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mtechcentral\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[33m45% session (resets 12pm)\u001b[0m"
+      }
+    ]
+  },
+  {
+    "name": "hostile text fields",
+    "config": null,
+    "steps": [
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "model": {
+            "display_name": "Opus\u001b]0;pwned\u0007\u001b[2J‮​\r\n"
+          },
+          "effort": {
+            "level": "max\u001b]0;pwned\u0007\u001b[2J‮​\r\n"
+          },
+          "workspace": {
+            "current_dir": "/r/evil\u001b]0;pwned\u0007\u001b[2J‮​\r\n",
+            "project_dir": "/r/evil\u001b]0;pwned\u0007\u001b[2J‮​\r\n"
+          }
+        },
+        "want": "\u001b[36mOpus]0;pwned[2J\u001b[0m \u001b[2m·\u001b[0m \u001b[2mmax]0;pwned[2J effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;224;161;251mevil]0;pwned[2J\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "workspace": {
+            "current_dir": "/r/evil"
+          }
+        },
+        "want": "\u001b[38;2;150;210;115mevil\u001b[0m \u001b[2m(\u001b[0mmain]0;pwned[2J\u001b[2m)\u001b[0m"
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "model": {
+            "display_name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+          }
+        },
+        "want": "\u001b[36mAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA…\u001b[0m"
+      }
+    ]
+  },
+  {
+    "name": "wrong types",
+    "config": null,
+    "steps": [
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {
+          "rate_limits": {
+            "five_hour": {
+              "used_percentage": "90"
+            },
+            "seven_day": "oops"
+          },
+          "fast_mode": "yes",
+          "model": {
+            "display_name": 42
+          }
+        },
+        "want": ""
+      },
+      {
+        "now": "2026-09-24T10:00:00Z",
+        "payload": {},
+        "want": ""
+      }
+    ]
+  }
+]
