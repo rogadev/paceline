@@ -2,7 +2,9 @@ name: Release
 
 # Every merge to main runs semantic-release, which reads the commits since the
 # last tag and decides the version (see release.config.js and CONTRIBUTING.md).
-# No releasable commits means no release; the run just ends.
+# When there is a release, semantic-release tags it and creates the GitHub
+# release, then runs GoReleaser to build and upload the binaries. No
+# releasable commits means no release; the run just ends.
 
 on:
   push:
@@ -19,25 +21,47 @@ jobs:
   release:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # tag and GitHub release
+      contents: write # tag, GitHub release, and binary uploads
       issues: write # comment on issues a release fixes
       pull-requests: write # comment on PRs a release ships
-      id-token: write # npm provenance: a signed link from the package to this build
+      id-token: write # sign the build provenance attestation
+      attestations: write # store the attestation
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: stable
+          cache: false
       - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: 24
           cache: npm
-      - run: npm ci --ignore-scripts
       # Main is protected by CI, but the release re-runs the suite on the exact
-      # commit it is about to publish.
-      - run: npm test
+      # commit it is about to ship.
+      - run: go test ./...
+      - run: npm ci --ignore-scripts
       - run: npm audit signatures
+      # Installed here and run by semantic-release's exec plugin.
+      - uses: goreleaser/goreleaser-action@f06c13b6b1a9625abc9e6e439d9c05a8f2190e94 # v7.2.3
+        with:
+          version: v2.18.2
+          install-only: true
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # A signed statement, verifiable with `gh attestation verify`, that each
+      # archive was built by this workflow from this repository's commit.
+      - name: Check for release artifacts
+        id: artifacts
+        run: |
+          if compgen -G "dist/*.tar.gz" > /dev/null; then echo "built=true" >> "$GITHUB_OUTPUT"; fi
+      - if: steps.artifacts.outputs.built == 'true'
+        uses: actions/attest-build-provenance@4d101475d8b20a2381f78447822ac1eab6504dd8 # v4.2.2
+        with:
+          subject-path: |
+            dist/*.tar.gz
+            dist/*.zip
+            dist/checksums.txt
