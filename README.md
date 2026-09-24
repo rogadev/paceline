@@ -1,12 +1,14 @@
 # paceline
 
-A Claude Code status line that paces your weekly usage limit across the days you have left.
+A Claude Code status line that paces your usage limits and shows, at a glance, where every session stands.
 
 ```
 Opus 5.5 · techcentral (dev) · 84% session · 96% week · ▲ 54% left of today's 28% budget · 16m
 ```
 
 Your weekly limit resets on a fixed schedule, but the status line only tells you how much is left, not whether that's a lot or a little for the days remaining. paceline divides what's left by the days until the reset and gives you **today's budget**, then counts it down as you work. A light week shows a big budget and a ▲; a heavy one shows a small budget and a ▼. It's most useful on weekends, when you're deciding whether to go hard on side projects or save the rest for Monday.
+
+The rest of the line tells your sessions apart and shows where each one stands: the model and effort, the project in its own color with its git branch, your session and weekly limits, and warnings when the context window fills up or the prompt cache goes cold.
 
 ## Install
 
