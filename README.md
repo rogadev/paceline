@@ -10,20 +10,38 @@ Your weekly limit resets on a fixed schedule, but the status line only tells you
 
 ## Install
 
-Requires Node.js 22 or later.
+paceline is a single binary with no dependencies, for macOS, Linux, and Windows on Intel and ARM.
+
+**Download a release.** Get the archive for your platform from the [latest release](https://github.com/rogadev/paceline/releases/latest), extract `paceline` (`paceline.exe` on Windows), and put it somewhere permanent, such as `~/.local/bin`. Then run:
 
 ```sh
-npm install -g paceline
 paceline install
 ```
 
-`paceline install` adds paceline as the `statusLine` in `~/.claude/settings.json`. It backs up the file first, and it won't replace a status line you already have unless you pass `--force`. To go back:
+**Or build it with Go** (1.26 or later):
+
+```sh
+go install github.com/rogadev/paceline/cmd/paceline@latest
+paceline install
+```
+
+`paceline install` points Claude Code's `statusLine` in `~/.claude/settings.json` at the binary you ran. It backs up the file first, keeps your other settings and their order, and won't replace a status line you already have unless you pass `--force`. To go back:
 
 ```sh
 paceline uninstall
 ```
 
-That removes paceline and restores whatever status line it replaced.
+That removes paceline and restores whatever status line it replaced. If you move the binary, run `paceline install` again from the new location.
+
+### Verify a download
+
+Every release archive has a signed build provenance attestation: proof that GitHub Actions built it from this repository. With the [GitHub CLI](https://cli.github.com):
+
+```sh
+gh attestation verify paceline_1.1.0_linux_amd64.tar.gz --repo rogadev/paceline
+```
+
+`checksums.txt` in each release lists the SHA-256 of every archive.
 
 ## What each segment means
 
@@ -68,13 +86,13 @@ paceline respects [`NO_COLOR`](https://no-color.org).
 
 paceline runs on every status line refresh, so it's built to do very little:
 
-- No runtime dependencies. It uses only Node.js built-ins.
-- It never starts processes. The git branch is read from `.git/HEAD` directly, so a repo's git config or hooks can't run code when paceline renders.
-- No network access.
-- It strips control characters from every folder name, branch name, and payload field before printing, so a hostile repo name can't send escape sequences to your terminal.
+- No dependencies. It uses only the Go standard library, and a test fails if that changes.
+- It never starts processes or touches the network. A test fails the build if the shipped code imports `os/exec`, `net`, `syscall`, `unsafe`, or `plugin`. The git branch is read from `.git/HEAD` directly, so a repo's git config or hooks can't run code when paceline renders.
+- It strips control characters, zero-width characters, and bidi overrides from every folder name, branch name, and payload field before printing, so a hostile repo name can't send escape sequences to your terminal.
 - The installer never overwrites a settings file it can't parse, and it writes through a temp file so a crash can't truncate your settings.
+- Releases are reproducible builds with signed provenance attestations.
 
-Releases are published from GitHub Actions with [npm provenance](https://docs.npmjs.com/generating-provenance-statements), so you can verify that each version was built from this repository. See [SECURITY.md](SECURITY.md) to report a vulnerability.
+See [SECURITY.md](SECURITY.md) to report a vulnerability.
 
 ## License
 
