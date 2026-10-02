@@ -95,7 +95,8 @@ jobs:
       - run: npm ci --ignore-scripts
       # Renders release notes through the real semantic-release plugins.
       - run: npm test
-      - run: npm audit --audit-level=high
+      # Fails on high or critical advisories; see the script for the allowed ones.
+      - run: npm audit --json | node .github/scripts/npm-audit.mjs
       - run: npm audit signatures
 
   commits:
