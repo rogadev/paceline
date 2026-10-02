@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"regexp"
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -40,6 +41,8 @@ var fixtureBranches = map[string]string{
 
 // TestParityWithJavaScript proves the Go port prints exactly what 1.0 printed,
 // ANSI codes included, across every segment and edge case in the fixtures.
+// The today segment's wants were later rewritten to the shorter
+// "<arrow> N% today, M% budget" form; every other byte is still 1.0's.
 func TestParityWithJavaScript(t *testing.T) {
 	data, err := os.ReadFile("testdata/parity.json")
 	if err != nil {
@@ -114,7 +117,7 @@ func TestNilPayloadAndMissingCallbacks(t *testing.T) {
 	// No snapshot or branch functions: renders without them.
 	got := Render(decode(t, `{"workspace":{"current_dir":"/r/app"},
 		"rate_limits":{"seven_day":{"used_percentage":5,"resets_at":1790899200}}}`), c)
-	if !strings.Contains(got, "today's") || !strings.HasPrefix(got, "app") {
+	if !strings.Contains(got, "% today "+middleDot+" ") || !strings.HasPrefix(got, "app") {
 		t.Errorf("got %q", got)
 	}
 }
@@ -148,5 +151,30 @@ func TestLongFieldsAreBounded(t *testing.T) {
 	raw, _ := json.Marshal(map[string]any{"model": map[string]string{"display_name": strings.Repeat("A", 100_000)}})
 	if got := Render(decode(t, string(raw)), ctx()); len([]rune(got)) > 64 {
 		t.Errorf("got %d runes", len([]rune(got)))
+	}
+}
+
+// Today reads as % used both under and over the budget, with the budget as a
+// segment of its own.
+func TestTodayReadsAsUsedWithBudgetSegment(t *testing.T) {
+	c := ctx()
+	var snap *pace.Snapshot
+	c.ReadSnapshot = func() *pace.Snapshot { return snap }
+	c.WriteSnapshot = func(s pace.Snapshot) { snap = &s }
+	payloadAt := func(used int) *payload.Payload {
+		return decode(t, `{"rate_limits":{"seven_day":{"used_percentage":`+strconv.Itoa(used)+`,"resets_at":1790899200}}}`)
+	}
+	c.Config.Segments.Week = false
+
+	// 90% left over 8 days is an 11% budget, below an even pace, so the arrow
+	// points down from the start.
+	if got, want := Render(payloadAt(10), c), arrows[pace.Down]+" 0% today "+middleDot+" 11% budget"; got != want {
+		t.Errorf("start of day: got %q, want %q", got, want)
+	}
+	if got, want := Render(payloadAt(16), c), arrows[pace.Down]+" 53% today "+middleDot+" 11% budget"; got != want {
+		t.Errorf("under budget: got %q, want %q", got, want)
+	}
+	if got, want := Render(payloadAt(30), c), arrows[pace.Down]+" 178% today "+middleDot+" 11% budget"; got != want {
+		t.Errorf("over budget: got %q, want %q", got, want)
 	}
 }

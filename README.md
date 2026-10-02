@@ -3,10 +3,10 @@
 A Claude Code status line that paces your usage limits and shows, at a glance, where every session stands.
 
 ```
-Opus 5.5 · techcentral (dev) · 84% session · 96% week · ▲ 54% left of today's 28% budget · 16m
+Opus 5.5 · techcentral (dev) · 84% session · 96% week · ▲ 46% today · 28% budget · 16m
 ```
 
-Your weekly limit resets on a fixed schedule, but the status line only tells you how much is left, not whether that's a lot or a little for the days remaining. paceline divides what's left by the days until the reset and gives you **today's budget**, then counts it down as you work. A light week shows a big budget and a ▲; a heavy one shows a small budget and a ▼. It's most useful on weekends, when you're deciding whether to go hard on side projects or save the rest for Monday.
+Your weekly limit resets on a fixed schedule, but the status line only tells you how much is left, not whether that's a lot or a little for the days remaining. paceline divides what's left by the days until the reset and gives you **today's budget**, then shows how much of it you've used as you work. A light week shows a big budget and a ▲; a heavy one shows a small budget and a ▼. It's most useful on weekends, when you're deciding whether to go hard on side projects or save the rest for Monday.
 
 The rest of the line tells your sessions apart and shows where each one stands: the model and effort, the project in its own color with its git branch, your session and weekly limits, and warnings when the context window fills up or the prompt cache goes cold.
 
@@ -64,12 +64,13 @@ gh attestation verify paceline_1.1.0_linux_amd64.tar.gz --repo rogadev/paceline
 | Project | `techcentral (dev)` | The folder, in a color unique to the project, and the git branch. |
 | Session | `18% session (resets 3:40pm)` | Five-hour limit left. The reset time appears once it drops below 30%. |
 | Week | `96% week` | Weekly limit left. |
-| Today | `▲ 54% left of today's 28% budget` | Today's share of the week, counting down. Turns into `% used` past 100%. |
+| Today | `▲ 46% today` | How much of today's budget you've used. Climbs past 100% when you go over. |
+| Budget | `28% budget` | Today's share of the weekly limit. Fixed for the day. Turned off along with today. |
 | Context | `ctx 72%` | Only when the context window is 70% or more full. |
 | Cache | `cache cold: 82k @ ~2x` | Only when the prompt cache has expired. |
 | Duration | `16m` | Session wall-clock time. |
 
-**Today's budget** is the weekly percentage left at the start of the day, divided by the days from midnight to the reset. It stays fixed all day, so you can watch it count down. Whatever you don't spend spreads over the remaining days, so a light week gives you bigger budgets later on. The arrow is your pace advice. It compares today's budget to an even pace of 100% ÷ 7 per day: ▲ means you have room to push, ▼ means ease off, and ● means about even. Once you go over today's budget, the arrow always shows ▼. On the final day before the reset, the segment shows `⏳ last day, resets 9pm` instead.
+**Today's budget** is the weekly percentage left at the start of the day, divided by the days from midnight to the reset. It stays fixed all day, and the today segment shows how much of it you've used. Whatever you don't spend spreads over the remaining days, so a light week gives you bigger budgets later on. The arrow is your pace advice. It compares today's budget to an even pace of 100% ÷ 7 per day: ▲ means you have room to push, ▼ means ease off, and ● means about even. Once you go over today's budget, the arrow always shows ▼. On the final day before the reset, the segment shows `⏳ last day, resets 9pm` instead.
 
 **Project colors** come from a hash of the project folder name, mapped to one of 12 evenly spaced hues in the OKLCH color space. Every color is equally bright and easy to read on a dark terminal. Each project keeps its color everywhere, including in subfolders.
 

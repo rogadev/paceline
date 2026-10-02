@@ -73,7 +73,7 @@ The brief's `Renders:` line points to `<scratch>/renders/summary.md` or says `no
 - The model segment strips a trailing parenthetical (`modelSuffix`). A change there must still leave a readable model name, never an empty segment or a dangling parenthesis.
 
 ### 4.6 Numbers and time
-- Percentages are integers rounded half up (`round`), followed by `%` with no space: `84% session`, `ctx 72%`. Today reads `<arrow> N% left of today's M% budget`, and past the budget flips to `<arrow> N% used of today's M% budget`, where N can exceed 100. Check that new wording keeps "left" and "used" unambiguous and never prints a negative percentage.
+- Percentages are integers rounded half up (`round`), followed by `%` with no space: `84% session`, `ctx 72%`. Today reads `<arrow> N% today · M% budget`: N is the share of today's budget used, which only climbs and can exceed 100, and the budget is its own dim segment. Check that new wording keeps N unambiguous as "used" and never prints a negative percentage.
 - Times come from `timefmt.Clock`: `9pm`, `3:40pm`, and `Thu 9pm` when the reset is on another local day. Durations come from `timefmt.Duration`: `1h5m`, `12m`, `40s`. A new time or duration uses these helpers, never a new layout string, so the formats stay consistent. Watch for `12:00am` style edge cases and for a weekday prefix that is missing when the reset is tomorrow.
 - A Go formatting mistake prints `%!d(MISSING)`, `%!s(<nil>)`, `<nil>`, or `NaN` into the status line. That is a Blocker on any common payload.
 
