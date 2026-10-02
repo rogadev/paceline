@@ -1,13 +1,16 @@
 name: CI
 
-# Green CI means a change is safe to merge. Runs on every push to dev and main
-# and on every pull request. Branch protection on main requires the single
-# `ci-ok` job, which only passes when every job below passes.
+# Green CI means a change is safe to merge. Runs on every push to dev and on
+# every pull request into main. Branch protection on main requires the single
+# `ci-ok` job, which only passes when every job below passes. There is no run
+# on main after a merge: the pull request run already tested the merged code,
+# and the release workflow re-runs the tests on the commit it ships.
 
 on:
   push:
-    branches: [dev, main]
+    branches: [dev]
   pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -92,7 +95,8 @@ jobs:
       - run: npm ci --ignore-scripts
       # Renders release notes through the real semantic-release plugins.
       - run: npm test
-      - run: npm audit --audit-level=high
+      # Fails on high or critical advisories; see the script for the allowed ones.
+      - run: npm audit --json | node .github/scripts/npm-audit.mjs
       - run: npm audit signatures
 
   commits:

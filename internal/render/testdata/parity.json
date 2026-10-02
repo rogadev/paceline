@@ -33,7 +33,7 @@
             "total_duration_ms": 960000
           }
         },
-        "want": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;73;207;252mtechcentral\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32m84% session\u001b[0m \u001b[2m·\u001b[0m \u001b[32m96% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m▲ 100% left of today's 28% budget\u001b[0m \u001b[2m·\u001b[0m \u001b[2m16m\u001b[0m"
+        "want": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;73;207;252mtechcentral\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32m84% session\u001b[0m \u001b[2m·\u001b[0m \u001b[32m96% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m▲ 0% today\u001b[0m \u001b[2m·\u001b[0m \u001b[2m28% budget\u001b[0m \u001b[2m·\u001b[0m \u001b[2m16m\u001b[0m"
       }
     ]
   },
@@ -51,7 +51,7 @@
             }
           }
         },
-        "want": "\u001b[32m100% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m● 100% left of today's 14% budget\u001b[0m"
+        "want": "\u001b[32m100% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m● 0% today\u001b[0m \u001b[2m·\u001b[0m \u001b[2m14% budget\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -63,7 +63,7 @@
             }
           }
         },
-        "want": "\u001b[32m90% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m● 30% left of today's 14% budget\u001b[0m"
+        "want": "\u001b[32m90% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m● 70% today\u001b[0m \u001b[2m·\u001b[0m \u001b[2m14% budget\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -75,7 +75,7 @@
             }
           }
         },
-        "want": "\u001b[32m86% week\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47m● 2% left of today's 14% budget\u001b[0m"
+        "want": "\u001b[32m86% week\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47m● 98% today\u001b[0m \u001b[2m·\u001b[0m \u001b[2m14% budget\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -87,7 +87,7 @@
             }
           }
         },
-        "want": "\u001b[32m85% week\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47m▼ 105% used of today's 14% budget\u001b[0m"
+        "want": "\u001b[32m85% week\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47m▼ 105% today\u001b[0m \u001b[2m·\u001b[0m \u001b[2m14% budget\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -99,7 +99,7 @@
             }
           }
         },
-        "want": "\u001b[32m80% week\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47m▼ 140% used of today's 14% budget\u001b[0m"
+        "want": "\u001b[32m80% week\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47m▼ 140% today\u001b[0m \u001b[2m·\u001b[0m \u001b[2m14% budget\u001b[0m"
       }
     ]
   },
@@ -117,7 +117,7 @@
             }
           }
         },
-        "want": "\u001b[32m100% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m● 100% left of today's 14% budget\u001b[0m"
+        "want": "\u001b[32m100% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m● 0% today\u001b[0m \u001b[2m·\u001b[0m \u001b[2m14% budget\u001b[0m"
       },
       {
         "now": "2026-09-25T09:00:00Z",
@@ -129,7 +129,7 @@
             }
           }
         },
-        "want": "\u001b[32m95% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m● 100% left of today's 16% budget\u001b[0m"
+        "want": "\u001b[32m95% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m● 0% today\u001b[0m \u001b[2m·\u001b[0m \u001b[2m16% budget\u001b[0m"
       }
     ]
   },
@@ -147,7 +147,7 @@
             }
           }
         },
-        "want": "\u001b[38;2;185;47;47m12% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m▼ 100% left of today's 5% budget\u001b[0m"
+        "want": "\u001b[38;2;185;47;47m12% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m▼ 0% today\u001b[0m \u001b[2m·\u001b[0m \u001b[2m5% budget\u001b[0m"
       }
     ]
   },
@@ -183,7 +183,7 @@
             }
           }
         },
-        "want": "\u001b[32m40% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m▲ 100% left of today's 39% budget\u001b[0m"
+        "want": "\u001b[32m40% week\u001b[0m \u001b[2m·\u001b[0m \u001b[32m▲ 0% today\u001b[0m \u001b[2m·\u001b[0m \u001b[2m39% budget\u001b[0m"
       }
     ]
   },

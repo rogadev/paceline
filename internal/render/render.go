@@ -163,7 +163,7 @@ func Render(p *payload.Payload, ctx Context) string {
 		parts = append(parts, st.dim(timefmt.Duration(c.TotalDurationMs.V)))
 	}
 
-	return strings.Join(parts, " "+st.dim(middleDot)+" ")
+	return strings.Join(parts, separator(st))
 }
 
 func project(p *payload.Payload, ctx Context, st style) string {
@@ -206,13 +206,16 @@ func renderToday(usedPct, resetsAt float64, ctx Context, st style, headroom func
 		ctx.WriteSnapshot(r.Snapshot)
 	}
 
-	arrow, budget := arrows[r.Pace], round(r.Budget)
-	// Past the budget, flip from "% left" to "% used" so the overshoot shows
-	// (102%), and point the arrow down: whatever today's budget was, the advice
-	// now is to ease off.
+	// Usage reads as % used throughout, so the number only climbs and the
+	// overshoot shows (118%). The budget is its own dim segment: it is fixed for
+	// the day, so it is context, not a warning.
+	budget := st.dim(fmt.Sprintf("%d%% budget", round(r.Budget)))
+	used := round(r.PctUsed)
 	if r.Over {
-		return st.red(fmt.Sprintf("%s %d%% used of today's %d%% budget", arrows[pace.Down], round(r.PctUsed), budget))
+		// Whatever today's budget was, the advice now is to ease off.
+		return st.red(fmt.Sprintf("%s %d%% today", arrows[pace.Down], used)) + separator(st) + budget
 	}
-	left := round(r.PctLeft)
-	return headroom(left, fmt.Sprintf("%s %d%% left of today's %d%% budget", arrow, left, budget))
+	return headroom(round(r.PctLeft), fmt.Sprintf("%s %d%% today", arrows[r.Pace], used)) + separator(st) + budget
 }
+
+func separator(st style) string { return " " + st.dim(middleDot) + " " }

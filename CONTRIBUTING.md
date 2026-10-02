@@ -51,7 +51,7 @@ The code layout follows Go convention:
 - `cmd/paceline` is the binary: argument handling, stdin, and the install commands.
 - `internal/` holds one package per concern: `payload` (decoding Claude Code's JSON), `render`, `pace`, `color`, `gitinfo`, `config`, `install`, `sanitize`, and `timefmt`. Tests sit next to the code they cover, as `*_test.go`.
 - `internal/policy` holds repository-wide rules tested like behavior: no dependencies, no dangerous imports, and ASCII-only Go source.
-- `internal/render/testdata/parity.json` holds outputs recorded from the 1.0 JavaScript version. The render tests must reproduce them byte for byte.
+- `internal/render/testdata/parity.json` holds outputs recorded from the 1.0 JavaScript version, updated deliberately when the output changes on purpose (the today segment, for example). The render tests must reproduce them byte for byte.
 - `tools/nextbump` is the release preview, a development tool that isn't part of the binary.
 
 To try a local build as your own status line:

@@ -66,3 +66,13 @@ describe('release config', { skip: !hasDevDeps && 'dev dependencies not installe
     assert.equal(await bump(['docs: a', 'chore: b']), null);
   });
 });
+
+// .github/scripts/npm-audit.mjs allows advisories in npm's bundled
+// dependencies because nothing in the release loads npm. That holds only while
+// the config leaves out @semantic-release/npm.
+describe('release plugins', () => {
+  it('never loads @semantic-release/npm', () => {
+    const names = releaseConfig.plugins.map((p) => (Array.isArray(p) ? p[0] : p));
+    assert.ok(!names.includes('@semantic-release/npm'), `plugins: ${names.join(', ')}`);
+  });
+});
