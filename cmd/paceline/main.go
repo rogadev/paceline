@@ -79,9 +79,13 @@ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 	case "--help", "-h", "help":
 		fmt.Fprint(stdout, help())
 	case "install":
-		verbose, chosen := chooseStyle(args[1:], isTerminal(stdin), stdin, stdout)
-		if code := runInstall(slices.Contains(args[1:], "--force"), stdout, stderr); code != 0 || !chosen {
+		if code := runInstall(slices.Contains(args[1:], "--force"), stdout, stderr); code != 0 {
 			return code
+		}
+		current := config.Load(filepath.Join(config.Dir(), "paceline.json")).Verbose
+		verbose, chosen := chooseStyle(args[1:], isTerminal(stdin), current, stdin, stdout)
+		if !chosen {
+			return 0
 		}
 		return runSetStyle(verbose, stdout, stderr)
 	case "uninstall":
@@ -110,14 +114,24 @@ func renderFromStdin(stdin io.Reader, stdout io.Writer) {
 		dir := config.Dir()
 		statePath := filepath.Join(dir, "paceline-day.json")
 		_, noColor := os.LookupEnv("NO_COLOR")
+		// The branch and the progress bar both need the git dir; find it once.
+		gitDirs := map[string]string{}
+		gitDir := func(dir string) string {
+			if g, ok := gitDirs[dir]; ok {
+				return g
+			}
+			g := gitinfo.FindGitDir(dir)
+			gitDirs[dir] = g
+			return g
+		}
 		return render.Render(p, render.Context{
 			Now:           time.Now(),
 			Config:        config.Load(filepath.Join(dir, "paceline.json")),
 			NoColor:       noColor,
 			ReadSnapshot:  func() *pace.Snapshot { return pace.ReadSnapshot(statePath) },
 			WriteSnapshot: func(s pace.Snapshot) { _ = pace.WriteSnapshot(statePath, s) },
-			GitBranch:     gitinfo.Branch,
-			Progress:      func(dir string) *progress.Run { return progress.Read(gitinfo.FindGitDir(dir)) },
+			GitBranch:     func(dir string) string { return gitinfo.BranchIn(gitDir(dir)) },
+			Progress:      func(dir string) *progress.Run { return progress.Read(gitDir(dir)) },
 		})
 	}()
 	if line == "" {
@@ -172,27 +186,37 @@ func runInstall(force bool, stdout, stderr io.Writer) int {
 }
 
 // chooseStyle picks the label style for install: a flag wins, then the answer
-// to a prompt. chosen is false for a non-interactive install with no flag, so
-// a scripted install leaves paceline.json alone.
-func chooseStyle(args []string, interactive bool, stdin io.Reader, stdout io.Writer) (verbose, chosen bool) {
+// to a prompt, which defaults to the current style. chosen is false when
+// there is nothing to record: a non-interactive install with no flag, or
+// input that ends without an answer (stdin from /dev/null or NUL, which look
+// like terminals), so a scripted install leaves paceline.json alone.
+func chooseStyle(args []string, interactive, current bool, stdin io.Reader, stdout io.Writer) (verbose, chosen bool) {
 	switch {
 	case slices.Contains(args, "--verbose"):
 		return true, true
 	case slices.Contains(args, "--regular"):
 		return false, true
 	case !interactive:
-		return false, false
+		return current, false
 	}
-	fmt.Fprint(stdout, "Choose a label style:\n"+
+	def := "1"
+	if current {
+		def = "2"
+	}
+	fmt.Fprint(stdout, "Choose a label style (s = session, w = week, t = today):\n"+
 		"  1) Regular   s 18% \u00b7 w 86% \u00b7 t 13% of 8%\n"+
 		"  2) Verbose   session 18% \u00b7 week 86% \u00b7 today 13% of 8% budget\n"+
-		"Style [1]: ")
-	answer, _ := bufio.NewReader(stdin).ReadString('\n')
+		"Style ["+def+"]: ")
+	answer, err := bufio.NewReader(stdin).ReadString('\n')
 	switch strings.ToLower(strings.TrimSpace(answer)) {
+	case "1", "r", "regular":
+		return false, true
 	case "2", "v", "verbose":
 		return true, true
+	case "":
+		return current, err == nil
 	}
-	return false, true
+	return current, true
 }
 
 func isTerminal(r io.Reader) bool {

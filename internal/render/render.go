@@ -127,17 +127,18 @@ func Render(p *payload.Payload, ctx Context) string {
 	// Usage limits: session, week, then today's share of the week.
 	if rl := p.RateLimits; rl != nil {
 		if fh := rl.FiveHour; on.Session && fh != nil && fh.UsedPercentage.Set {
-			left := round(100 - fh.UsedPercentage.V)
+			used := round(fh.UsedPercentage.V)
+			left := 100 - used
 			when := ""
 			if float64(left) < th.HeadroomGreen && fh.ResetsAt.Set {
 				when = " (resets " + timefmt.Clock(fh.ResetsAt.V, ctx.Now) + ")"
 			}
-			parts = append(parts, headroom(left, fmt.Sprintf("%s %d%%%s", label(ctx, "s", "session"), 100-left, when)))
+			parts = append(parts, headroom(left, fmt.Sprintf("%s %d%%%s", label(ctx, "s", "session"), used, when)))
 		}
 		if sd := rl.SevenDay; sd != nil && sd.UsedPercentage.Set {
 			if on.Week {
-				left := round(100 - sd.UsedPercentage.V)
-				parts = append(parts, headroom(left, fmt.Sprintf("%s %d%%", label(ctx, "w", "week"), 100-left)))
+				used := round(sd.UsedPercentage.V)
+				parts = append(parts, headroom(100-used, fmt.Sprintf("%s %d%%", label(ctx, "w", "week"), used)))
 			}
 			if on.Today && sd.ResetsAt.Set {
 				if today := renderToday(sd.UsedPercentage.V, sd.ResetsAt.V, ctx, st, headroom); today != "" {

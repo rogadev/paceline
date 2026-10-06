@@ -76,8 +76,10 @@ func FindGitDir(dir string) string {
 
 // Branch returns the branch name, "detached <sha7>", or "" outside a repo.
 // The result is raw repo data: callers must sanitize it before printing.
-func Branch(dir string) string {
-	gitDir := FindGitDir(dir)
+func Branch(dir string) string { return BranchIn(FindGitDir(dir)) }
+
+// BranchIn is Branch for a git directory that has already been found.
+func BranchIn(gitDir string) string {
 	if gitDir == "" {
 		return ""
 	}

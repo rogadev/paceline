@@ -276,25 +276,34 @@ func TestInstallRecordsStyleOnlyWhenChosen(t *testing.T) {
 func TestChooseStyle(t *testing.T) {
 	cases := []struct {
 		args                 []string
-		interactive          bool
+		interactive, current bool
 		answer               string
 		verbose, chosen, ask bool
 	}{
-		{[]string{"--verbose"}, true, "", true, true, false},
-		{[]string{"--regular"}, true, "2\n", false, true, false},
-		{nil, false, "2\n", false, false, false},
-		{nil, true, "\n", false, true, true},
-		{nil, true, "2\n", true, true, true},
-		{nil, true, " Verbose \n", true, true, true},
-		{nil, true, "", false, true, true},
+		{[]string{"--verbose"}, true, false, "", true, true, false},
+		{[]string{"--regular"}, true, true, "2\n", false, true, false},
+		{nil, false, true, "2\n", true, false, false},
+		{nil, true, false, "\n", false, true, true},
+		{nil, true, true, "\n", true, true, true},
+		{nil, true, false, "2\n", true, true, true},
+		{nil, true, true, "1\n", false, true, true},
+		{nil, true, false, " Verbose \n", true, true, true},
+		{nil, true, true, "huh\n", true, true, true},
+		// End of input with no answer, as from /dev/null or NUL: record nothing.
+		{nil, true, true, "", true, false, true},
 	}
 	for _, c := range cases {
 		var out bytes.Buffer
-		verbose, chosen := chooseStyle(c.args, c.interactive, strings.NewReader(c.answer), &out)
+		verbose, chosen := chooseStyle(c.args, c.interactive, c.current, strings.NewReader(c.answer), &out)
 		asked := strings.Contains(out.String(), "Choose a label style")
 		if verbose != c.verbose || chosen != c.chosen || asked != c.ask {
-			t.Errorf("args %v, interactive %v, answer %q: verbose %v, chosen %v, asked %v",
-				c.args, c.interactive, c.answer, verbose, chosen, asked)
+			t.Errorf("args %v, interactive %v, current %v, answer %q: verbose %v, chosen %v, asked %v",
+				c.args, c.interactive, c.current, c.answer, verbose, chosen, asked)
 		}
+	}
+	var out bytes.Buffer
+	chooseStyle(nil, true, true, strings.NewReader(""), &out)
+	if !strings.Contains(out.String(), "Style [2]: ") {
+		t.Errorf("prompt does not default to the current style: %q", out.String())
 	}
 }

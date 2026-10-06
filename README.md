@@ -47,7 +47,7 @@ That removes paceline and restores whatever status line it replaced. If you move
 
 Claude Code runs whatever binary is at the installed path, so updating is replacing that file. There's nothing to uninstall or reinstall, and your `paceline.json` config and today's budget carry over.
 
-- **Built with Go:** run `go install github.com/rogadev/paceline/cmd/paceline@latest` again.
+- **Built with Go:** run `go install github.com/rogadev/paceline/cmd/paceline@latest` again, and `go install github.com/rogadev/paceline/cmd/paceline-mcp@latest` if you use the progress tools.
 - **Downloaded a release:** extract the new archive over the old binary.
 
 The next status line refresh uses the new version. Run `paceline --version` to check which one you have. paceline never touches the network, so it can't tell you when a new release is out: watch the [releases page](https://github.com/rogadev/paceline/releases) for that. On Windows, if replacing the file fails because it's in use, try again; paceline only runs for a moment on each refresh.
@@ -75,7 +75,7 @@ gh attestation verify paceline_1.1.0_linux_amd64.tar.gz --repo rogadev/paceline
 | Today | `t 46% of 28%` | How much of today's budget you've used, then the budget: today's share of the weekly limit, fixed for the day. Climbs past 100% when you go over. Verbose: `today 46% of 28% budget`. |
 | Context | `ctx 72%` | Only when the context window is 70% or more full. |
 | Cache | `cache cold: 82k @ ~2x` | Only when the prompt cache has expired. |
-| Progress | `loop ▰▰▰▱▱ #44 3/5` | Only while an agent reports a long job's progress. See [Progress bar](#progress-bar). |
+| Progress | `loop ▰▰▰▰▱ #44 3/5` | Only while an agent reports a long job's progress. See [Progress bar](#progress-bar). On a narrow pane, hide it with `"segments": {"progress": false}`. |
 | Duration | `16m` | Session wall-clock time. Always last, at the right edge. |
 
 **Today's budget** is the weekly percentage left at the start of the day, divided by the days from midnight to the reset. It stays fixed all day, and the today segment shows how much of it you've used. Whatever you don't spend spreads over the remaining days, so a light week gives you bigger budgets later on. The color is your pace advice: green while you have room, yellow from 70% of the budget, and red from 85% and once you go over. On the final day before the reset, the segment shows `⏳ last day, resets 9pm` instead.
@@ -87,7 +87,7 @@ gh attestation verify paceline_1.1.0_linux_amd64.tar.gz --repo rogadev/paceline
 When an agent works through a long job on its own, such as a batch of issues or a multi-task build, paceline can show how far along it is:
 
 ```
-loop ▰▰▰▱▱ #44 3/5          one cell per step: done, active, skipped, blocked, pending
+loop ▰▰▰▰▱ #44 3/5          one cell per step: done, active, skipped, blocked, pending
 orc ▰▰▱▱ #42 review 55%     a planned run: weighted percentage, moving within a step
 loop ▰▰▰ review 2/3         a status label the agent set
 loop ▰▰▰ ✓ done             finished; hidden 30 minutes later
