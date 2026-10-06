@@ -12,7 +12,7 @@ const maxConfigBytes = 64 * 1024
 
 // Segments turns individual status-line segments on or off.
 type Segments struct {
-	Model, Effort, FastMode, Project, Branch, Session, Week, Today, Context, Cache, Duration bool
+	Model, Effort, FastMode, Project, Branch, Session, Week, Today, Context, Cache, Duration, Progress bool
 }
 
 // Thresholds are the percentages where colors and warnings change.
@@ -36,6 +36,7 @@ func Default() Config {
 		Segments: Segments{
 			Model: true, Effort: true, FastMode: true, Project: true, Branch: true,
 			Session: true, Week: true, Today: true, Context: true, Cache: true, Duration: true,
+			Progress: true,
 		},
 		Thresholds:   Thresholds{HeadroomGreen: 30, HeadroomYellow: 15, ContextWarn: 70, ContextCritical: 85},
 		QuietEfforts: []string{"low", "medium"},
@@ -78,7 +79,7 @@ func Merge(data []byte) Config {
 		"model": &c.Segments.Model, "effort": &c.Segments.Effort, "fastMode": &c.Segments.FastMode,
 		"project": &c.Segments.Project, "branch": &c.Segments.Branch, "session": &c.Segments.Session,
 		"week": &c.Segments.Week, "today": &c.Segments.Today, "context": &c.Segments.Context,
-		"cache": &c.Segments.Cache, "duration": &c.Segments.Duration,
+		"cache": &c.Segments.Cache, "duration": &c.Segments.Duration, "progress": &c.Segments.Progress,
 	}
 	for key, raw := range f.Segments {
 		var v bool

@@ -21,6 +21,7 @@ import (
 	"github.com/rogadev/paceline/internal/install"
 	"github.com/rogadev/paceline/internal/pace"
 	"github.com/rogadev/paceline/internal/payload"
+	"github.com/rogadev/paceline/internal/progress"
 	"github.com/rogadev/paceline/internal/render"
 )
 
@@ -106,6 +107,7 @@ func renderFromStdin(stdin io.Reader, stdout io.Writer) {
 			ReadSnapshot:  func() *pace.Snapshot { return pace.ReadSnapshot(statePath) },
 			WriteSnapshot: func(s pace.Snapshot) { _ = pace.WriteSnapshot(statePath, s) },
 			GitBranch:     gitinfo.Branch,
+			Progress:      func(dir string) *progress.Run { return progress.Read(gitinfo.FindGitDir(dir)) },
 		})
 	}()
 	if line == "" {

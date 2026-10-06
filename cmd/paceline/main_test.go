@@ -44,6 +44,28 @@ func TestWritesDaySnapshot(t *testing.T) {
 
 func jsonNum(n int64) string { b, _ := json.Marshal(n); return string(b) }
 
+func TestRendersProgressFromTheRepo(t *testing.T) {
+	repo := t.TempDir()
+	sub := filepath.Join(repo, "src")
+	file := filepath.Join(repo, ".git", "paceline", "progress.json")
+	if err := os.MkdirAll(sub, 0o750); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(filepath.Dir(file), 0o750); err != nil {
+		t.Fatal(err)
+	}
+	run := `{"version": 1, "name": "loop", "phase": "running", "updatedAt": "` + time.Now().UTC().Format(time.RFC3339) + `",
+		"steps": [{"id": "1", "label": "#1", "status": "done"}, {"id": "2", "label": "#2", "status": "active"}]}`
+	if err := os.WriteFile(file, []byte(run), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	cwd, _ := json.Marshal(sub)
+	_, out, _, _ := runCLI(t, `{"cwd": `+string(cwd)+`}`)
+	if !strings.HasSuffix(out, " "+string(rune(0xb7))+" loop "+strings.Repeat(string(rune(0x25b0)), 2)+" #2 1/2") {
+		t.Errorf("stdout %q", out)
+	}
+}
+
 func TestFallsBackOnBadInput(t *testing.T) {
 	for _, in := range []string{"", "not json", `{"model":`, "[]", `{"pad":"` + strings.Repeat("x", 2<<20) + `"}`} {
 		if code, out, _, _ := runCLI(t, in); code != 0 || out != fallback {
