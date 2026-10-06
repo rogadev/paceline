@@ -305,3 +305,36 @@ func TestIsPaceline(t *testing.T) {
 		}
 	}
 }
+
+func TestSetVerboseKeepsOtherKeys(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "paceline.json")
+	if err := os.WriteFile(path, []byte(`{"segments":{"duration":false},"verbose":true,"projectSlots":{"web":4}}`), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if err := SetVerbose(dir, false); err != nil {
+		t.Fatal(err)
+	}
+	got := read(t, path)
+	seg, verbose, slots := strings.Index(got, `"segments"`), strings.Index(got, `"verbose": false`), strings.Index(got, `"projectSlots"`)
+	if seg < 0 || verbose < 0 || slots < 0 || !(seg < verbose && verbose < slots) {
+		t.Errorf("paceline.json = %s", got)
+	}
+}
+
+func TestSetVerboseCreatesConfigAndRefusesBrokenOne(t *testing.T) {
+	dir := filepath.Join(t.TempDir(), "new")
+	if err := SetVerbose(dir, true); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(dir, "paceline.json")
+	if got := read(t, path); !strings.Contains(got, `"verbose": true`) {
+		t.Errorf("paceline.json = %s", got)
+	}
+	if err := os.WriteFile(path, []byte(`{broken`), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if err := SetVerbose(dir, false); err == nil || read(t, path) != `{broken` {
+		t.Errorf("err %v, file %q", err, read(t, path))
+	}
+}

@@ -35,7 +35,6 @@ const (
 var mutedRed = color.RGB{185, 47, 47}
 
 var (
-	arrows       = map[pace.Direction]string{pace.Up: "\u25b2", pace.Even: "\u25cf", pace.Down: "\u25bc"}
 	modelSuffix  = regexp.MustCompile(`\s*\(.*\)$`)
 	trailingSeps = regexp.MustCompile(`[\\/]+$`)
 )
@@ -133,12 +132,12 @@ func Render(p *payload.Payload, ctx Context) string {
 			if float64(left) < th.HeadroomGreen && fh.ResetsAt.Set {
 				when = " (resets " + timefmt.Clock(fh.ResetsAt.V, ctx.Now) + ")"
 			}
-			parts = append(parts, headroom(left, fmt.Sprintf("%d%% session%s", left, when)))
+			parts = append(parts, headroom(left, fmt.Sprintf("%s %d%%%s", label(ctx, "s", "session"), 100-left, when)))
 		}
 		if sd := rl.SevenDay; sd != nil && sd.UsedPercentage.Set {
 			if on.Week {
 				left := round(100 - sd.UsedPercentage.V)
-				parts = append(parts, headroom(left, fmt.Sprintf("%d%% week", left)))
+				parts = append(parts, headroom(left, fmt.Sprintf("%s %d%%", label(ctx, "w", "week"), 100-left)))
 			}
 			if on.Today && sd.ResetsAt.Set {
 				if today := renderToday(sd.UsedPercentage.V, sd.ResetsAt.V, ctx, st, headroom); today != "" {
@@ -168,10 +167,6 @@ func Render(p *payload.Payload, ctx Context) string {
 		parts = append(parts, st.red(text))
 	}
 
-	if c := p.Cost; on.Duration && c != nil && c.TotalDurationMs.Set && c.TotalDurationMs.V > 0 {
-		parts = append(parts, st.dim(timefmt.Duration(c.TotalDurationMs.V)))
-	}
-
 	if on.Progress && ctx.Progress != nil {
 		if dir := workDir(p); dir != "" {
 			if segment := renderProgress(ctx.Progress(dir), ctx.Now, st); segment != "" {
@@ -180,7 +175,21 @@ func Render(p *payload.Payload, ctx Context) string {
 		}
 	}
 
+	// Duration always comes last, so it sits at the right edge.
+	if c := p.Cost; on.Duration && c != nil && c.TotalDurationMs.Set && c.TotalDurationMs.V > 0 {
+		parts = append(parts, st.dim(timefmt.Duration(c.TotalDurationMs.V)))
+	}
+
 	return strings.Join(parts, separator(st))
+}
+
+// label picks a usage segment's one-letter label, or its full word when the
+// verbose style is on.
+func label(ctx Context, short, long string) string {
+	if ctx.Config.Verbose {
+		return long
+	}
+	return short
 }
 
 // workDir is the session's current directory.
@@ -228,16 +237,15 @@ func renderToday(usedPct, resetsAt float64, ctx Context, st style, headroom func
 		ctx.WriteSnapshot(r.Snapshot)
 	}
 
-	// Usage reads as % used throughout, so the number only climbs and the
-	// overshoot shows (118%). The budget is its own dim segment: it is fixed for
-	// the day, so it is context, not a warning.
-	budget := st.dim(fmt.Sprintf("%d%% budget", round(r.Budget)))
-	used := round(r.PctUsed)
+	// Usage reads as % used, like session and week, so the number only climbs
+	// and the overshoot shows (118%). The budget is dim: it is fixed for the
+	// day, so it is context, not a warning.
+	budget := " " + st.dim(fmt.Sprintf("of %d%%%s", round(r.Budget), label(ctx, "", " budget")))
+	today := fmt.Sprintf("%s %d%%", label(ctx, "t", "today"), round(r.PctUsed))
 	if r.Over {
-		// Whatever today's budget was, the advice now is to ease off.
-		return st.red(fmt.Sprintf("%s %d%% today", arrows[pace.Down], used)) + separator(st) + budget
+		return st.red(today) + budget
 	}
-	return headroom(round(r.PctLeft), fmt.Sprintf("%s %d%% today", arrows[r.Pace], used)) + separator(st) + budget
+	return headroom(round(r.PctLeft), today) + budget
 }
 
 func separator(st style) string { return " " + st.dim(middleDot) + " " }

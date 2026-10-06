@@ -34,7 +34,7 @@ func TestWritesDaySnapshot(t *testing.T) {
 	resets := time.Now().Add(4 * 24 * time.Hour).Unix()
 	in := `{"rate_limits":{"seven_day":{"used_percentage":10,"resets_at":` + jsonNum(resets) + `}}}`
 	_, out, _, dir := runCLI(t, in)
-	if !strings.Contains(out, "% budget") {
+	if !strings.Contains(out, "t 0% of ") {
 		t.Errorf("stdout %q", out)
 	}
 	if _, err := os.Stat(filepath.Join(dir, "paceline-day.json")); err != nil {
@@ -209,5 +209,92 @@ func TestBuildVersionPrefersReleaseVersion(t *testing.T) {
 	version = "1.2.3"
 	if got := buildVersion(); got != "1.2.3" {
 		t.Errorf("buildVersion = %q", got)
+	}
+}
+
+func TestStyleCommand(t *testing.T) {
+	configDir := t.TempDir()
+	t.Setenv("CLAUDE_CONFIG_DIR", configDir)
+	cli := func(args ...string) (int, string, string) {
+		var out, errOut bytes.Buffer
+		code := run(args, strings.NewReader(""), &out, &errOut)
+		return code, out.String(), errOut.String()
+	}
+
+	if _, out, _ := cli("style"); !strings.Contains(out, "Label style: regular.") {
+		t.Errorf("default style: %q", out)
+	}
+	if code, out, _ := cli("style", "LONG"); code != 0 || !strings.Contains(out, "verbose") {
+		t.Errorf("style long: code %d, stdout %q", code, out)
+	}
+	if _, out, _ := cli("style"); !strings.Contains(out, "Label style: verbose.") {
+		t.Errorf("after long: %q", out)
+	}
+	if code, _, _ := cli("style", "short"); code != 0 {
+		t.Errorf("style short: code %d", code)
+	}
+	if _, out, _ := cli("style"); !strings.Contains(out, "Label style: regular.") {
+		t.Errorf("after short: %q", out)
+	}
+	if code, _, errOut := cli("style", "huge"); code != 1 || !strings.Contains(errOut, "Unknown style: huge") {
+		t.Errorf("unknown style: code %d, stderr %q", code, errOut)
+	}
+
+	if err := os.WriteFile(filepath.Join(configDir, "paceline.json"), []byte(`{broken`), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if code, _, errOut := cli("style", "verbose"); code != 1 || !strings.Contains(errOut, "refusing to edit") {
+		t.Errorf("broken config: code %d, stderr %q", code, errOut)
+	}
+}
+
+func TestInstallRecordsStyleOnlyWhenChosen(t *testing.T) {
+	configDir := t.TempDir()
+	t.Setenv("CLAUDE_CONFIG_DIR", configDir)
+	orig := resolveExecutable
+	t.Cleanup(func() { resolveExecutable = orig })
+	resolveExecutable = func() (string, error) { return "/opt/bin/paceline", nil }
+	configPath := filepath.Join(configDir, "paceline.json")
+
+	var out, errOut bytes.Buffer
+	if code := run([]string{"install"}, strings.NewReader(""), &out, &errOut); code != 0 {
+		t.Fatalf("install: code %d, stderr %q", code, errOut.String())
+	}
+	if _, err := os.Stat(configPath); !os.IsNotExist(err) {
+		t.Error("a non-interactive install without a flag wrote paceline.json")
+	}
+
+	out.Reset()
+	if code := run([]string{"install", "--verbose"}, strings.NewReader(""), &out, &errOut); code != 0 || !strings.Contains(out.String(), "Label style: verbose") {
+		t.Errorf("install --verbose: code %d, stdout %q", code, out.String())
+	}
+	if b, _ := os.ReadFile(configPath); !strings.Contains(string(b), `"verbose": true`) {
+		t.Errorf("paceline.json = %s", b)
+	}
+}
+
+func TestChooseStyle(t *testing.T) {
+	cases := []struct {
+		args                 []string
+		interactive          bool
+		answer               string
+		verbose, chosen, ask bool
+	}{
+		{[]string{"--verbose"}, true, "", true, true, false},
+		{[]string{"--regular"}, true, "2\n", false, true, false},
+		{nil, false, "2\n", false, false, false},
+		{nil, true, "\n", false, true, true},
+		{nil, true, "2\n", true, true, true},
+		{nil, true, " Verbose \n", true, true, true},
+		{nil, true, "", false, true, true},
+	}
+	for _, c := range cases {
+		var out bytes.Buffer
+		verbose, chosen := chooseStyle(c.args, c.interactive, strings.NewReader(c.answer), &out)
+		asked := strings.Contains(out.String(), "Choose a label style")
+		if verbose != c.verbose || chosen != c.chosen || asked != c.ask {
+			t.Errorf("args %v, interactive %v, answer %q: verbose %v, chosen %v, asked %v",
+				c.args, c.interactive, c.answer, verbose, chosen, asked)
+		}
 	}
 }

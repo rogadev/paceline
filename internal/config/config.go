@@ -28,6 +28,9 @@ type Config struct {
 	QuietEfforts []string
 	// ProjectSlots pins project folder names to color slots 0-11.
 	ProjectSlots map[string]int
+	// Verbose spells out the usage labels ("session 18%") instead of the
+	// one-letter form ("s 18%").
+	Verbose bool
 }
 
 // Default returns the built-in configuration.
@@ -63,6 +66,7 @@ type fileShape struct {
 	Thresholds   map[string]json.RawMessage `json:"thresholds"`
 	QuietEfforts json.RawMessage            `json:"quietEfforts"`
 	ProjectSlots map[string]json.RawMessage `json:"projectSlots"`
+	Verbose      json.RawMessage            `json:"verbose"`
 }
 
 // Merge applies a paceline.json document to the defaults. Only known keys
@@ -109,6 +113,11 @@ func Merge(data []byte) Config {
 		if json.Unmarshal(raw, &v) == nil && v == math.Trunc(v) && v >= 0 && v < 12 {
 			c.ProjectSlots[name] = int(v)
 		}
+	}
+
+	var verbose bool
+	if len(f.Verbose) > 0 && json.Unmarshal(f.Verbose, &verbose) == nil {
+		c.Verbose = verbose
 	}
 	return c
 }

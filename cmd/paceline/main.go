@@ -6,6 +6,7 @@
 package main
 
 import (
+	"bufio"
 	"errors"
 	"fmt"
 	"io"
@@ -55,7 +56,10 @@ func help() string {
 
 Usage:
   paceline install [--force]   set paceline as your Claude Code status line
+    [--regular | --verbose]    label style: "s 18%%" or "session 18%%" (asks if omitted)
   paceline uninstall           remove it and restore the previous status line
+  paceline style [regular | verbose]
+                               show or change the label style
   paceline --version
   paceline --help
 
@@ -75,9 +79,15 @@ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 	case "--help", "-h", "help":
 		fmt.Fprint(stdout, help())
 	case "install":
-		return runInstall(slices.Contains(args[1:], "--force"), stdout, stderr)
+		verbose, chosen := chooseStyle(args[1:], isTerminal(stdin), stdin, stdout)
+		if code := runInstall(slices.Contains(args[1:], "--force"), stdout, stderr); code != 0 || !chosen {
+			return code
+		}
+		return runSetStyle(verbose, stdout, stderr)
 	case "uninstall":
 		return runUninstall(stdout, stderr)
+	case "style":
+		return runStyle(args[1:], stdout, stderr)
 	default:
 		fmt.Fprintf(stderr, "Unknown command: %s\n\n%s", args[0], help())
 		return 1
@@ -159,6 +169,73 @@ func runInstall(force bool, stdout, stderr io.Writer) int {
 	}
 	fmt.Fprintln(stderr, err)
 	return 1
+}
+
+// chooseStyle picks the label style for install: a flag wins, then the answer
+// to a prompt. chosen is false for a non-interactive install with no flag, so
+// a scripted install leaves paceline.json alone.
+func chooseStyle(args []string, interactive bool, stdin io.Reader, stdout io.Writer) (verbose, chosen bool) {
+	switch {
+	case slices.Contains(args, "--verbose"):
+		return true, true
+	case slices.Contains(args, "--regular"):
+		return false, true
+	case !interactive:
+		return false, false
+	}
+	fmt.Fprint(stdout, "Choose a label style:\n"+
+		"  1) Regular   s 18% \u00b7 w 86% \u00b7 t 13% of 8%\n"+
+		"  2) Verbose   session 18% \u00b7 week 86% \u00b7 today 13% of 8% budget\n"+
+		"Style [1]: ")
+	answer, _ := bufio.NewReader(stdin).ReadString('\n')
+	switch strings.ToLower(strings.TrimSpace(answer)) {
+	case "2", "v", "verbose":
+		return true, true
+	}
+	return false, true
+}
+
+func isTerminal(r io.Reader) bool {
+	f, ok := r.(*os.File)
+	if !ok {
+		return false
+	}
+	info, err := f.Stat()
+	return err == nil && info.Mode()&os.ModeCharDevice != 0
+}
+
+// runStyle shows the label style, or changes it when given a name. Several
+// names are accepted for each style, so "short" or "long" work as well.
+func runStyle(args []string, stdout, stderr io.Writer) int {
+	if len(args) == 0 {
+		style := "regular"
+		if config.Load(filepath.Join(config.Dir(), "paceline.json")).Verbose {
+			style = "verbose"
+		}
+		fmt.Fprintf(stdout, "Label style: %s. Change it with 'paceline style regular' or 'paceline style verbose'.\n", style)
+		return 0
+	}
+	switch strings.ToLower(args[0]) {
+	case "regular", "short", "normal", "compact":
+		return runSetStyle(false, stdout, stderr)
+	case "verbose", "long":
+		return runSetStyle(true, stdout, stderr)
+	}
+	fmt.Fprintf(stderr, "Unknown style: %s. Choose regular or verbose.\n", args[0])
+	return 1
+}
+
+func runSetStyle(verbose bool, stdout, stderr io.Writer) int {
+	if err := install.SetVerbose(config.Dir(), verbose); err != nil {
+		fmt.Fprintln(stderr, err)
+		return 1
+	}
+	style := "regular"
+	if verbose {
+		style = "verbose"
+	}
+	fmt.Fprintf(stdout, "Label style: %s. Change it any time with 'paceline style'.\n", style)
+	return 0
 }
 
 func runUninstall(stdout, stderr io.Writer) int {

@@ -176,6 +176,26 @@ func Install(claudeDir, exePath string, force bool) (Result, error) {
 	return r, nil
 }
 
+// SetVerbose records the label style in paceline.json, keeping every other
+// key and their order. Like settings.json, an unparseable file is never
+// overwritten.
+func SetVerbose(claudeDir string, verbose bool) error {
+	path := filepath.Join(claudeDir, "paceline.json")
+	o, _, _, err := readSettings(path)
+	if err != nil {
+		return err
+	}
+	o.set("verbose", json.RawMessage(fmt.Sprint(verbose)))
+	out, err := o.marshal()
+	if err != nil {
+		return err
+	}
+	if err := os.MkdirAll(claudeDir, 0o700); err != nil {
+		return err
+	}
+	return writeAtomic(path, out)
+}
+
 // Uninstall removes paceline and restores the status line it replaced. It
 // never touches a status line that is not paceline's.
 func Uninstall(claudeDir string) (Result, error) {

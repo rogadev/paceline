@@ -85,3 +85,15 @@ func TestDir(t *testing.T) {
 		t.Errorf("Dir = %q", Dir())
 	}
 }
+
+func TestMergeVerbose(t *testing.T) {
+	if Default().Verbose {
+		t.Error("verbose is on by default")
+	}
+	if !Merge([]byte(`{"verbose": true}`)).Verbose {
+		t.Error("verbose: true was ignored")
+	}
+	if Merge([]byte(`{"verbose": "yes"}`)).Verbose {
+		t.Error("a non-boolean verbose was taken")
+	}
+}

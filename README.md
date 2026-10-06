@@ -3,10 +3,12 @@
 A Claude Code status line that paces your usage limits and shows, at a glance, where every session stands.
 
 ```
-Opus 5.5 · techcentral (dev) · 84% session · 96% week · ▲ 46% today · 28% budget · 16m
+Opus 5.5 · techcentral (dev) · s 16% · w 4% · t 46% of 28% · 16m
 ```
 
-Your weekly limit resets on a fixed schedule, but the status line only tells you how much is left, not whether that's a lot or a little for the days remaining. paceline divides what's left by the days until the reset and gives you **today's budget**, then shows how much of it you've used as you work. A light week shows a big budget and a ▲; a heavy one shows a small budget and a ▼. It's most useful on weekends, when you're deciding whether to go hard on side projects or save the rest for Monday.
+Every number is how much you've used, so higher always means closer to a limit: `s` is your five-hour session, `w` your week, and `t` today. Prefer words? The verbose style reads `session 16% · week 4% · today 46% of 28% budget`.
+
+Your weekly limit resets on a fixed schedule, but the status line only tells you how much is left, not whether that's a lot or a little for the days remaining. paceline divides what's left by the days until the reset and gives you **today's budget**, then shows how much of it you've used as you work. A light week gives you a big budget; a heavy one, a small budget. It's most useful on weekends, when you're deciding whether to go hard on side projects or save the rest for Monday.
 
 The rest of the line tells your sessions apart and shows where each one stands: the model and effort, the project in its own color with its git branch, your session and weekly limits, and warnings when the context window fills up or the prompt cache goes cold.
 
@@ -27,7 +29,13 @@ go install github.com/rogadev/paceline/cmd/paceline@latest
 paceline install
 ```
 
-`paceline install` points Claude Code's `statusLine` in `~/.claude/settings.json` at the binary you ran. It backs up the file first, keeps your other settings and their order, and won't replace a status line you already have unless you pass `--force`. To go back:
+`paceline install` points Claude Code's `statusLine` in `~/.claude/settings.json` at the binary you ran. It backs up the file first, keeps your other settings and their order, and won't replace a status line you already have unless you pass `--force`. It also asks which label style you want, regular (`s 16%`) or verbose (`session 16%`); pass `--regular` or `--verbose` to skip the question. Change the style any time:
+
+```sh
+paceline style verbose     # or: paceline style regular
+```
+
+To go back:
 
 ```sh
 paceline uninstall
@@ -62,16 +70,15 @@ gh attestation verify paceline_1.1.0_linux_amd64.tar.gz --repo rogadev/paceline
 | Effort | `high effort` | Only when effort is above `low` or `medium`. |
 | Fast mode | `fast mode` | Only while fast mode is on. |
 | Project | `techcentral (dev)` | The folder, in a color unique to the project, and the git branch. |
-| Session | `18% session (resets 3:40pm)` | Five-hour limit left. The reset time appears once it drops below 30%. |
-| Week | `96% week` | Weekly limit left. |
-| Today | `▲ 46% today` | How much of today's budget you've used. Climbs past 100% when you go over. |
-| Budget | `28% budget` | Today's share of the weekly limit. Fixed for the day. Turned off along with today. |
+| Session | `s 82% (resets 3:40pm)` | Five-hour limit used. The reset time appears once it passes 70%. Verbose: `session 82%`. |
+| Week | `w 4%` | Weekly limit used. Verbose: `week 4%`. |
+| Today | `t 46% of 28%` | How much of today's budget you've used, then the budget: today's share of the weekly limit, fixed for the day. Climbs past 100% when you go over. Verbose: `today 46% of 28% budget`. |
 | Context | `ctx 72%` | Only when the context window is 70% or more full. |
 | Cache | `cache cold: 82k @ ~2x` | Only when the prompt cache has expired. |
-| Duration | `16m` | Session wall-clock time. |
 | Progress | `loop ▰▰▰▱▱ #44 3/5` | Only while an agent reports a long job's progress. See [Progress bar](#progress-bar). |
+| Duration | `16m` | Session wall-clock time. Always last, at the right edge. |
 
-**Today's budget** is the weekly percentage left at the start of the day, divided by the days from midnight to the reset. It stays fixed all day, and the today segment shows how much of it you've used. Whatever you don't spend spreads over the remaining days, so a light week gives you bigger budgets later on. The arrow is your pace advice. It compares today's budget to an even pace of 100% ÷ 7 per day: ▲ means you have room to push, ▼ means ease off, and ● means about even. Once you go over today's budget, the arrow always shows ▼. On the final day before the reset, the segment shows `⏳ last day, resets 9pm` instead.
+**Today's budget** is the weekly percentage left at the start of the day, divided by the days from midnight to the reset. It stays fixed all day, and the today segment shows how much of it you've used. Whatever you don't spend spreads over the remaining days, so a light week gives you bigger budgets later on. The color is your pace advice: green while you have room, yellow from 70% of the budget, and red from 85% and once you go over. On the final day before the reset, the segment shows `⏳ last day, resets 9pm` instead.
 
 **Project colors** come from a hash of the project folder name, mapped to one of 12 evenly spaced hues in the OKLCH color space. Every color is equally bright and easy to read on a dark terminal. Each project keeps its color everywhere, including in subfolders.
 
@@ -148,14 +155,16 @@ Create `~/.claude/paceline.json` (or `$CLAUDE_CONFIG_DIR/paceline.json`) to chan
   "segments": { "duration": false, "cache": false },
   "thresholds": { "headroomGreen": 30, "headroomYellow": 15, "contextWarn": 70, "contextCritical": 85 },
   "quietEfforts": ["low", "medium"],
-  "projectSlots": { "website": 4 }
+  "projectSlots": { "website": 4 },
+  "verbose": false
 }
 ```
 
 - `segments`: turn any segment off: `model`, `effort`, `fastMode`, `project`, `branch`, `session`, `week`, `today`, `context`, `cache`, `duration`, `progress`.
-- `thresholds`: percentages where colors change from green to yellow to red, and where the context warning appears.
+- `thresholds`: percentages where colors change from green to yellow to red, and where the context warning appears. `headroomGreen` and `headroomYellow` count what's left of a limit, so the defaults turn session, week, and today yellow at 70% used and red at 85%.
 - `quietEfforts`: effort levels that don't need a label.
 - `projectSlots`: pin a project to a color slot from 0 to 11 when two projects you use together get the same color.
+- `verbose`: spell out the labels (`session 16%`) instead of one letter (`s 16%`). `paceline style` changes it for you.
 
 paceline respects [`NO_COLOR`](https://no-color.org).
 
