@@ -14,6 +14,7 @@ import (
 	"github.com/rogadev/paceline/internal/config"
 	"github.com/rogadev/paceline/internal/pace"
 	"github.com/rogadev/paceline/internal/payload"
+	"github.com/rogadev/paceline/internal/progress"
 	"github.com/rogadev/paceline/internal/sanitize"
 	"github.com/rogadev/paceline/internal/timefmt"
 )
@@ -21,6 +22,12 @@ import (
 const (
 	middleDot = "\u00b7"
 	hourglass = "\u23f3"
+	cellFull  = "\u25b0"
+	cellEmpty = "\u25b1"
+	checkMark = "\u2713"
+	ellipsis  = "\u2026"
+	// maxCells keeps a long run from pushing the rest of the line off-screen.
+	maxCells = 20
 )
 
 // mutedRed is Windows Terminal's default red (#C50F1F) with 15% less OKLCH
@@ -28,7 +35,6 @@ const (
 var mutedRed = color.RGB{185, 47, 47}
 
 var (
-	arrows       = map[pace.Direction]string{pace.Up: "\u25b2", pace.Even: "\u25cf", pace.Down: "\u25bc"}
 	modelSuffix  = regexp.MustCompile(`\s*\(.*\)$`)
 	trailingSeps = regexp.MustCompile(`[\\/]+$`)
 )
@@ -42,6 +48,8 @@ type Context struct {
 	ReadSnapshot  func() *pace.Snapshot
 	WriteSnapshot func(pace.Snapshot)
 	GitBranch     func(dir string) string
+	// Progress returns the progress run for the repo holding dir, or nil.
+	Progress func(dir string) *progress.Run
 }
 
 // style wraps text in ANSI SGR codes unless color is off (NO_COLOR).
@@ -119,17 +127,18 @@ func Render(p *payload.Payload, ctx Context) string {
 	// Usage limits: session, week, then today's share of the week.
 	if rl := p.RateLimits; rl != nil {
 		if fh := rl.FiveHour; on.Session && fh != nil && fh.UsedPercentage.Set {
-			left := round(100 - fh.UsedPercentage.V)
+			used := round(fh.UsedPercentage.V)
+			left := 100 - used
 			when := ""
 			if float64(left) < th.HeadroomGreen && fh.ResetsAt.Set {
 				when = " (resets " + timefmt.Clock(fh.ResetsAt.V, ctx.Now) + ")"
 			}
-			parts = append(parts, headroom(left, fmt.Sprintf("%d%% session%s", left, when)))
+			parts = append(parts, headroom(left, fmt.Sprintf("%s %d%%%s", label(ctx, "s", "session"), used, when)))
 		}
 		if sd := rl.SevenDay; sd != nil && sd.UsedPercentage.Set {
 			if on.Week {
-				left := round(100 - sd.UsedPercentage.V)
-				parts = append(parts, headroom(left, fmt.Sprintf("%d%% week", left)))
+				used := round(sd.UsedPercentage.V)
+				parts = append(parts, headroom(100-used, fmt.Sprintf("%s %d%%", label(ctx, "w", "week"), used)))
 			}
 			if on.Today && sd.ResetsAt.Set {
 				if today := renderToday(sd.UsedPercentage.V, sd.ResetsAt.V, ctx, st, headroom); today != "" {
@@ -159,6 +168,15 @@ func Render(p *payload.Payload, ctx Context) string {
 		parts = append(parts, st.red(text))
 	}
 
+	if on.Progress && ctx.Progress != nil {
+		if dir := workDir(p); dir != "" {
+			if segment := renderProgress(ctx.Progress(dir), ctx.Now, st); segment != "" {
+				parts = append(parts, segment)
+			}
+		}
+	}
+
+	// Duration always comes last, so it sits at the right edge.
 	if c := p.Cost; on.Duration && c != nil && c.TotalDurationMs.Set && c.TotalDurationMs.V > 0 {
 		parts = append(parts, st.dim(timefmt.Duration(c.TotalDurationMs.V)))
 	}
@@ -166,13 +184,27 @@ func Render(p *payload.Payload, ctx Context) string {
 	return strings.Join(parts, separator(st))
 }
 
-func project(p *payload.Payload, ctx Context, st style) string {
-	var dir, projectDir string
-	if p.Workspace != nil {
-		dir, projectDir = p.Workspace.CurrentDir.V, p.Workspace.ProjectDir.V
+// label picks a usage segment's one-letter label, or its full word when the
+// verbose style is on.
+func label(ctx Context, short, long string) string {
+	if ctx.Config.Verbose {
+		return long
 	}
-	if dir == "" {
-		dir = p.Cwd.V
+	return short
+}
+
+// workDir is the session's current directory.
+func workDir(p *payload.Payload) string {
+	if p.Workspace != nil && p.Workspace.CurrentDir.V != "" {
+		return p.Workspace.CurrentDir.V
+	}
+	return p.Cwd.V
+}
+
+func project(p *payload.Payload, ctx Context, st style) string {
+	dir, projectDir := workDir(p), ""
+	if p.Workspace != nil {
+		projectDir = p.Workspace.ProjectDir.V
 	}
 	if dir == "" {
 		return ""
@@ -206,16 +238,109 @@ func renderToday(usedPct, resetsAt float64, ctx Context, st style, headroom func
 		ctx.WriteSnapshot(r.Snapshot)
 	}
 
-	// Usage reads as % used throughout, so the number only climbs and the
-	// overshoot shows (118%). The budget is its own dim segment: it is fixed for
-	// the day, so it is context, not a warning.
-	budget := st.dim(fmt.Sprintf("%d%% budget", round(r.Budget)))
-	used := round(r.PctUsed)
+	// Usage reads as % used, like session and week, so the number only climbs
+	// and the overshoot shows (118%). The budget is dim: it is fixed for the
+	// day, so it is context, not a warning.
+	budget := " " + st.dim(fmt.Sprintf("of %d%%%s", round(r.Budget), label(ctx, "", " budget")))
+	today := fmt.Sprintf("%s %d%%", label(ctx, "t", "today"), round(r.PctUsed))
 	if r.Over {
-		// Whatever today's budget was, the advice now is to ease off.
-		return st.red(fmt.Sprintf("%s %d%% today", arrows[pace.Down], used)) + separator(st) + budget
+		return st.red(today) + budget
 	}
-	return headroom(round(r.PctLeft), fmt.Sprintf("%s %d%% today", arrows[r.Pace], used)) + separator(st) + budget
+	return headroom(round(r.PctLeft), today) + budget
 }
 
 func separator(st style) string { return " " + st.dim(middleDot) + " " }
+
+// renderProgress draws a run as "name cells status": one cell per step,
+// colored by its status, then the active step and how far the run has come.
+func renderProgress(r *progress.Run, now time.Time, st style) string {
+	if r == nil || !r.Visible(now) {
+		return ""
+	}
+	parts := []string{sanitize.Text(r.Name, 16), progressCells(r, st)}
+	switch r.Phase {
+	case progress.Halted:
+		parts = append(parts, st.red("halted"))
+	case progress.Done:
+		parts = append(parts, st.green(checkMark+" done"))
+	default:
+		parts = append(parts, progressStatus(r))
+		if r.Paused(now) {
+			parts[len(parts)-1] += st.dim(" (paused)")
+		}
+	}
+	return strings.Join(slices.DeleteFunc(parts, func(s string) bool { return s == "" }), " ")
+}
+
+// progressCells draws up to maxCells cells. A longer run shows a window
+// around the active (or first unsettled) step, with an ellipsis on each side
+// that was cut.
+func progressCells(r *progress.Run, st style) string {
+	steps := r.Steps
+	start, end := 0, len(steps)
+	if len(steps) > maxCells {
+		focus := r.ActiveIndex()
+		if focus < 0 {
+			focus = slices.IndexFunc(steps, func(s progress.Step) bool { return s.Status == progress.Pending })
+		}
+		if focus < 0 {
+			focus = len(steps) - 1
+		}
+		start = min(max(focus-maxCells/2, 0), len(steps)-maxCells)
+		end = start + maxCells
+	}
+	var b strings.Builder
+	if start > 0 {
+		b.WriteString(st.dim(ellipsis))
+	}
+	// Neighbors with the same status share one color code.
+	for i := start; i < end; {
+		j := i + 1
+		for j < end && steps[j].Status == steps[i].Status {
+			j++
+		}
+		b.WriteString(progressRun(steps[i].Status, j-i, st))
+		i = j
+	}
+	if end < len(steps) {
+		b.WriteString(st.dim(ellipsis))
+	}
+	return b.String()
+}
+
+// progressRun draws n cells for steps with the same status.
+func progressRun(status string, n int, st style) string {
+	switch status {
+	case progress.Settled:
+		return st.green(strings.Repeat(cellFull, n))
+	case progress.Active:
+		return st.cyan(strings.Repeat(cellFull, n))
+	case progress.Skipped:
+		return st.dim(strings.Repeat(cellFull, n))
+	case progress.Blocked:
+		return st.red(strings.Repeat(cellFull, n))
+	}
+	return st.dim(strings.Repeat(cellEmpty, n))
+}
+
+// progressStatus is the writer's label, or the active step and its stage.
+// A planned run (steps with weights or stages) adds its weighted percentage,
+// which moves within a step; any other run counts settled steps instead,
+// unless the writer set a label of its own.
+func progressStatus(r *progress.Run) string {
+	text := sanitize.Text(r.Label, 24)
+	if text == "" {
+		if i := r.ActiveIndex(); i >= 0 {
+			step := r.Steps[i]
+			text = strings.TrimSpace(sanitize.Text(step.Label, 24) + " " + sanitize.Text(step.Stage, 16))
+		}
+	}
+	switch {
+	case r.Planned():
+		// Never claim 100% while work remains.
+		text += fmt.Sprintf(" %d%%", min(int(r.Percent()), 99))
+	case r.Label == "":
+		text += fmt.Sprintf(" %d/%d", r.SettledCount(), len(r.Steps))
+	}
+	return strings.TrimSpace(text)
+}

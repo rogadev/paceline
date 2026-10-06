@@ -7,7 +7,8 @@ version: 2
 project_name: paceline
 
 builds:
-  - main: ./cmd/paceline
+  - id: paceline
+    main: ./cmd/paceline
     binary: paceline
     env:
       - CGO_ENABLED=0
@@ -18,6 +19,20 @@ builds:
     ldflags:
       - -s -w -X main.version={{ .Version }}
     # Reproducible builds: the same commit always produces the same bytes.
+    mod_timestamp: "{{ .CommitTimestamp }}"
+  # The MCP server agents use to report progress. It ships in the same
+  # archive as paceline.
+  - id: paceline-mcp
+    main: ./cmd/paceline-mcp
+    binary: paceline-mcp
+    env:
+      - CGO_ENABLED=0
+    goos: [linux, darwin, windows]
+    goarch: [amd64, arm64]
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w -X main.version={{ .Version }}
     mod_timestamp: "{{ .CommitTimestamp }}"
 
 archives:

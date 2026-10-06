@@ -12,6 +12,7 @@ import (
 	"github.com/rogadev/paceline/internal/config"
 	"github.com/rogadev/paceline/internal/pace"
 	"github.com/rogadev/paceline/internal/payload"
+	"github.com/rogadev/paceline/internal/progress"
 )
 
 // The parity fixtures were generated in UTC, so every test here runs in UTC.
@@ -41,8 +42,8 @@ var fixtureBranches = map[string]string{
 
 // TestParityWithJavaScript proves the Go port prints exactly what 1.0 printed,
 // ANSI codes included, across every segment and edge case in the fixtures.
-// The today segment's wants were later rewritten to the shorter
-// "<arrow> N% today, M% budget" form; every other byte is still 1.0's.
+// The usage segments' wants were later rewritten to the "s N%", "w N%", and
+// "t N% of M%" form, all as % used; every other byte is still 1.0's.
 func TestParityWithJavaScript(t *testing.T) {
 	data, err := os.ReadFile("testdata/parity.json")
 	if err != nil {
@@ -95,7 +96,7 @@ func TestNoColorEmitsNoEscapes(t *testing.T) {
 	if strings.Contains(got, "\x1b") {
 		t.Errorf("escape in NO_COLOR output: %q", got)
 	}
-	if got != "Opus \u00b7 app \u00b7 10% session" {
+	if got != "Opus "+middleDot+" app "+middleDot+" s 90%" {
 		t.Errorf("got %q", got)
 	}
 }
@@ -117,7 +118,7 @@ func TestNilPayloadAndMissingCallbacks(t *testing.T) {
 	// No snapshot or branch functions: renders without them.
 	got := Render(decode(t, `{"workspace":{"current_dir":"/r/app"},
 		"rate_limits":{"seven_day":{"used_percentage":5,"resets_at":1790899200}}}`), c)
-	if !strings.Contains(got, "% today "+middleDot+" ") || !strings.HasPrefix(got, "app") {
+	if !strings.Contains(got, " t 0% of ") || !strings.HasPrefix(got, "app") {
 		t.Errorf("got %q", got)
 	}
 }
@@ -154,9 +155,9 @@ func TestLongFieldsAreBounded(t *testing.T) {
 	}
 }
 
-// Today reads as % used both under and over the budget, with the budget as a
-// segment of its own.
-func TestTodayReadsAsUsedWithBudgetSegment(t *testing.T) {
+// Today reads as % used both under and over the budget, followed by the
+// budget itself.
+func TestTodayReadsAsUsedOfBudget(t *testing.T) {
 	c := ctx()
 	var snap *pace.Snapshot
 	c.ReadSnapshot = func() *pace.Snapshot { return snap }
@@ -166,15 +167,44 @@ func TestTodayReadsAsUsedWithBudgetSegment(t *testing.T) {
 	}
 	c.Config.Segments.Week = false
 
-	// 90% left over 8 days is an 11% budget, below an even pace, so the arrow
-	// points down from the start.
-	if got, want := Render(payloadAt(10), c), arrows[pace.Down]+" 0% today "+middleDot+" 11% budget"; got != want {
+	// 90% left over 8 days is an 11% budget.
+	if got, want := Render(payloadAt(10), c), "t 0% of 11%"; got != want {
 		t.Errorf("start of day: got %q, want %q", got, want)
 	}
-	if got, want := Render(payloadAt(16), c), arrows[pace.Down]+" 53% today "+middleDot+" 11% budget"; got != want {
+	if got, want := Render(payloadAt(16), c), "t 53% of 11%"; got != want {
 		t.Errorf("under budget: got %q, want %q", got, want)
 	}
-	if got, want := Render(payloadAt(30), c), arrows[pace.Down]+" 178% today "+middleDot+" 11% budget"; got != want {
+	if got, want := Render(payloadAt(30), c), "t 178% of 11%"; got != want {
 		t.Errorf("over budget: got %q, want %q", got, want)
+	}
+}
+
+func TestVerboseSpellsOutLabels(t *testing.T) {
+	c := ctx()
+	c.Config.Verbose = true
+	got := Render(decode(t, `{"rate_limits":{"five_hour":{"used_percentage":18},
+		"seven_day":{"used_percentage":10,"resets_at":1790899200}}}`), c)
+	if want := "session 18% " + middleDot + " week 10% " + middleDot + " today 0% of 11% budget"; got != want {
+		t.Errorf("got %q, want %q", got, want)
+	}
+}
+
+func TestSessionResetTimeFollowsUsage(t *testing.T) {
+	got := Render(decode(t, `{"rate_limits":{"five_hour":{"used_percentage":80,"resets_at":1790251200}}}`), ctx())
+	if want := "s 80% (resets 12pm)"; got != want {
+		t.Errorf("got %q, want %q", got, want)
+	}
+}
+
+// The duration stays at the right edge, after the progress bar.
+func TestDurationIsLast(t *testing.T) {
+	c := ctx()
+	c.Progress = func(string) *progress.Run {
+		return &progress.Run{Version: progress.Version, Name: "loop", Phase: progress.Running, UpdatedAt: c.Now,
+			Steps: []progress.Step{{ID: "1", Label: "#1", Status: progress.Active}}}
+	}
+	got := Render(decode(t, `{"workspace":{"current_dir":"/r/app"},"cost":{"total_duration_ms":60000}}`), c)
+	if !strings.HasSuffix(got, middleDot+" 1m") || !strings.Contains(got, "loop") {
+		t.Errorf("got %q", got)
 	}
 }

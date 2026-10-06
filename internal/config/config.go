@@ -12,7 +12,7 @@ const maxConfigBytes = 64 * 1024
 
 // Segments turns individual status-line segments on or off.
 type Segments struct {
-	Model, Effort, FastMode, Project, Branch, Session, Week, Today, Context, Cache, Duration bool
+	Model, Effort, FastMode, Project, Branch, Session, Week, Today, Context, Cache, Duration, Progress bool
 }
 
 // Thresholds are the percentages where colors and warnings change.
@@ -28,6 +28,9 @@ type Config struct {
 	QuietEfforts []string
 	// ProjectSlots pins project folder names to color slots 0-11.
 	ProjectSlots map[string]int
+	// Verbose spells out the usage labels ("session 18%") instead of the
+	// one-letter form ("s 18%").
+	Verbose bool
 }
 
 // Default returns the built-in configuration.
@@ -36,6 +39,7 @@ func Default() Config {
 		Segments: Segments{
 			Model: true, Effort: true, FastMode: true, Project: true, Branch: true,
 			Session: true, Week: true, Today: true, Context: true, Cache: true, Duration: true,
+			Progress: true,
 		},
 		Thresholds:   Thresholds{HeadroomGreen: 30, HeadroomYellow: 15, ContextWarn: 70, ContextCritical: 85},
 		QuietEfforts: []string{"low", "medium"},
@@ -62,6 +66,7 @@ type fileShape struct {
 	Thresholds   map[string]json.RawMessage `json:"thresholds"`
 	QuietEfforts json.RawMessage            `json:"quietEfforts"`
 	ProjectSlots map[string]json.RawMessage `json:"projectSlots"`
+	Verbose      json.RawMessage            `json:"verbose"`
 }
 
 // Merge applies a paceline.json document to the defaults. Only known keys
@@ -78,7 +83,7 @@ func Merge(data []byte) Config {
 		"model": &c.Segments.Model, "effort": &c.Segments.Effort, "fastMode": &c.Segments.FastMode,
 		"project": &c.Segments.Project, "branch": &c.Segments.Branch, "session": &c.Segments.Session,
 		"week": &c.Segments.Week, "today": &c.Segments.Today, "context": &c.Segments.Context,
-		"cache": &c.Segments.Cache, "duration": &c.Segments.Duration,
+		"cache": &c.Segments.Cache, "duration": &c.Segments.Duration, "progress": &c.Segments.Progress,
 	}
 	for key, raw := range f.Segments {
 		var v bool
@@ -108,6 +113,11 @@ func Merge(data []byte) Config {
 		if json.Unmarshal(raw, &v) == nil && v == math.Trunc(v) && v >= 0 && v < 12 {
 			c.ProjectSlots[name] = int(v)
 		}
+	}
+
+	var verbose bool
+	if len(f.Verbose) > 0 && json.Unmarshal(f.Verbose, &verbose) == nil {
+		c.Verbose = verbose
 	}
 	return c
 }

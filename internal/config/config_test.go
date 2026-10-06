@@ -18,12 +18,12 @@ func TestMergeFallsBackToDefaults(t *testing.T) {
 
 func TestMergeTakesOnlyValidValues(t *testing.T) {
 	c := Merge([]byte(`{
-		"segments": {"model": false, "duration": "no", "unknown": false},
+		"segments": {"model": false, "duration": "no", "progress": false, "unknown": false},
 		"thresholds": {"headroomGreen": 40, "headroomYellow": 500, "contextWarn": "70"},
 		"quietEfforts": ["low"],
 		"projectSlots": {"api": 3, "web": 12, "bad": 1.5, "neg": -1, "str": "4"}
 	}`))
-	if c.Segments.Model || !c.Segments.Duration {
+	if c.Segments.Model || !c.Segments.Duration || c.Segments.Progress {
 		t.Errorf("segments = %+v", c.Segments)
 	}
 	if c.Thresholds.HeadroomGreen != 40 || c.Thresholds.HeadroomYellow != 15 || c.Thresholds.ContextWarn != 70 {
@@ -83,5 +83,17 @@ func TestDir(t *testing.T) {
 	t.Setenv("CLAUDE_CONFIG_DIR", "")
 	if !strings.HasSuffix(Dir(), ".claude") {
 		t.Errorf("Dir = %q", Dir())
+	}
+}
+
+func TestMergeVerbose(t *testing.T) {
+	if Default().Verbose {
+		t.Error("verbose is on by default")
+	}
+	if !Merge([]byte(`{"verbose": true}`)).Verbose {
+		t.Error("verbose: true was ignored")
+	}
+	if Merge([]byte(`{"verbose": "yes"}`)).Verbose {
+		t.Error("a non-boolean verbose was taken")
 	}
 }
