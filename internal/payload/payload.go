@@ -69,6 +69,7 @@ type Payload struct {
 	} `json:"effort"`
 	FastMode  Bool `json:"fast_mode"`
 	Cwd       Str  `json:"cwd"`
+	SessionID Str  `json:"session_id"`
 	Workspace *struct {
 		CurrentDir Str `json:"current_dir"`
 		ProjectDir Str `json:"project_dir"`

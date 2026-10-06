@@ -131,7 +131,7 @@ func renderFromStdin(stdin io.Reader, stdout io.Writer) {
 			ReadSnapshot:  func() *pace.Snapshot { return pace.ReadSnapshot(statePath) },
 			WriteSnapshot: func(s pace.Snapshot) { _ = pace.WriteSnapshot(statePath, s) },
 			GitBranch:     func(dir string) string { return gitinfo.BranchIn(gitDir(dir)) },
-			Progress:      func(dir string) *progress.Run { return progress.Read(gitDir(dir)) },
+			Progress:      func(dir string) *progress.Run { return progress.Current(gitDir(dir), p.SessionID.V) },
 		})
 	}()
 	if line == "" {

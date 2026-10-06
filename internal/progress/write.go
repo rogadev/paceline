@@ -8,6 +8,7 @@ import (
 	"os"
 	"path/filepath"
 	"slices"
+	"strings"
 	"time"
 )
 
@@ -25,12 +26,12 @@ func (n NewStep) step() Step {
 
 // Load reads the progress file for a writer. Unlike Read it reports why a
 // file is unusable, so a tool can tell the agent to start a new run.
-func Load(gitDir string) (*Run, error) {
-	r := Read(gitDir)
+func Load(gitDir, session string) (*Run, error) {
+	r := Read(gitDir, session)
 	if r != nil {
 		return r, nil
 	}
-	if _, err := os.Stat(Path(gitDir)); errors.Is(err, os.ErrNotExist) {
+	if _, err := os.Stat(Path(gitDir, session)); errors.Is(err, os.ErrNotExist) {
 		return nil, errors.New("no run in progress; start one first")
 	}
 	return nil, errors.New("the progress file is unreadable or invalid; start a new run to replace it")
@@ -38,7 +39,7 @@ func Load(gitDir string) (*Run, error) {
 
 // Save validates r, stamps it with now, and writes it via a temp file and
 // rename, so the status line never reads a half-written file.
-func Save(gitDir string, r *Run, now time.Time) error {
+func Save(gitDir, session string, r *Run, now time.Time) error {
 	r.Version = Version
 	r.UpdatedAt = now.UTC().Truncate(time.Second)
 	if err := r.Validate(); err != nil {
@@ -51,7 +52,7 @@ func Save(gitDir string, r *Run, now time.Time) error {
 	if len(data) > maxFileBytes {
 		return errors.New("the run is too large to save; use fewer or shorter steps")
 	}
-	path := Path(gitDir)
+	path := Path(gitDir, session)
 	if err := os.MkdirAll(filepath.Dir(path), 0o750); err != nil {
 		return err
 	}
@@ -179,4 +180,22 @@ func (r *Run) Finish(outcome string) error {
 		}
 	}
 	return nil
+}
+
+// Prune removes other sessions' progress files not written for a day. Each
+// session leaves its file behind when it ends; this keeps them from piling up.
+func Prune(gitDir, keep string, now time.Time) {
+	dir := filepath.Join(gitDir, dirName)
+	entries, _ := os.ReadDir(dir)
+	for _, e := range entries {
+		name := e.Name()
+		session, ok := strings.CutPrefix(name, sessionPrefix)
+		session, isJSON := strings.CutSuffix(session, sessionSuffix)
+		if !ok || !isJSON || session == keep || !ValidSession(session) {
+			continue
+		}
+		if info, err := e.Info(); err == nil && info.Mode().IsRegular() && now.Sub(info.ModTime()) > sessionPruneAge {
+			_ = os.Remove(filepath.Join(dir, name))
+		}
+	}
 }

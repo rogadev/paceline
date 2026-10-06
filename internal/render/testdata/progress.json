@@ -270,7 +270,7 @@
     "want": ""
   },
   {
-    "name": "quiet for over 6 hours is paused",
+    "name": "quiet for over an hour is paused",
     "now": "2026-10-06T12:00:00Z",
     "config": null,
     "file": {
@@ -304,9 +304,48 @@
           "status": "pending"
         }
       ],
-      "updatedAt": "2026-10-06T05:59:00Z"
+      "updatedAt": "2026-10-06T10:59:00Z"
     },
     "want": "loop \u001b[32m▰▰\u001b[0m\u001b[2m▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱\u001b[0m #44 3/5\u001b[2m (paused)\u001b[0m"
+  },
+  {
+    "name": "quiet for over 4 hours is hidden",
+    "now": "2026-10-06T12:00:00Z",
+    "config": null,
+    "file": {
+      "version": 1,
+      "name": "loop",
+      "phase": "running",
+      "steps": [
+        {
+          "id": "41",
+          "label": "#41",
+          "status": "done"
+        },
+        {
+          "id": "42",
+          "label": "#42",
+          "status": "done"
+        },
+        {
+          "id": "43",
+          "label": "#43",
+          "status": "skipped"
+        },
+        {
+          "id": "44",
+          "label": "#44",
+          "status": "active"
+        },
+        {
+          "id": "45",
+          "label": "#45",
+          "status": "pending"
+        }
+      ],
+      "updatedAt": "2026-10-06T07:59:00Z"
+    },
+    "want": ""
   },
   {
     "name": "hostile labels are sanitized",
