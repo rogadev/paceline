@@ -113,6 +113,10 @@ The tools tell the agent when to use them, so a long job reports progress withou
 
 **Plan first for an accurate bar.** Without a plan, the bar counts steps, so a big step and a small one move it equally. When the agent starts the run with each step's `weight` (its size relative to the others) and the `stages` it will pass through (for example, `design`, `build`, `review`, `commit`), paceline shows a weighted percentage that also moves as a step advances through its stages.
 
+### Works with orc-pack
+
+[orc-pack](https://github.com/rogadev/orc-pack), an autonomous orchestrator for Claude Code, reports its runs through these tools. With `paceline-mcp` registered, an `/orc` run or an `/orc-loop` batch plans its steps and shows up as a bar, such as `orc ▰▰▱▱ #42 review 55%`, with no extra setup.
+
 ### Progress file format
 
 Any tool can write this file. Write it through a temp file and a rename, so paceline never reads half of it.
