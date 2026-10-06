@@ -45,10 +45,10 @@ func TestProgressGolden(t *testing.T) {
 		t.Run(c.Name, func(t *testing.T) {
 			gitDir := t.TempDir()
 			if len(c.File) > 0 && string(c.File) != "null" {
-				if err := os.MkdirAll(filepath.Dir(progress.Path(gitDir)), 0o750); err != nil {
+				if err := os.MkdirAll(filepath.Dir(progress.Path(gitDir, "")), 0o750); err != nil {
 					t.Fatal(err)
 				}
-				if err := os.WriteFile(progress.Path(gitDir), c.File, 0o600); err != nil {
+				if err := os.WriteFile(progress.Path(gitDir, ""), c.File, 0o600); err != nil {
 					t.Fatal(err)
 				}
 			}
@@ -60,7 +60,7 @@ func TestProgressGolden(t *testing.T) {
 					if dir != "/r/repo" {
 						t.Errorf("Progress called with %q, want the session's cwd", dir)
 					}
-					return progress.Read(gitDir)
+					return progress.Read(gitDir, "")
 				},
 			})
 			if *updateGolden {

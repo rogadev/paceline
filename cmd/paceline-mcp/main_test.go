@@ -73,7 +73,7 @@ func TestToolsDriveTheProgressFile(t *testing.T) {
 		t.Errorf("summary = %q", text)
 	}
 
-	r := progress.Read(gitDir)
+	r := progress.Read(gitDir, "")
 	if r == nil {
 		t.Fatal("the status line reader could not parse the file the tools wrote")
 	}
@@ -84,7 +84,7 @@ func TestToolsDriveTheProgressFile(t *testing.T) {
 	if text, failed := call(t, ts, "progress_finish", `{"outcome": "done"}`); failed || !strings.Contains(text, "done") {
 		t.Errorf("finish: %s", text)
 	}
-	if r := progress.Read(gitDir); r == nil || r.Phase != progress.Done {
+	if r := progress.Read(gitDir, ""); r == nil || r.Phase != progress.Done {
 		t.Errorf("after finish: %+v", r)
 	}
 }
@@ -95,7 +95,7 @@ func TestInvalidCallsLeaveTheFileUnchanged(t *testing.T) {
 	if text, failed := call(t, ts, "progress_start", `{"name": "orc", "steps": [{"id": "1", "label": "#1", "stages": ["build"]}]}`); failed {
 		t.Fatal(text)
 	}
-	path := progress.Path(filepath.Join(filepath.Dir(sub), ".git"))
+	path := progress.Path(filepath.Join(filepath.Dir(sub), ".git"), "")
 	before, _ := os.ReadFile(path)
 
 	for name, c := range map[string][2]string{
@@ -130,7 +130,7 @@ func TestCwdArgument(t *testing.T) {
 	if text, failed := call(t, outside, "progress_start", args); failed {
 		t.Errorf("cwd should name the repo: %s", text)
 	}
-	if progress.Read(filepath.Join(root, ".git")) == nil {
+	if progress.Read(filepath.Join(root, ".git"), "") == nil {
 		t.Error("the run was not written to the cwd repo")
 	}
 	if text, failed := call(t, testTools(root), "progress_step", `{"id": "1"}`); !failed || !strings.Contains(text, "status, a stage") {
@@ -214,4 +214,35 @@ func TestBuildVersion(t *testing.T) {
 func strconvQuote(s string) string {
 	b, _ := json.Marshal(s)
 	return string(b)
+}
+
+func TestEachSessionWritesItsOwnRun(t *testing.T) {
+	root, sub := repo(t)
+	gitDir := filepath.Join(root, ".git")
+	for _, session := range []string{"aaaa-1111", "bbbb-2222"} {
+		ts := testTools(sub)
+		ts.session = session
+		if text, failed := call(t, ts, "progress_start", `{"name": "`+session+`", "steps": [{"id": "1", "label": "#1"}]}`); failed {
+			t.Fatal(text)
+		}
+	}
+	for _, session := range []string{"aaaa-1111", "bbbb-2222"} {
+		if r := progress.Read(gitDir, session); r == nil || r.Name != session {
+			t.Errorf("session %s: %+v", session, r)
+		}
+	}
+	if progress.Read(gitDir, "") != nil {
+		t.Error("a session's tools wrote the shared file")
+	}
+}
+
+func TestDefaultToolsetReadsTheSession(t *testing.T) {
+	t.Setenv(sessionEnv, "6f348220-ec29-4b61-9ab7-15218ee26bc6")
+	if s := defaultToolset().session; s != "6f348220-ec29-4b61-9ab7-15218ee26bc6" {
+		t.Errorf("session = %q", s)
+	}
+	t.Setenv(sessionEnv, "../escape")
+	if s := defaultToolset().session; s != "" {
+		t.Errorf("an invalid session id was kept: %q", s)
+	}
 }

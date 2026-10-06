@@ -35,11 +35,18 @@ const stepsSchema = `{
   }
 }`
 
+// sessionEnv names the variable Claude Code sets to its session id in the
+// processes it starts, this server among them.
+const sessionEnv = "CLAUDE_CODE_SESSION_ID"
+
 // toolset holds what the tools need from the environment, so tests can point
-// them at a temporary repo and a fixed clock.
+// them at a temporary repo, a fixed clock, and a session of their choosing.
 type toolset struct {
 	getwd func() (string, error)
 	now   func() time.Time
+	// session is the Claude Code session whose run these tools write, or ""
+	// for the shared run when the server is started some other way.
+	session string
 }
 
 func (t toolset) gitDir(cwd string) (string, error) {
@@ -71,7 +78,7 @@ func (t toolset) decode(args json.RawMessage, v any) (string, error) {
 // update loads the current run, applies change, and saves it. A change that
 // fails, or leaves the run invalid, leaves the file untouched.
 func (t toolset) update(gitDir string, change func(*progress.Run) error) (string, error) {
-	r, err := progress.Load(gitDir)
+	r, err := progress.Load(gitDir, t.session)
 	if err != nil {
 		return "", err
 	}
@@ -82,7 +89,7 @@ func (t toolset) update(gitDir string, change func(*progress.Run) error) (string
 }
 
 func (t toolset) save(gitDir string, r *progress.Run) (string, error) {
-	if err := progress.Save(gitDir, r, t.now()); err != nil {
+	if err := progress.Save(gitDir, t.session, r, t.now()); err != nil {
 		return "", err
 	}
 	return summary(r), nil
@@ -109,7 +116,7 @@ func (t toolset) tools() []mcp.Tool {
 	return []mcp.Tool{
 		{
 			Name: "progress_start",
-			Description: "Start a progress bar for a long job, replacing any earlier run in this repository. " +
+			Description: "Start a progress bar for a long job, replacing any earlier run in this session. " +
 				"Call once, after planning, with every step you expect in order; every step starts pending. " +
 				"Give steps weights and stages so the bar's percentage is accurate.",
 			InputSchema: schema(`"name", "steps"`,
@@ -124,6 +131,7 @@ func (t toolset) tools() []mcp.Tool {
 				if err != nil {
 					return "", err
 				}
+				progress.Prune(gitDir, t.session, t.now())
 				return t.save(gitDir, progress.Start(a.Name, a.Steps))
 			},
 		},
@@ -194,4 +202,10 @@ func (t toolset) tools() []mcp.Tool {
 
 var errNoArgs = errors.New("paceline-mcp takes no arguments besides --version; Claude Code starts it over stdio")
 
-func defaultToolset() toolset { return toolset{getwd: os.Getwd, now: time.Now} }
+func defaultToolset() toolset {
+	t := toolset{getwd: os.Getwd, now: time.Now}
+	if s := os.Getenv(sessionEnv); progress.ValidSession(s) {
+		t.session = s
+	}
+	return t
+}

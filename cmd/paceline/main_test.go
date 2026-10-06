@@ -66,6 +66,37 @@ func TestRendersProgressFromTheRepo(t *testing.T) {
 	}
 }
 
+func TestShowsOnlyThisSessionsRun(t *testing.T) {
+	repo := t.TempDir()
+	dir := filepath.Join(repo, ".git", "paceline")
+	if err := os.MkdirAll(dir, 0o750); err != nil {
+		t.Fatal(err)
+	}
+	run := func(name string) []byte {
+		return []byte(`{"version": 1, "name": "` + name + `", "phase": "running", "updatedAt": "` + time.Now().UTC().Format(time.RFC3339) + `",
+			"steps": [{"id": "1", "label": "#1", "status": "active"}]}`)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "progress-aaaa-1111.json"), run("mine"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(dir, "progress-bbbb-2222.json"), run("theirs"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	cwd, _ := json.Marshal(repo)
+	for session, want := range map[string]string{"aaaa-1111": "mine", "bbbb-2222": "theirs", "cccc-3333": ""} {
+		_, out, _, _ := runCLI(t, `{"cwd": `+string(cwd)+`, "session_id": "`+session+`"}`)
+		got := ""
+		for _, name := range []string{"mine", "theirs"} {
+			if strings.Contains(out, " "+name+" ") {
+				got += name
+			}
+		}
+		if got != want {
+			t.Errorf("session %s: shows %q, want %q (stdout %q)", session, got, want, out)
+		}
+	}
+}
+
 func TestFallsBackOnBadInput(t *testing.T) {
 	for _, in := range []string{"", "not json", `{"model":`, "[]", `{"pad":"` + strings.Repeat("x", 2<<20) + `"}`} {
 		if code, out, _, _ := runCLI(t, in); code != 0 || out != fallback {

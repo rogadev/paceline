@@ -33,6 +33,10 @@ const (
 	maxFileBytes    = 32 * 1024
 	dirName         = "paceline"
 	fileName        = "progress.json"
+	sessionPrefix   = "progress-"
+	sessionSuffix   = ".json"
+	maxSessionLen   = 64
+	sessionPruneAge = 24 * time.Hour
 	pausedAfter     = time.Hour
 	quietHiddenFrom = 4 * time.Hour
 	doneHiddenFrom  = 30 * time.Minute
@@ -81,8 +85,30 @@ type Run struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 }
 
-// Path is the progress file for a git directory.
-func Path(gitDir string) string { return filepath.Join(gitDir, dirName, fileName) }
+// Path is the progress file for a git directory. A Claude Code session's
+// run lives in a file of its own, so each window shows only its own bar and
+// a new session never shows a run an old one left behind. Without a valid
+// session it is the shared file, for writers that run outside Claude Code.
+func Path(gitDir, session string) string {
+	if ValidSession(session) {
+		return filepath.Join(gitDir, dirName, sessionPrefix+session+sessionSuffix)
+	}
+	return filepath.Join(gitDir, dirName, fileName)
+}
+
+// ValidSession accepts a Claude Code session id: letters, digits, and dashes,
+// so it can never name a path outside the progress directory.
+func ValidSession(session string) bool {
+	if session == "" || len(session) > maxSessionLen {
+		return false
+	}
+	for _, c := range session {
+		if (c < '0' || c > '9') && (c < 'a' || c > 'z') && (c < 'A' || c > 'Z') && c != '-' {
+			return false
+		}
+	}
+	return true
+}
 
 func validText(s string, required bool) error {
 	switch {
@@ -155,14 +181,25 @@ func (s *Step) validate() error {
 	return nil
 }
 
-// Read loads the progress file in gitDir, or nil when it is missing,
+// Current is the run the status line shows for session: its own run, or the
+// shared run when the session has none.
+func Current(gitDir, session string) *Run {
+	if ValidSession(session) {
+		if r := Read(gitDir, session); r != nil {
+			return r
+		}
+	}
+	return Read(gitDir, "")
+}
+
+// Read loads session's progress file in gitDir, or nil when it is missing,
 // oversized, corrupt, or invalid. It never fails louder than that: the status
 // line must render whatever the file holds.
-func Read(gitDir string) *Run {
+func Read(gitDir, session string) *Run {
 	if gitDir == "" {
 		return nil
 	}
-	path := Path(gitDir)
+	path := Path(gitDir, session)
 	// Checked before opening, so a named pipe can't block the refresh.
 	info, err := os.Stat(path)
 	if err != nil || !info.Mode().IsRegular() || info.Size() > maxFileBytes {

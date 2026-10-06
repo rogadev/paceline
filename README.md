@@ -93,9 +93,14 @@ loop ▰▰▰ review 2/3         a status label the agent set
 loop ▰▰▰ ✓ done             finished; hidden 30 minutes later
 ```
 
-Green cells are done, cyan is the active step, dim is skipped, red is blocked, and hollow cells are still to come. A running job with no update in an hour shows `(paused)`, and one with no update in 4 hours is hidden, since whatever was driving it most likely stopped.
+Green cells are done, cyan is the active step, dim is skipped, red is blocked, and hollow cells are still to come. A running job with no update in an hour shows `(paused)`, since whatever was driving it most likely stopped.
 
-The bar comes from a small file, `.git/paceline/progress.json`, in the repository you're working in (in a worktree, the worktree's own git directory). paceline only reads it. Agents write it through the MCP server below, and any other program can write it directly using the format at the end of this section.
+Each Claude Code window shows only its own run. Agents in four windows on the same repository get four separate bars, and a new window never shows a run that an earlier session left behind.
+
+The bar comes from a small file in the git directory of the repository you're working in (in a worktree, the worktree's own git directory). paceline only reads it.
+
+- **Agents** write it through the MCP server below, one file per Claude Code session: `.git/paceline/progress-<session id>.json`. Files from sessions that haven't written for a day are cleaned up when a new run starts.
+- **Any other program** can write the shared file, `.git/paceline/progress.json`, using the format at the end of this section. Every window in the repository shows it when it has no run of its own, and it's hidden after 4 hours with no update.
 
 ### Let agents report progress
 

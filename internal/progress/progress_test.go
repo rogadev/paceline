@@ -15,10 +15,10 @@ var now = time.Date(2026, 10, 6, 12, 0, 0, 0, time.UTC)
 
 func writeFile(t *testing.T, gitDir, body string) {
 	t.Helper()
-	if err := os.MkdirAll(filepath.Dir(Path(gitDir)), 0o750); err != nil {
+	if err := os.MkdirAll(filepath.Dir(Path(gitDir, "")), 0o750); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.WriteFile(Path(gitDir), []byte(body), 0o600); err != nil {
+	if err := os.WriteFile(Path(gitDir, ""), []byte(body), 0o600); err != nil {
 		t.Fatal(err)
 	}
 }
@@ -36,7 +36,7 @@ const validFile = `{
 func TestReadValidFile(t *testing.T) {
 	dir := t.TempDir()
 	writeFile(t, dir, validFile)
-	r := Read(dir)
+	r := Read(dir, "")
 	if r == nil {
 		t.Fatal("Read returned nil for a valid file")
 	}
@@ -80,7 +80,7 @@ func TestReadRejectsUnusableFiles(t *testing.T) {
 				body = strings.Replace(body, `"id": "N"`, `"id": "`+strings.Repeat("i", n%40+1)+string(rune('a'+n/40))+`"`, 1)
 			}
 			writeFile(t, dir, body)
-			if r := Read(dir); r != nil {
+			if r := Read(dir, ""); r != nil {
 				t.Errorf("Read accepted %s file: %+v", name, r)
 			}
 		})
@@ -88,22 +88,22 @@ func TestReadRejectsUnusableFiles(t *testing.T) {
 }
 
 func TestReadMissingOversizedAndNonRegular(t *testing.T) {
-	if Read("") != nil {
-		t.Error("Read(\"\") should be nil outside a repo")
+	if Read("", "") != nil {
+		t.Error("Read should be nil outside a repo")
 	}
 	dir := t.TempDir()
-	if Read(dir) != nil {
+	if Read(dir, "") != nil {
 		t.Error("Read should be nil with no file")
 	}
 	writeFile(t, dir, validFile[:len(validFile)-1]+strings.Repeat(" ", maxFileBytes)+"}")
-	if Read(dir) != nil {
+	if Read(dir, "") != nil {
 		t.Error("Read should reject a file over the size cap")
 	}
 	other := t.TempDir()
-	if err := os.MkdirAll(Path(other), 0o750); err != nil {
+	if err := os.MkdirAll(Path(other, ""), 0o750); err != nil {
 		t.Fatal(err)
 	}
-	if Read(other) != nil {
+	if Read(other, "") != nil {
 		t.Error("Read should reject a directory in place of the file")
 	}
 }
@@ -171,7 +171,7 @@ func plan() []NewStep {
 func TestWriteRoundTrip(t *testing.T) {
 	dir := t.TempDir()
 	r := Start("orc", plan())
-	if err := Save(dir, r, now); err != nil {
+	if err := Save(dir, "", r, now); err != nil {
 		t.Fatal(err)
 	}
 	if err := r.SetStep("1", "", "review"); err != nil {
@@ -181,11 +181,11 @@ func TestWriteRoundTrip(t *testing.T) {
 		t.Fatal(err)
 	}
 	r.SetLabel("review 1/3")
-	if err := Save(dir, r, now.Add(time.Minute)); err != nil {
+	if err := Save(dir, "", r, now.Add(time.Minute)); err != nil {
 		t.Fatal(err)
 	}
 
-	got := Read(dir)
+	got := Read(dir, "")
 	if got == nil {
 		t.Fatal("Read could not parse what Save wrote")
 	}
@@ -199,11 +199,11 @@ func TestWriteRoundTrip(t *testing.T) {
 		t.Errorf("an added step should start pending, got %q", got.Steps[2].Status)
 	}
 
-	loaded, err := Load(dir)
+	loaded, err := Load(dir, "")
 	if err != nil || loaded.Name != "orc" {
 		t.Errorf("Load = %+v, %v", loaded, err)
 	}
-	entries, _ := os.ReadDir(filepath.Dir(Path(dir)))
+	entries, _ := os.ReadDir(filepath.Dir(Path(dir, "")))
 	if len(entries) != 1 {
 		t.Errorf("Save left temp files behind: %v", entries)
 	}
@@ -272,21 +272,21 @@ func TestAddStepsLimits(t *testing.T) {
 
 func TestSaveRejectsInvalidRunsAndKeepsTheFile(t *testing.T) {
 	dir := t.TempDir()
-	if err := Save(dir, Start("orc", plan()), now); err != nil {
+	if err := Save(dir, "", Start("orc", plan()), now); err != nil {
 		t.Fatal(err)
 	}
-	before, _ := os.ReadFile(Path(dir))
+	before, _ := os.ReadFile(Path(dir, ""))
 	for name, r := range map[string]*Run{
 		"no name":      Start("", plan()),
 		"no steps":     Start("orc", nil),
 		"long label":   Start("orc", []NewStep{{ID: "1", Label: strings.Repeat("x", 41)}}),
 		"duplicate id": Start("orc", []NewStep{{ID: "1"}, {ID: "1"}}),
 	} {
-		if err := Save(dir, r, now); err == nil {
+		if err := Save(dir, "", r, now); err == nil {
 			t.Errorf("%s: Save should fail", name)
 		}
 	}
-	after, _ := os.ReadFile(Path(dir))
+	after, _ := os.ReadFile(Path(dir, ""))
 	if string(before) != string(after) {
 		t.Error("a rejected Save changed the file")
 	}
@@ -301,18 +301,18 @@ func TestSaveRejectsOversizedRun(t *testing.T) {
 		}
 		steps[i] = NewStep{ID: strings.Repeat("i", 30) + string(rune('A'+i)), Label: strings.Repeat("l", MaxLabelRunes), Stages: stages}
 	}
-	if err := Save(t.TempDir(), Start("orc", steps), now); err == nil {
+	if err := Save(t.TempDir(), "", Start("orc", steps), now); err == nil {
 		t.Error("Save should refuse a run larger than the reader accepts")
 	}
 }
 
 func TestLoadErrors(t *testing.T) {
-	if _, err := Load(t.TempDir()); err == nil || !strings.Contains(err.Error(), "start one") {
+	if _, err := Load(t.TempDir(), ""); err == nil || !strings.Contains(err.Error(), "start one") {
 		t.Errorf("Load with no file: %v", err)
 	}
 	dir := t.TempDir()
 	writeFile(t, dir, "{not json")
-	if _, err := Load(dir); err == nil || !strings.Contains(err.Error(), "invalid") {
+	if _, err := Load(dir, ""); err == nil || !strings.Contains(err.Error(), "invalid") {
 		t.Errorf("Load with a corrupt file: %v", err)
 	}
 }
@@ -322,7 +322,7 @@ func TestLoadErrors(t *testing.T) {
 func TestReadersNeverSeePartialWrites(t *testing.T) {
 	dir := t.TempDir()
 	r := Start("orc", plan())
-	if err := Save(dir, r, now); err != nil {
+	if err := Save(dir, "", r, now); err != nil {
 		t.Fatal(err)
 	}
 	stop := make(chan struct{})
@@ -337,7 +337,7 @@ func TestReadersNeverSeePartialWrites(t *testing.T) {
 				return
 			default:
 			}
-			data, err := os.ReadFile(Path(dir))
+			data, err := os.ReadFile(Path(dir, ""))
 			if err != nil {
 				continue // Windows can refuse a read mid-rename.
 			}
@@ -350,7 +350,7 @@ func TestReadersNeverSeePartialWrites(t *testing.T) {
 	for i := range 200 {
 		status := []string{Active, Pending, Settled}[i%3]
 		_ = r.SetStep("2", status, "")
-		if err := Save(dir, r, now); err != nil {
+		if err := Save(dir, "", r, now); err != nil {
 			t.Log(err) // Windows can refuse a rename while the file is open.
 		}
 	}
@@ -381,23 +381,81 @@ func TestSaveIgnoresPlantedTempSymlink(t *testing.T) {
 	if err := os.WriteFile(victim, []byte("keep"), 0o600); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.MkdirAll(filepath.Dir(Path(gitDir)), 0o750); err != nil {
+	if err := os.MkdirAll(filepath.Dir(Path(gitDir, "")), 0o750); err != nil {
 		t.Fatal(err)
 	}
-	if err := os.Symlink(victim, Path(gitDir)+"."+strconv.Itoa(os.Getpid())+".tmp"); err != nil {
+	if err := os.Symlink(victim, Path(gitDir, "")+"."+strconv.Itoa(os.Getpid())+".tmp"); err != nil {
 		t.Skip("symlinks unavailable:", err)
 	}
-	if err := Save(gitDir, Start("loop", []NewStep{{ID: "1", Label: "#1"}}), now); err != nil {
+	if err := Save(gitDir, "", Start("loop", []NewStep{{ID: "1", Label: "#1"}}), now); err != nil {
 		t.Fatal(err)
 	}
 	if b, _ := os.ReadFile(victim); string(b) != "keep" {
 		t.Errorf("victim overwritten: %q", b)
 	}
-	if Read(gitDir) == nil {
+	if Read(gitDir, "") == nil {
 		t.Error("the run was not saved")
 	}
-	matches, _ := filepath.Glob(filepath.Join(filepath.Dir(Path(gitDir)), "progress-*.tmp"))
+	matches, _ := filepath.Glob(filepath.Join(filepath.Dir(Path(gitDir, "")), "progress-*.tmp"))
 	if len(matches) != 0 {
 		t.Errorf("temp files left: %v", matches)
+	}
+}
+
+func TestSessionPath(t *testing.T) {
+	dir := t.TempDir()
+	shared := filepath.Join(dir, "paceline", "progress.json")
+	if got := Path(dir, "6f348220-ec29-4b61-9ab7-15218ee26bc6"); got != filepath.Join(dir, "paceline", "progress-6f348220-ec29-4b61-9ab7-15218ee26bc6.json") {
+		t.Errorf("session path = %s", got)
+	}
+	for _, bad := range []string{"", "../x", "a/b", `a`, "a.b", "a b", strings.Repeat("a", 65)} {
+		if got := Path(dir, bad); got != shared {
+			t.Errorf("session %q: path %s, want the shared file", bad, got)
+		}
+	}
+}
+
+func TestCurrentPrefersTheSessionsOwnRun(t *testing.T) {
+	dir := t.TempDir()
+	if Current(dir, "a1") != nil {
+		t.Error("no files should mean no run")
+	}
+	if err := Save(dir, "a1", Start("mine", plan()), now); err != nil {
+		t.Fatal(err)
+	}
+	if r := Current(dir, "a1"); r == nil || r.Name != "mine" {
+		t.Errorf("own run: %+v", r)
+	}
+	if r := Current(dir, "b2"); r != nil {
+		t.Errorf("another session's run leaked: %+v", r)
+	}
+	if err := Save(dir, "", Start("shared", plan()), now); err != nil {
+		t.Fatal(err)
+	}
+	for session, want := range map[string]string{"a1": "mine", "b2": "shared", "": "shared", "../a1": "shared"} {
+		if r := Current(dir, session); r == nil || r.Name != want {
+			t.Errorf("session %q: got %+v, want %s", session, r, want)
+		}
+	}
+}
+
+func TestPruneRemovesOnlyOldSessionFiles(t *testing.T) {
+	dir := t.TempDir()
+	for _, session := range []string{"", "keep", "fresh", "stale"} {
+		if err := Save(dir, session, Start("run", plan()), now); err != nil {
+			t.Fatal(err)
+		}
+	}
+	old := now.Add(-25 * time.Hour)
+	for _, session := range []string{"", "keep", "stale"} {
+		if err := os.Chtimes(Path(dir, session), old, old); err != nil {
+			t.Fatal(err)
+		}
+	}
+	Prune(dir, "keep", now)
+	for session, kept := range map[string]bool{"": true, "keep": true, "fresh": true, "stale": false} {
+		if _, err := os.Stat(Path(dir, session)); (err == nil) != kept {
+			t.Errorf("session %q: kept = %v, want %v", session, err == nil, kept)
+		}
 	}
 }
