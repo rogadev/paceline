@@ -408,7 +408,7 @@ func TestSessionPath(t *testing.T) {
 	if got := Path(dir, "6f348220-ec29-4b61-9ab7-15218ee26bc6"); got != filepath.Join(dir, "paceline", "progress-6f348220-ec29-4b61-9ab7-15218ee26bc6.json") {
 		t.Errorf("session path = %s", got)
 	}
-	for _, bad := range []string{"", "../x", "a/b", `a`, "a.b", "a b", strings.Repeat("a", 65)} {
+	for _, bad := range []string{"", "../x", "a/b", `a\b`, "a.b", "a b", strings.Repeat("a", 65)} {
 		if got := Path(dir, bad); got != shared {
 			t.Errorf("session %q: path %s, want the shared file", bad, got)
 		}
