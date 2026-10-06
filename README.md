@@ -93,7 +93,7 @@ loop ▰▰▰ review 2/3         a status label the agent set
 loop ▰▰▰ ✓ done             finished; hidden 30 minutes later
 ```
 
-Green cells are done, cyan is the active step, dim is skipped, red is blocked, and hollow cells are still to come. A running job with no update in 6 hours shows `(paused)`, since whatever was driving it most likely stopped.
+Green cells are done, cyan is the active step, dim is skipped, red is blocked, and hollow cells are still to come. A running job with no update in an hour shows `(paused)`, and one with no update in 4 hours is hidden, since whatever was driving it most likely stopped.
 
 The bar comes from a small file, `.git/paceline/progress.json`, in the repository you're working in (in a worktree, the worktree's own git directory). paceline only reads it. Agents write it through the MCP server below, and any other program can write it directly using the format at the end of this section.
 

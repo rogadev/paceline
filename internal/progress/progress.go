@@ -26,15 +26,16 @@ const Version = 1
 // Limits shared by the reader and the writer, so anything the writer accepts
 // the reader can draw.
 const (
-	MaxSteps       = 50
-	MaxStages      = 12
-	MaxLabelRunes  = 40
-	MaxWeight      = 1000
-	maxFileBytes   = 32 * 1024
-	dirName        = "paceline"
-	fileName       = "progress.json"
-	pausedAfter    = 6 * time.Hour
-	doneHiddenFrom = 30 * time.Minute
+	MaxSteps        = 50
+	MaxStages       = 12
+	MaxLabelRunes   = 40
+	MaxWeight       = 1000
+	maxFileBytes    = 32 * 1024
+	dirName         = "paceline"
+	fileName        = "progress.json"
+	pausedAfter     = time.Hour
+	quietHiddenFrom = 4 * time.Hour
+	doneHiddenFrom  = 30 * time.Minute
 )
 
 // Run phases.
@@ -190,9 +191,13 @@ func parse(src io.Reader) *Run {
 }
 
 // Visible reports whether the run belongs on the status line at now: a
-// finished run is shown for a while, then hidden.
+// finished run is shown for a while, then hidden, and any other run is
+// hidden once it has gone quiet long enough that its writer is gone.
 func (r *Run) Visible(now time.Time) bool {
-	return r.Phase != Done || now.Sub(r.UpdatedAt) <= doneHiddenFrom
+	if r.Phase == Done {
+		return now.Sub(r.UpdatedAt) <= doneHiddenFrom
+	}
+	return now.Sub(r.UpdatedAt) <= quietHiddenFrom
 }
 
 // Paused reports whether a running run has gone quiet for so long that its

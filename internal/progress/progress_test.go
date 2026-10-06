@@ -115,11 +115,14 @@ func TestVisibleAndPaused(t *testing.T) {
 		visible, paused bool
 	}{
 		{Running, time.Hour, true, false},
-		{Running, 6*time.Hour + time.Second, true, true},
+		{Running, time.Hour + time.Second, true, true},
+		{Running, 4 * time.Hour, true, true},
+		{Running, 4*time.Hour + time.Second, false, true},
 		{Running, -time.Hour, true, false}, // a clock behind the writer's
 		{Done, 30 * time.Minute, true, false},
 		{Done, 31 * time.Minute, false, false},
-		{Halted, 48 * time.Hour, true, false},
+		{Halted, 4 * time.Hour, true, false},
+		{Halted, 4*time.Hour + time.Second, false, false},
 	}
 	for _, tt := range tests {
 		r := &Run{Phase: tt.phase, UpdatedAt: now.Add(-tt.age)}
