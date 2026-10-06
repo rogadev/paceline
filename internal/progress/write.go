@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"slices"
@@ -54,15 +55,37 @@ func Save(gitDir string, r *Run, now time.Time) error {
 	if err := os.MkdirAll(filepath.Dir(path), 0o750); err != nil {
 		return err
 	}
-	tmp := fmt.Sprintf("%s.%d.tmp", path, os.Getpid())
-	if err := os.WriteFile(tmp, data, 0o600); err != nil {
+	// A random temp name that must not already exist, so a symlink planted in
+	// the repo's git dir can't redirect the write to another file.
+	f, err := os.CreateTemp(filepath.Dir(path), "progress-*.tmp")
+	if err != nil {
 		return err
 	}
-	if err := os.Rename(tmp, path); err != nil {
+	tmp := f.Name()
+	_, err = f.Write(data)
+	if closeErr := f.Close(); err == nil {
+		err = closeErr
+	}
+	if err == nil {
+		err = rename(tmp, path)
+	}
+	if err != nil {
 		_ = os.Remove(tmp)
-		return err
 	}
-	return nil
+	return err
+}
+
+// rename retries briefly on a permission error: on Windows, replacing a file
+// fails while a status line refresh has it open for reading.
+func rename(from, to string) error {
+	var err error
+	for range 5 {
+		if err = os.Rename(from, to); err == nil || !errors.Is(err, fs.ErrPermission) {
+			return err
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
+	return err
 }
 
 // Start begins a new run with every step pending, replacing any previous run.

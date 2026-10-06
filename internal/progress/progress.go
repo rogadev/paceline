@@ -12,6 +12,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"slices"
@@ -161,11 +162,23 @@ func Read(gitDir string) *Run {
 		return nil
 	}
 	path := Path(gitDir)
+	// Checked before opening, so a named pipe can't block the refresh.
 	info, err := os.Stat(path)
 	if err != nil || !info.Mode().IsRegular() || info.Size() > maxFileBytes {
 		return nil
 	}
-	data, err := os.ReadFile(path) //nolint:gosec // G304: the progress file in the repo's own git dir.
+	f, err := os.Open(path) //nolint:gosec // G304: the progress file in the repo's own git dir.
+	if err != nil {
+		return nil
+	}
+	defer func() { _ = f.Close() }()
+	return parse(f)
+}
+
+// parse decodes and validates a run. The size checked before opening can lie
+// (a symlink to a /proc file reports 0), so the read itself is capped too.
+func parse(src io.Reader) *Run {
+	data, err := io.ReadAll(io.LimitReader(src, maxFileBytes+1))
 	if err != nil || len(data) > maxFileBytes {
 		return nil
 	}

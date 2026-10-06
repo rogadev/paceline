@@ -314,7 +314,7 @@
     "config": null,
     "file": {
       "version": 1,
-      "name": "lo\u001b[31mop",
+      "name": "lo\u001b[31m\u009b2J\r\nop",
       "phase": "running",
       "steps": [
         {
@@ -324,7 +324,7 @@
         },
         {
           "id": "2",
-          "label": "#2\u001b]0;pwned\u0007\u202e\u200b",
+          "label": "#2\u001b]0;pwned\u0007\u202e\u200b\u009b2J\r\n",
           "status": "active",
           "stages": [
             "b\u001b[2Juild"
@@ -334,7 +334,27 @@
       ],
       "updatedAt": "2026-10-06T11:00:00Z"
     },
-    "want": "lo[31mop \u001b[32m▰\u001b[0m\u001b[36m▰\u001b[0m #2]0;pwned b[2Juild 50%"
+    "want": "lo[31m2Jop \u001b[32m▰\u001b[0m\u001b[36m▰\u001b[0m #2]0;pwned2J b[2Juild 50%"
+  },
+  {
+    "name": "hostile run label is sanitized",
+    "now": "2026-10-06T12:00:00Z",
+    "config": null,
+    "file": {
+      "version": 1,
+      "name": "loop",
+      "phase": "running",
+      "label": "re\u001b[31mview\u009b2J\r\n\u202e2/3",
+      "steps": [
+        {
+          "id": "1",
+          "label": "#1",
+          "status": "active"
+        }
+      ],
+      "updatedAt": "2026-10-06T11:00:00Z"
+    },
+    "want": "loop \u001b[36m▰\u001b[0m re[31mview2J2/3"
   },
   {
     "name": "long run shows a window",

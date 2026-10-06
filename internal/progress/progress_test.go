@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"sync"
 	"testing"
@@ -354,5 +355,46 @@ func TestReadersNeverSeePartialWrites(t *testing.T) {
 	wg.Wait()
 	if torn > 0 {
 		t.Errorf("a reader saw partial JSON %d times", torn)
+	}
+}
+
+// A file whose reported size lies (a symlink to a /proc file reports 0) must
+// still be read no further than the cap.
+func TestParseCapsTheRead(t *testing.T) {
+	if parse(strings.NewReader(validFile)) == nil {
+		t.Fatal("parse rejected a valid run")
+	}
+	padded := validFile[:len(validFile)-1] + strings.Repeat(" ", maxFileBytes) + "}"
+	if parse(strings.NewReader(padded)) != nil {
+		t.Error("parse took input over the size cap")
+	}
+}
+
+// A symlink planted at the old predictable temp name must not redirect the
+// write to the file it points at.
+func TestSaveIgnoresPlantedTempSymlink(t *testing.T) {
+	gitDir := t.TempDir()
+	victim := filepath.Join(t.TempDir(), "victim")
+	if err := os.WriteFile(victim, []byte("keep"), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.MkdirAll(filepath.Dir(Path(gitDir)), 0o750); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.Symlink(victim, Path(gitDir)+"."+strconv.Itoa(os.Getpid())+".tmp"); err != nil {
+		t.Skip("symlinks unavailable:", err)
+	}
+	if err := Save(gitDir, Start("loop", []NewStep{{ID: "1", Label: "#1"}}), now); err != nil {
+		t.Fatal(err)
+	}
+	if b, _ := os.ReadFile(victim); string(b) != "keep" {
+		t.Errorf("victim overwritten: %q", b)
+	}
+	if Read(gitDir) == nil {
+		t.Error("the run was not saved")
+	}
+	matches, _ := filepath.Glob(filepath.Join(filepath.Dir(Path(gitDir)), "progress-*.tmp"))
+	if len(matches) != 0 {
+		t.Errorf("temp files left: %v", matches)
 	}
 }
