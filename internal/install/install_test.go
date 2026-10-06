@@ -317,7 +317,7 @@ func TestSetVerboseKeepsOtherKeys(t *testing.T) {
 	}
 	got := read(t, path)
 	seg, verbose, slots := strings.Index(got, `"segments"`), strings.Index(got, `"verbose": false`), strings.Index(got, `"projectSlots"`)
-	if seg < 0 || verbose < 0 || slots < 0 || !(seg < verbose && verbose < slots) {
+	if seg < 0 || verbose < 0 || slots < 0 || seg >= verbose || verbose >= slots {
 		t.Errorf("paceline.json = %s", got)
 	}
 }
