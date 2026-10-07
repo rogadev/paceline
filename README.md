@@ -47,7 +47,7 @@ That removes paceline and restores whatever status line it replaced. If you move
 
 Claude Code runs whatever binary is at the installed path, so updating is replacing that file. There's nothing to uninstall or reinstall, and your `paceline.json` config and today's budget carry over.
 
-- **Built with Go:** run `go install github.com/rogadev/paceline/cmd/paceline@latest` again, and `go install github.com/rogadev/paceline/cmd/paceline-mcp@latest` if you use the progress tools.
+- **Built with Go:** run `go install github.com/rogadev/paceline/cmd/paceline@latest` again, and `go install github.com/rogadev/paceline/cmd/paceline-mcp@latest` if you use the progress or budget tools.
 - **Downloaded a release:** extract the new archive over the old binary.
 
 The next status line refresh uses the new version. Run `paceline --version` to check which one you have. paceline never touches the network, so it can't tell you when a new release is out: watch the [releases page](https://github.com/rogadev/paceline/releases) for that. On Windows, if replacing the file fails because it's in use, try again; paceline only runs for a moment on each refresh.
@@ -104,7 +104,7 @@ The bar comes from a small file in the git directory of the repository you're wo
 
 ### Let agents report progress
 
-`paceline-mcp` is an MCP server that ships in the same release archive as `paceline`. It gives agents five tools: `progress_start`, `progress_step`, `progress_label`, `progress_add_steps`, and `progress_finish`. Register it once for every project:
+`paceline-mcp` is an MCP server that ships in the same release archive as `paceline`. It gives agents five progress tools: `progress_start`, `progress_step`, `progress_label`, `progress_add_steps`, and `progress_finish`. It also gives them two read-only budget tools, described in [Let Claude check your budget](#let-claude-check-your-budget). Register it once for every project:
 
 ```sh
 claude mcp add --scope user paceline -- /path/to/paceline-mcp
@@ -118,9 +118,20 @@ The tools tell the agent when to use them, so a long job reports progress withou
 
 **Plan first for an accurate bar.** Without a plan, the bar counts steps, so a big step and a small one move it equally. When the agent starts the run with each step's `weight` (its size relative to the others) and the `stages` it will pass through (for example, `design`, `build`, `review`, `commit`), paceline shows a weighted percentage that also moves as a step advances through its stages.
 
+### Let Claude check your budget
+
+The same server gives Claude two read-only tools for checking your usage, so it can plan around it, for example by checking before a long task or a batch of subagents and choosing a smaller batch when today's budget is nearly spent. You can also ask Claude "how's my budget today?". Both tools need the [usage feed](#usage-feed) on, and the descriptions tell Claude when to call them.
+
+- **`get_usage`**: your five-hour session and weekly limits, each as a percentage used and left, and when each resets, both as a date and time and as clock text such as `Thu 9pm`. A limit the feed has no reading for is reported as missing, not as 0%.
+- **`get_today_budget`**: today's budget as the status line's today segment shows it: the budget and what you've spent today, both in percentage points of the week; how much of the budget you've used and have left; whether you're over; and whether today's budget is larger or smaller than an even share of the week. On the last day before the reset, it says that everything left in the week is today's.
+
+Each answer is a short summary followed by the full set of fields as a JSON object, including how old the reading is in seconds. A reading over 10 minutes old still gets an answer, but the answer starts with its age, for example "This reading is 3h0m old". If paceline has never written the feed file, the tools say so and tell you to run `paceline feed on` rather than failing. After `paceline feed off`, the file stays, so the tools answer from the last reading and lead with its age.
+
+The budget tools never write anything. `get_today_budget` reads the day's starting point that the status line saves, but only the status line updates it.
+
 ### Works with orc-pack
 
-[orc-pack](https://github.com/rogadev/orc-pack), an autonomous orchestrator for Claude Code, reports its runs through these tools. With `paceline-mcp` registered, an `/orc` run or an `/orc-loop` batch plans its steps and shows up as a bar, such as `orc ▰▰▱▱ #42 review 55%`, with no extra setup.
+[orc-pack](https://github.com/rogadev/orc-pack), an autonomous orchestrator for Claude Code, reports its runs through the progress tools. With `paceline-mcp` registered, an `/orc` run or an `/orc-loop` batch plans its steps and shows up as a bar, such as `orc ▰▰▱▱ #42 review 55%`, with no extra setup.
 
 ### Progress file format
 
@@ -181,7 +192,7 @@ paceline respects [`NO_COLOR`](https://no-color.org).
 
 ## Usage feed
 
-paceline already sees your latest usage every time it draws the status line. Turn on the usage feed and it also saves those numbers to a small file on your computer, so other local tools can read them without asking Anthropic. [paceline-tray](https://github.com/rogadev/paceline-tray) reads it to show your budget in the system tray. Nothing leaves your machine.
+paceline already sees your latest usage every time it draws the status line. Turn on the usage feed and it also saves those numbers to a small file on your computer, so other local tools can read them without asking Anthropic. [paceline-tray](https://github.com/rogadev/paceline-tray) reads it to show your budget in the system tray, and `paceline-mcp` reads it to [answer Claude's questions about your budget](#let-claude-check-your-budget). Nothing leaves your machine.
 
 The feed is off by default. Turn it on or off, or check its state, with:
 
@@ -223,7 +234,7 @@ paceline runs on every status line refresh, so it's built to do very little:
 - No dependencies. It uses only the Go standard library, and a test fails if that changes.
 - It never starts processes or touches the network. A test fails the build if the shipped code imports `os/exec`, `net`, `syscall`, `unsafe`, or `plugin`. The git branch is read from `.git/HEAD` directly, so a repo's git config or hooks can't run code when paceline renders.
 - It strips control characters, zero-width characters, and bidi overrides from every folder name, branch name, payload field, and progress label before printing, so a hostile repo name can't send escape sequences to your terminal.
-- `paceline-mcp` follows the same import rules. Its only effect is writing the progress file in a repository's git directory.
+- `paceline-mcp` follows the same import rules. Its only effect is writing the progress file in a repository's git directory. The budget tools only read the usage feed, today's budget file, and `paceline.json`.
 - The installer never overwrites a settings file it can't parse, and it writes through a temp file so a crash can't truncate your settings.
 - Releases are reproducible builds with signed provenance attestations.
 
