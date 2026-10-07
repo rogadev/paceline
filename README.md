@@ -165,7 +165,8 @@ Create `~/.claude/paceline.json` (or `$CLAUDE_CONFIG_DIR/paceline.json`) to chan
   "thresholds": { "headroomGreen": 30, "headroomYellow": 15, "contextWarn": 70, "contextCritical": 85 },
   "quietEfforts": ["low", "medium"],
   "projectSlots": { "website": 4 },
-  "verbose": false
+  "verbose": false,
+  "feed": false
 }
 ```
 
@@ -174,8 +175,46 @@ Create `~/.claude/paceline.json` (or `$CLAUDE_CONFIG_DIR/paceline.json`) to chan
 - `quietEfforts`: effort levels that don't need a label.
 - `projectSlots`: pin a project to a color slot from 0 to 11 when two projects you use together get the same color.
 - `verbose`: spell out the labels (`session 16%`) instead of one letter (`s 16%`). `paceline style` changes it for you.
+- `feed`: save your latest usage to a local file other tools can read. Off by default. `paceline feed on` changes it for you; see [Usage feed](#usage-feed).
 
 paceline respects [`NO_COLOR`](https://no-color.org).
+
+## Usage feed
+
+paceline already sees your latest usage every time it draws the status line. Turn on the usage feed and it also saves those numbers to a small file on your computer, so other local tools can read them without asking Anthropic. [paceline-tray](https://github.com/rogadev/paceline-tray) reads it to show your budget in the system tray. Nothing leaves your machine.
+
+The feed is off by default. Turn it on or off, or check its state, with:
+
+```sh
+paceline feed on      # or: paceline feed off
+paceline feed         # shows whether it's on
+```
+
+That sets `feed` in `paceline.json` and keeps your other settings. The file is `~/.claude/paceline-feed.json` (or `$CLAUDE_CONFIG_DIR/paceline-feed.json`).
+
+paceline writes it on each status line refresh, through a temp file and a rename, so a reader never sees half of it. When your usage hasn't changed, it rewrites the file at most every 30 seconds. When Claude Code reports no usable usage limits, paceline leaves the file as it is. Turning the feed off stops the updates but doesn't delete the file.
+
+### Feed file format
+
+```json
+{
+  "version": 1,
+  "fiveHour": { "usedPct": 21, "resetsAt": 1790283000 },
+  "sevenDay": { "usedPct": 46, "resetsAt": 1790838000 },
+  "writtenAt": 1790277013
+}
+```
+
+| Field | Meaning |
+|---|---|
+| `version` | Always `1`. |
+| `fiveHour` | Your five-hour session limit. Left out when Claude Code didn't report it, or reported a value out of range. |
+| `sevenDay` | Your weekly limit. Left out when Claude Code didn't report it, or reported a value out of range. |
+| `usedPct` | How much of the limit you've used, from 0 to 100. It can have a fraction. |
+| `resetsAt` | When the limit resets, in whole Unix seconds. |
+| `writtenAt` | When paceline last wrote the file, in whole Unix seconds. Use it, rather than the file's modified time, to tell how fresh the numbers are. |
+
+The file holds only these fields: no session IDs, paths, or model names. paceline-tray ignores a file over 4 KB, a `version` other than `1`, or a value outside the ranges above.
 
 ## Security
 

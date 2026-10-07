@@ -1,5 +1,6 @@
-// Package install adds or removes paceline as Claude Code's status line in
-// settings.json.
+// Package install edits the user's Claude Code files: it adds or removes
+// paceline as the status line in settings.json, and sets paceline's own
+// options in paceline.json.
 //
 // This edits a file the user owns, so it is deliberately conservative:
 //   - an unparseable settings.json is never overwritten
@@ -180,12 +181,24 @@ func Install(claudeDir, exePath string, force bool) (Result, error) {
 // key and their order. Like settings.json, an unparseable file is never
 // overwritten.
 func SetVerbose(claudeDir string, verbose bool) error {
+	return setConfigBool(claudeDir, "verbose", verbose)
+}
+
+// SetFeed turns the usage feed on or off in paceline.json, keeping every
+// other key and their order. An unparseable file is never overwritten.
+func SetFeed(claudeDir string, on bool) error {
+	return setConfigBool(claudeDir, "feed", on)
+}
+
+// setConfigBool sets one boolean key in paceline.json, creating the file and
+// claudeDir when they are missing.
+func setConfigBool(claudeDir, key string, value bool) error {
 	path := filepath.Join(claudeDir, "paceline.json")
 	o, _, _, err := readSettings(path)
 	if err != nil {
 		return err
 	}
-	o.set("verbose", json.RawMessage(fmt.Sprint(verbose)))
+	o.set(key, json.RawMessage(fmt.Sprint(value)))
 	out, err := o.marshal()
 	if err != nil {
 		return err

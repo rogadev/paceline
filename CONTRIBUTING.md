@@ -50,7 +50,7 @@ The code layout follows Go convention:
 
 - `cmd/paceline` is the binary: argument handling, stdin, and the install commands.
 - `cmd/paceline-mcp` is the MCP server agents use to report progress: the five progress tools and their schemas.
-- `internal/` holds one package per concern: `payload` (decoding Claude Code's JSON), `render`, `color`, `gitinfo`, `config`, `install`, `sanitize`, `progress` (reading and writing the progress file), and `mcp` (the stdio JSON-RPC loop). Tests sit next to the code they cover, as `*_test.go`.
+- `internal/` holds one package per concern: `payload` (decoding Claude Code's JSON), `render`, `color`, `gitinfo`, `config`, `install`, `sanitize`, `progress` (reading and writing the progress file), `feed` (writing the usage feed file other local tools read), and `mcp` (the stdio JSON-RPC loop). Tests sit next to the code they cover, as `*_test.go`.
 - `pace` (today's budget math and its snapshot file) and `timefmt` (local-time formatting) live at the module root because they are public API: other modules, such as paceline-tray, import them, so changing their exported API is a breaking change.
 - `internal/policy` holds repository-wide rules tested like behavior: no dependencies, no dangerous imports, and ASCII-only Go source.
 - `internal/render/testdata/parity.json` holds outputs recorded from the 1.0 JavaScript version, updated deliberately when the output changes on purpose (the today segment, for example). The render tests must reproduce them byte for byte.

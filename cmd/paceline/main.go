@@ -2,7 +2,8 @@
 // and shows, at a glance, where every session stands.
 //
 // With no arguments it reads Claude Code's status JSON on stdin and prints
-// the status line; install and uninstall edit settings.json.
+// the status line; install and uninstall edit settings.json, and style and
+// feed change options in paceline.json.
 package main
 
 import (
@@ -61,6 +62,8 @@ Usage:
   paceline uninstall           remove it and restore the previous status line
   paceline style [regular | verbose]
                                show or change the label style
+  paceline feed [on | off]     show or change the usage feed, a local file
+                               other tools such as paceline-tray read
   paceline --version
   paceline --help
 
@@ -93,6 +96,8 @@ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 		return runUninstall(stdout, stderr)
 	case "style":
 		return runStyle(args[1:], stdout, stderr)
+	case "feed":
+		return runFeed(args[1:], stdout, stderr)
 	default:
 		fmt.Fprintf(stderr, "Unknown command: %s\n\n%s", args[0], help())
 		return 1
@@ -268,6 +273,40 @@ func runSetStyle(verbose bool, stdout, stderr io.Writer) int {
 		style = "verbose"
 	}
 	fmt.Fprintf(stdout, "Label style: %s. Change it any time with 'paceline style'.\n", style)
+	return 0
+}
+
+// runFeed shows whether the usage feed is on, or turns it on or off.
+func runFeed(args []string, stdout, stderr io.Writer) int {
+	dir := config.Dir()
+	if len(args) == 0 {
+		state := "off"
+		if config.Load(filepath.Join(dir, "paceline.json")).Feed {
+			state = "on"
+		}
+		fmt.Fprintf(stdout, "Usage feed: %s. Change it with 'paceline feed on' or 'paceline feed off'.\n", state)
+		return 0
+	}
+	switch strings.ToLower(args[0]) {
+	case "on":
+		return runSetFeed(dir, true, stdout, stderr)
+	case "off":
+		return runSetFeed(dir, false, stdout, stderr)
+	}
+	fmt.Fprintf(stderr, "Unknown feed setting: %s. Choose on or off.\n", args[0])
+	return 1
+}
+
+func runSetFeed(dir string, on bool, stdout, stderr io.Writer) int {
+	if err := install.SetFeed(dir, on); err != nil {
+		fmt.Fprintln(stderr, err)
+		return 1
+	}
+	if on {
+		fmt.Fprintf(stdout, "Usage feed: on. Each status line refresh saves your latest usage to %s.\n", feed.Path(dir))
+		return 0
+	}
+	fmt.Fprintln(stdout, "Usage feed: off. paceline stops updating the feed file; turn it back on with 'paceline feed on'.")
 	return 0
 }
 

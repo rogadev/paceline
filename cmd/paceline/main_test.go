@@ -390,6 +390,56 @@ func TestStyleCommand(t *testing.T) {
 	}
 }
 
+func TestFeedCommand(t *testing.T) {
+	configDir := t.TempDir()
+	t.Setenv("CLAUDE_CONFIG_DIR", configDir)
+	configPath := filepath.Join(configDir, "paceline.json")
+	cli := func(args ...string) (int, string, string) {
+		var out, errOut bytes.Buffer
+		code := run(args, strings.NewReader(""), &out, &errOut)
+		return code, out.String(), errOut.String()
+	}
+
+	if code, out, _ := cli("feed"); code != 0 || !strings.Contains(out, "Usage feed: off.") || !strings.Contains(out, "paceline feed on") {
+		t.Errorf("default feed: code %d, stdout %q", code, out)
+	}
+	if err := os.WriteFile(configPath, []byte(`{"verbose":true}`), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	code, out, _ := cli("feed", "ON")
+	if code != 0 || !strings.Contains(out, "Usage feed: on.") || !strings.Contains(out, filepath.Join(configDir, "paceline-feed.json")) {
+		t.Errorf("feed on: code %d, stdout %q", code, out)
+	}
+	if got, err := os.ReadFile(configPath); err != nil || !strings.Contains(string(got), `"verbose": true`) || !strings.Contains(string(got), `"feed": true`) {
+		t.Errorf("after feed on: err %v, paceline.json %s", err, got)
+	}
+	if _, out, _ := cli("feed"); !strings.Contains(out, "Usage feed: on.") {
+		t.Errorf("after on: %q", out)
+	}
+	if code, out, _ := cli("feed", "off"); code != 0 || !strings.Contains(out, "Usage feed: off.") {
+		t.Errorf("feed off: code %d, stdout %q", code, out)
+	}
+	if _, out, _ := cli("feed"); !strings.Contains(out, "Usage feed: off.") {
+		t.Errorf("after off: %q", out)
+	}
+	if code, out, errOut := cli("feed", "maybe"); code != 1 || out != "" || !strings.Contains(errOut, "Unknown feed setting: maybe") {
+		t.Errorf("unknown setting: code %d, stdout %q, stderr %q", code, out, errOut)
+	}
+
+	if err := os.WriteFile(configPath, []byte(`{broken`), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if code, _, errOut := cli("feed", "on"); code != 1 || !strings.Contains(errOut, "refusing to edit") {
+		t.Errorf("broken config: code %d, stderr %q", code, errOut)
+	}
+}
+
+func TestHelpListsFeed(t *testing.T) {
+	if _, out, _, _ := runCLI(t, "", "--help"); !strings.Contains(out, "paceline feed [on | off]") {
+		t.Errorf("--help = %q", out)
+	}
+}
+
 func TestInstallRecordsStyleOnlyWhenChosen(t *testing.T) {
 	configDir := t.TempDir()
 	t.Setenv("CLAUDE_CONFIG_DIR", configDir)
