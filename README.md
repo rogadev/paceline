@@ -2,6 +2,8 @@
 
 A Claude Code status line that paces your usage limits and shows, at a glance, where every session stands.
 
+![paceline in a Claude Code window, cycling through a fresh day, a light week, a session running dry, over budget, a cold cache, the last day, and an agent job](docs/paceline-states.svg)
+
 ```
 Opus 5.5 · techcentral (dev) · s 84% · w 96% · t 54% of 28% · 16m
 ```

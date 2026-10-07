@@ -1,0 +1,133 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="292" viewBox="0 0 980 292" role="img" aria-labelledby="title desc">
+  <title id="title">paceline in a Claude Code window</title>
+  <desc id="desc">A Claude Code window cycling through seven status lines: a fresh day, a light week, a session running dry, over budget, a cold cache, the last day before the weekly reset, and an agent job with a progress bar. Session, week, and today count down what's left, from 100%.</desc>
+  <style>
+    text { font-family: ui-monospace, SFMono-Regular, "Cascadia Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace; font-size: 13.5px; fill: #d6d9e0; white-space: pre; }
+    .cap { font-size: 13px; }
+    .b { font-weight: 700; }
+    .d { fill: #7a8090; }
+    .g { fill: #73c991; }
+    .y { fill: #e2c08d; }
+    .c { fill: #4fc1d6; }
+    .r { fill: #b92f2f; }
+    .o { fill: #d97757; }
+    .w { fill: #f2f3f5; }
+    .p1 { fill: #fd97d2; }
+    .p2 { fill: #b7b5fc; }
+    .p3 { fill: #96d273; }
+    .cells { font-size: 16px; }
+
+    .scene, .dot { opacity: 0; animation-duration: 31.5s; animation-iteration-count: infinite; animation-fill-mode: both; }
+    .scene { animation-name: scene; }
+    .dot { opacity: 1; fill: #3a3f4b; animation-name: dot; }
+    @keyframes scene {
+      0% { opacity: 0; }
+      1.2% { opacity: 1; }
+      13.1% { opacity: 1; }
+      14.28% { opacity: 0; }
+      100% { opacity: 0; }
+    }
+    @keyframes dot {
+      0% { fill: #3a3f4b; }
+      1.2% { fill: #d97757; }
+      13.1% { fill: #d97757; }
+      14.28% { fill: #3a3f4b; }
+      100% { fill: #3a3f4b; }
+    }
+    .n1 { animation-delay: 0s; }
+    .n2 { animation-delay: 4.5s; }
+    .n3 { animation-delay: 9s; }
+    .n4 { animation-delay: 13.5s; }
+    .n5 { animation-delay: 18s; }
+    .n6 { animation-delay: 22.5s; }
+    .n7 { animation-delay: 27s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .scene, .dot { animation: none; }
+      .scene { opacity: 0; }
+      .scene.n1 { opacity: 1; }
+      .dot.n1 { fill: #d97757; }
+    }
+  </style>
+
+  <!-- Window -->
+  <rect x="0.5" y="0.5" width="979" height="291" rx="10" fill="#16181d" stroke="#2a2e37"/>
+  <path d="M0.5 40.5 H979.5" stroke="#2a2e37"/>
+  <circle cx="22" cy="20.5" r="5.5" fill="#ff5f57"/>
+  <circle cx="40" cy="20.5" r="5.5" fill="#febc2e"/>
+  <circle cx="58" cy="20.5" r="5.5" fill="#28c840"/>
+  <rect x="24" y="142" width="932" height="38" rx="6" fill="none" stroke="#3a3f4b"/>
+
+  <!-- 1. Fresh day -->
+  <g class="scene n1">
+    <text class="cap" x="84" y="25"><tspan class="w b">Fresh day</tspan><tspan class="d">  Today's budget is set at midnight and starts at 100% left.</tspan></text>
+    <text x="24" y="74"><tspan class="w">● </tspan>Found it. The date picker formats in UTC. Switching it to the user timezone now.</text>
+    <text x="24" y="110"><tspan class="o">✻ Crafting… </tspan><tspan class="d">(28s · ↓ 1.2k tokens · thinking)</tspan></text>
+    <text x="38" y="166"><tspan class="d">&gt; </tspan>also check the invoice dates while you are in there</text>
+    <text x="24" y="210"><tspan class="c">Opus 5.5</tspan><tspan class="d"> · </tspan><tspan class="p1">acme-portal</tspan> <tspan class="d">(</tspan>dev<tspan class="d">)</tspan><tspan class="d"> · </tspan><tspan class="g">s 98%</tspan><tspan class="d"> · </tspan><tspan class="g">w 52%</tspan><tspan class="d"> · </tspan><tspan class="g">t 100%</tspan> <tspan class="d">of 17%</tspan><tspan class="d"> · </tspan><tspan class="d">2m</tspan></text>
+  </g>
+
+  <!-- 2. Light week -->
+  <g class="scene n2">
+    <text class="cap" x="84" y="25"><tspan class="w b">Light week</tspan><tspan class="d">  What you don't spend spreads over the days left, so budgets grow.</tspan></text>
+    <text x="24" y="74"><tspan class="w">● </tspan>Offline sync is in. Moving the queue logic into its own module next.</text>
+    <text x="24" y="110"><tspan class="o">✻ Refactoring… </tspan><tspan class="d">(1m 04s · ↓ 6.8k tokens)</tspan></text>
+    <text x="38" y="166"><tspan class="d">&gt; </tspan>go ahead and do the conflict handling too</text>
+    <text x="24" y="210"><tspan class="c">Sonnet 5.5</tspan><tspan class="d"> · </tspan><tspan class="p2">field-app</tspan> <tspan class="d">(</tspan>feat/offline<tspan class="d">)</tspan><tspan class="d"> · </tspan><tspan class="g">s 71%</tspan><tspan class="d"> · </tspan><tspan class="g">w 88%</tspan><tspan class="d"> · </tspan><tspan class="g">t 64%</tspan> <tspan class="d">of 29%</tspan><tspan class="d"> · </tspan><tspan class="d">1h12m</tspan></text>
+  </g>
+
+  <!-- 3. Session running dry -->
+  <g class="scene n3">
+    <text class="cap" x="84" y="25"><tspan class="w b">Session running dry</tspan><tspan class="d">  Below 30% left, the session shows when it resets.</tspan></text>
+    <text x="24" y="74"><tspan class="w">● </tspan>The flaky test is a race in the session refresh. Tracing where the token gets swapped.</text>
+    <text x="24" y="110"><tspan class="o">✻ Investigating… </tspan><tspan class="d">(3m 41s · ↓ 18.4k tokens · thinking)</tspan></text>
+    <text x="38" y="166"><tspan class="d">&gt; </tspan>add a regression test for the token refresh once it is fixed</text>
+    <text x="24" y="210"><tspan class="c">Opus 5.5</tspan><tspan class="d"> · </tspan><tspan class="p1">acme-portal</tspan> <tspan class="d">(</tspan>dev<tspan class="d">)</tspan><tspan class="d"> · </tspan><tspan class="r">s 6% (resets 3:40pm)</tspan><tspan class="d"> · </tspan><tspan class="g">w 44%</tspan><tspan class="d"> · </tspan><tspan class="y">t 22%</tspan> <tspan class="d">of 11%</tspan><tspan class="d"> · </tspan><tspan class="y">ctx 78%</tspan><tspan class="d"> · </tspan><tspan class="d">3h5m</tspan></text>
+  </g>
+
+  <!-- 4. Over budget -->
+  <g class="scene n4">
+    <text class="cap" x="84" y="25"><tspan class="w b">Over budget</tspan><tspan class="d">  Past today's budget, it counts up how far over you are, in red.</tspan></text>
+    <text x="24" y="74"><tspan class="w">● </tspan>Webhook retries now back off properly. Adding a test for the duplicate event case.</text>
+    <text x="24" y="110"><tspan class="o">✻ Debugging… </tspan><tspan class="d">(52s · ↓ 3.1k tokens)</tspan></text>
+    <text x="38" y="166"><tspan class="d">&gt; </tspan>log the event id when a duplicate is skipped</text>
+    <text x="24" y="210"><tspan class="c">Opus 5.5</tspan><tspan class="d"> · </tspan><tspan class="p3">billing-api</tspan> <tspan class="d">(</tspan>fix/webhooks<tspan class="d">)</tspan><tspan class="d"> · </tspan><tspan class="g">s 41%</tspan><tspan class="d"> · </tspan><tspan class="y">w 23%</tspan><tspan class="d"> · </tspan><tspan class="r">t over 18%</tspan> <tspan class="d">of 9%</tspan><tspan class="d"> · </tspan><tspan class="d">2h40m</tspan></text>
+  </g>
+
+  <!-- 5. Cache went cold -->
+  <g class="scene n5">
+    <text class="cap" x="84" y="25"><tspan class="w b">Cache went cold</tspan><tspan class="d">  The prompt cache expired, so the next message costs about twice as much.</tspan></text>
+    <text x="24" y="74"><tspan class="w">● </tspan>The docs build is green. Let me know what to tackle next.</text>
+    <text x="24" y="110"><tspan class="o">✻ Reading… </tspan><tspan class="d">(9s · ↓ 402 tokens)</tspan></text>
+    <text x="38" y="166"><tspan class="d">&gt; </tspan>add a search box to the docs sidebar</text>
+    <text x="24" y="210"><tspan class="c">Opus 5.5</tspan><tspan class="d"> · </tspan><tspan class="p2">docs-site</tspan> <tspan class="d">(</tspan>main<tspan class="d">)</tspan><tspan class="d"> · </tspan><tspan class="g">s 63%</tspan><tspan class="d"> · </tspan><tspan class="g">w 57%</tspan><tspan class="d"> · </tspan><tspan class="g">t 48%</tspan> <tspan class="d">of 14%</tspan><tspan class="d"> · </tspan><tspan class="r">cache cold: 82k @ ~2x</tspan><tspan class="d"> · </tspan><tspan class="d">47m</tspan></text>
+  </g>
+
+  <!-- 6. Last day -->
+  <g class="scene n6">
+    <text class="cap" x="84" y="25"><tspan class="w b">Last day</tspan><tspan class="d">  Before the weekly reset, everything left in the week is today's budget.</tspan></text>
+    <text x="24" y="74"><tspan class="w">● </tspan>Copy tweaks are done across all six screens.</text>
+    <text x="24" y="110"><tspan class="o">✻ Polishing… </tspan><tspan class="d">(17s · ↓ 880 tokens)</tspan></text>
+    <text x="38" y="166"><tspan class="d">&gt; </tspan>make the empty states match the new illustrations</text>
+    <text x="24" y="210"><tspan class="c">Haiku 5.5</tspan><tspan class="d"> · </tspan><tspan class="p2">field-app</tspan> <tspan class="d">(</tspan>main<tspan class="d">)</tspan><tspan class="d"> · </tspan><tspan class="g">s 90%</tspan><tspan class="d"> · </tspan><tspan class="r">w 12%</tspan><tspan class="d"> · </tspan><tspan class="g">t 60%</tspan> <tspan class="d">of 20%</tspan><tspan class="d"> · </tspan><tspan class="d">25m</tspan></text>
+  </g>
+
+  <!-- 7. Agent job -->
+  <g class="scene n7">
+    <text class="cap" x="84" y="25"><tspan class="w b">Agent job</tspan><tspan class="d">  An agent reports a long job's progress: done, active, and still to come.</tspan></text>
+    <text x="24" y="74"><tspan class="w">● </tspan>Issue #42 passed review. Committing, then picking up #43.</text>
+    <text x="24" y="110"><tspan class="o">✻ Orchestrating… </tspan><tspan class="d">(6m 12s · ↓ 24.9k tokens · 3 agents)</tspan></text>
+    <text x="38" y="166"><tspan class="d">&gt; </tspan>work through the open issues on the board</text>
+    <text x="24" y="210"><tspan class="c">Opus 5.5</tspan><tspan class="d"> · </tspan><tspan class="d">high effort</tspan><tspan class="d"> · </tspan><tspan class="p1">acme-portal</tspan> <tspan class="d">(</tspan>dev<tspan class="d">)</tspan><tspan class="d"> · </tspan><tspan class="g">s 54%</tspan><tspan class="d"> · </tspan><tspan class="g">w 61%</tspan><tspan class="d"> · </tspan><tspan class="g">t 70%</tspan> <tspan class="d">of 16%</tspan><tspan class="d"> · </tspan>orc <tspan class="cells"><tspan class="g">▰▰</tspan><tspan class="c">▰</tspan><tspan class="d">▱▱</tspan></tspan> #42 review 55%<tspan class="d"> · </tspan><tspan class="d">1h38m</tspan></text>
+  </g>
+
+  <!-- Footer and scene dots -->
+  <text class="d" x="24" y="236">⏵⏵ bypass permissions on (shift+tab to cycle)</text>
+  <circle class="dot n1" cx="436" cy="266" r="4"/>
+  <circle class="dot n2" cx="454" cy="266" r="4"/>
+  <circle class="dot n3" cx="472" cy="266" r="4"/>
+  <circle class="dot n4" cx="490" cy="266" r="4"/>
+  <circle class="dot n5" cx="508" cy="266" r="4"/>
+  <circle class="dot n6" cx="526" cy="266" r="4"/>
+  <circle class="dot n7" cx="544" cy="266" r="4"/>
+</svg>
