@@ -58,7 +58,8 @@ func help() string {
 
 Usage:
   paceline install [--force]   set paceline as your Claude Code status line
-    [--regular | --verbose]    label style: "s 18%%" or "session 18%%" (asks if omitted)
+    [--regular | --verbose]    label style: "s 82%%" or "session 82%% left"
+                               (asks if omitted)
   paceline uninstall           remove it and restore the previous status line
   paceline style [regular | verbose]
                                show or change the label style
@@ -218,8 +219,8 @@ func chooseStyle(args []string, interactive, current bool, stdin io.Reader, stdo
 		def = "2"
 	}
 	fmt.Fprint(stdout, "Choose a label style (s = session, w = week, t = today):\n"+
-		"  1) Regular   s 18% \u00b7 w 86% \u00b7 t 13% of 8%\n"+
-		"  2) Verbose   session 18% \u00b7 week 86% \u00b7 today 13% of 8% budget\n"+
+		"  1) Regular   s 82% \u00b7 w 14% \u00b7 t 75% of 8%\n"+
+		"  2) Verbose   session 82% left \u00b7 week 14% left \u00b7 today 75% left of 8% budget\n"+
 		"Style ["+def+"]: ")
 	answer, err := bufio.NewReader(stdin).ReadString('\n')
 	switch strings.ToLower(strings.TrimSpace(answer)) {

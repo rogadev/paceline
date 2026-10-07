@@ -75,7 +75,7 @@ paceline has no issue or PR templates, so requirements are written in plain pros
 
 ### 4.2 Core ask
 
-- Restate the title and first paragraph as one outcome ("a user with `NO_COLOR` set sees plain text for the budget arrow"). Does the change deliver that outcome end to end?
+- Restate the title and first paragraph as one outcome ("a user with `NO_COLOR` set sees plain text for the today segment"). Does the change deliver that outcome end to end?
 - A bug issue's core ask is that the described failure no longer happens. Check the fix reaches the path the issue names (a rollover bug reported against `pace` is not fixed by a change only to `internal/render`).
 - A fix that addresses one platform while the issue's reproduction spans several (Windows path separators, for example) is Partial.
 

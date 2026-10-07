@@ -3,7 +3,7 @@
 // Leaf values use the Num, Str, and Bool types instead of pointers. With a
 // plain *float64, encoding/json allocates the pointer before it notices a type
 // mismatch, so `"used_percentage": "90"` would decode as a set value of 0 and
-// render as "100% session". These types stay unset unless the JSON type
+// render as "s 100%". These types stay unset unless the JSON type
 // matches, and they never return an error, so a surprise in one field never
 // blanks the whole status line.
 package payload

@@ -10,6 +10,11 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/rogadev/paceline/internal/config"
+	"github.com/rogadev/paceline/internal/payload"
+	"github.com/rogadev/paceline/internal/render"
+	"github.com/rogadev/paceline/pace"
 )
 
 // runCLI calls run with an isolated CLAUDE_CONFIG_DIR and color off.
@@ -497,5 +502,41 @@ func TestChooseStyle(t *testing.T) {
 	chooseStyle(nil, true, true, strings.NewReader(""), &out)
 	if !strings.Contains(out.String(), "Style [2]: ") {
 		t.Errorf("prompt does not default to the current style: %q", out.String())
+	}
+}
+
+// The style examples in the install prompt and --help are what the status line
+// prints for the same usage, so they show what's left, not what's used.
+func TestStyleExamplesMatchTheStatusLine(t *testing.T) {
+	now := time.Date(2026, 9, 24, 10, 0, 0, 0, time.UTC)
+	resets := float64(now.Add(38 * time.Hour).Unix()) // two days from midnight
+	// The day started at 84% of the week used, so today's budget is 16/2 = 8%;
+	// 2 of those 8 points are spent.
+	snap := &pace.Snapshot{Date: "20260924", ResetsAt: resets, UsedAtStart: 84}
+	line := func(t *testing.T, in string, verbose bool) string {
+		t.Helper()
+		p, err := payload.Decode([]byte(in))
+		if err != nil {
+			t.Fatal(err)
+		}
+		cfg := config.Default()
+		cfg.Verbose = verbose
+		return render.Render(p, render.Context{Now: now, Config: cfg, NoColor: true,
+			ReadSnapshot: func() *pace.Snapshot { return snap }})
+	}
+	session := `{"rate_limits":{"five_hour":{"used_percentage":18}}}`
+	full := `{"rate_limits":{"five_hour":{"used_percentage":18},` +
+		`"seven_day":{"used_percentage":86,"resets_at":` + jsonNum(int64(resets)) + `}}}`
+
+	var prompt bytes.Buffer
+	chooseStyle(nil, true, false, strings.NewReader("\n"), &prompt)
+	for _, verbose := range []bool{false, true} {
+		if want := line(t, full, verbose); !strings.Contains(prompt.String(), want) {
+			t.Errorf("prompt does not show the status line %q:\n%s", want, prompt.String())
+		}
+	}
+	want := `label style: "` + line(t, session, false) + `" or "` + line(t, session, true) + `"`
+	if !strings.Contains(help(), want) {
+		t.Errorf("--help does not show %s:\n%s", want, help())
 	}
 }

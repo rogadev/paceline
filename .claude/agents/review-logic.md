@@ -54,7 +54,7 @@ Your two failure modes are equally bad. One is missing the bug that reaches a st
 - Check both call sites that feed `round`: percentages (`round(100 - fh.UsedPercentage.V)`) and budget math (`round(r.PctLeft)`, `round(r.Budget)`) for the same treatment.
 
 ### 3.4 JSON decoding (`internal/payload/payload.go`)
-- `Num`, `Str`, `Bool` stay `Set == false` on a wrong JSON type or absence, rather than allocating a zero value; a plain `*float64` or bare `float64` field would let `"used_percentage": "90"` decode as `0` and render as `100% session`. Any new payload field must use one of these types, not a bare Go type, and every read site must check `.Set` before using `.V`.
+- `Num`, `Str`, `Bool` stay `Set == false` on a wrong JSON type or absence, rather than allocating a zero value; a plain `*float64` or bare `float64` field would let `"used_percentage": "90"` decode as `0` and render as `s 100%`. Any new payload field must use one of these types, not a bare Go type, and every read site must check `.Set` before using `.V`.
 - `Decode` swallows `*json.UnmarshalTypeError` only when `typeErr.Field != ""` (a nested field mismatch); a top-level type mismatch (the payload is an array, a string, `null`) still returns an error, which `renderFromStdin` turns into the `Claude Code` fallback. A change that widens this swallowing to all type errors, or narrows it to break the "wrong nested field never blanks the whole line" guarantee, is a Blocker.
 - `Payload`'s object fields are pointers (`*struct{...}`) so a missing object is `nil`; every new pointer field needs a nil check before dereference at its call site in `render.go`.
 

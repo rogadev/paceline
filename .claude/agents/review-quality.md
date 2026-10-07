@@ -116,7 +116,7 @@ From the app profile:
 - `crypto/md5` in `color.ProjectSlot`: a stable, non-security hash for picking a color slot, not a cryptographic use. Both `//nolint:gosec` lines that guard it are sanctioned.
 - The `//nolint:gosec // G304: ...` lines on `os.ReadFile`/`os.Open` calls in `pace.go`, `config.go`, `gitinfo.go`, `install.go` (both), and `tools/nextbump/main.go`: each reads a path paceline controls or a user-owned config/settings file, not an attacker-supplied path. Do not re-flag these; do flag a *new* file read without an equivalent reason.
 - `tools/nextbump` running `git` through `os/exec`: it's a dev tool, excluded from the forbidden-imports policy test (the ASCII test still walks it) and from `gosec` by path in `.golangci.yml`. This is placement, not a quality finding; if a diff adds a similar exec call inside any of `shippedDirs` (`cmd/`, `internal/`, `pace/`, or `timefmt/`), that's `review-architecture`'s and `review-security`'s finding (a forbidden import that breaks the policy test), not yours.
-- Output glyphs written as `\u` escapes in Go string literals (`middleDot`, `hourglass`, the arrow runes in `internal/render/render.go`), never as literal non-ASCII bytes: this is the ASCII-source rule, not a readability nit.
+- Output glyphs written as `\u` escapes in Go string literals (`middleDot`, `hourglass`, and the progress cells in `internal/render/render.go`), never as literal non-ASCII bytes: this is the ASCII-source rule, not a readability nit.
 - No `go.sum`, no third-party dependencies: don't suggest pulling one in to simplify code.
 
 ---

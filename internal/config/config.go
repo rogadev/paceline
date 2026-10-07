@@ -28,8 +28,8 @@ type Config struct {
 	QuietEfforts []string
 	// ProjectSlots pins project folder names to color slots 0-11.
 	ProjectSlots map[string]int
-	// Verbose spells out the usage labels ("session 18%") instead of the
-	// one-letter form ("s 18%").
+	// Verbose spells out the usage labels ("session 82% left") instead of
+	// the one-letter form ("s 82%").
 	Verbose bool
 	// Feed writes the latest usage to paceline-feed.json on each render, for
 	// other local tools such as paceline-tray.

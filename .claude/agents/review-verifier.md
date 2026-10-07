@@ -38,7 +38,7 @@ Discard a finding that only re-raises one of these, unless the diff itself chang
 - Node.js and `package-lock.json` present with no Node code shipped to users -- release tooling only (commitlint, semantic-release); do not flag "move the release to Go tooling" as a finding.
 - `@semantic-release/github` creating the release while GoReleaser uploads into it (`release.mode: keep-existing`, changelog disabled) -- this ordering is intentional, not a misconfiguration.
 - The version living only in the git tag, nothing committed back to the repo on release.
-- Non-ASCII output glyphs (arrows, middle dot, hourglass, ellipsis) written as backslash-u escapes in Go string literals -- required by `TestGoSourceIsASCII`, not a typo or an encoding bug.
+- Non-ASCII output glyphs (middle dot, hourglass, progress cells, ellipsis) written as backslash-u escapes in Go string literals -- required by `TestGoSourceIsASCII`, not a typo or an encoding bug.
 
 ## For every finding
 
