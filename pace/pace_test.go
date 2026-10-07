@@ -134,3 +134,10 @@ func TestSnapshotFileRejectsBadState(t *testing.T) {
 		t.Error("write into a missing directory reported success")
 	}
 }
+
+func TestSnapshotPath(t *testing.T) {
+	dir := filepath.Join("home", ".claude")
+	if got, want := SnapshotPath(dir), filepath.Join(dir, "paceline-day.json"); got != want {
+		t.Errorf("SnapshotPath(%q) = %q, want %q", dir, got, want)
+	}
+}

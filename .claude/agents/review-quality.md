@@ -47,7 +47,7 @@ Your two failure modes are equally bad: waving through code that re-implements a
 
 ### 3.2 Function size and cohesion
 - Judge growth, not absolute size. This repo keeps functions small and single-purpose (`Render` in `internal/render/render.go` is the biggest at under 100 lines, and even it delegates `project` and `renderToday` out). A new function mixing parse, compute, and format in one body, where the file's neighbours split those jobs, is a finding.
-- Deep nesting where an early return is the local idiom (see `Compute` in `internal/pace/pace.go`: guard clauses for `daysLeft <= 0` and `daysLeft <= 1` before the real work starts).
+- Deep nesting where an early return is the local idiom (see `Compute` in `pace/pace.go`: guard clauses for `daysLeft <= 0` and `daysLeft <= 1` before the real work starts).
 
 ### 3.3 Duplication (Rule of Three)
 - Two copies are a note; three are a finding. A block copied a second time is a Nit unless the copies must stay in lockstep (the same parsing rule, the same magic threshold); then it's a Warning.
@@ -75,7 +75,7 @@ Your two failure modes are equally bad: waving through code that re-implements a
 - Check with `git grep` for importers outside the defining package. Zero external importers plus no test-only reason is a finding.
 
 ### 3.8 `//nolint` without a reason
-- This repo's convention is `//nolint:<linter> // <gosec code or short reason>.`, for example `//nolint:gosec // G304: path is paceline's own state file.` in `internal/pace/pace.go`, and the matching lines in `internal/color/color.go`, `internal/config/config.go`, `internal/gitinfo/gitinfo.go`, and `internal/install/install.go`. A new `//nolint` with no reason, or a reason that doesn't say why the flagged risk doesn't apply here, is a Warning: the suppression is opaque to the next reader and to a future audit.
+- This repo's convention is `//nolint:<linter> // <gosec code or short reason>.`, for example `//nolint:gosec // G304: path is paceline's own state file.` in `pace/pace.go`, and the matching lines in `internal/color/color.go`, `internal/config/config.go`, `internal/gitinfo/gitinfo.go`, and `internal/install/install.go`. A new `//nolint` with no reason, or a reason that doesn't say why the flagged risk doesn't apply here, is a Warning: the suppression is opaque to the next reader and to a future audit.
 - A `//nolint` that suppresses more than the one line it needs (a file-wide or block-wide nolint where a line-level one would do) is a Nit.
 
 ### 3.9 Comments that mislead or narrate
@@ -115,7 +115,7 @@ From the app profile:
 - `fmt.Fprint*` return values ignored: excluded from `errcheck` on purpose (a failed terminal write has nowhere to be reported).
 - `crypto/md5` in `color.ProjectSlot`: a stable, non-security hash for picking a color slot, not a cryptographic use. Both `//nolint:gosec` lines that guard it are sanctioned.
 - The `//nolint:gosec // G304: ...` lines on `os.ReadFile`/`os.Open` calls in `pace.go`, `config.go`, `gitinfo.go`, `install.go` (both), and `tools/nextbump/main.go`: each reads a path paceline controls or a user-owned config/settings file, not an attacker-supplied path. Do not re-flag these; do flag a *new* file read without an equivalent reason.
-- `tools/nextbump` running `git` through `os/exec`: it's a dev tool, excluded from the ASCII-imports policy test and from `gosec` by path in `.golangci.yml`. This is placement, not a quality finding; if a diff adds a similar exec call inside `cmd/` or `internal/`, that's `review-architecture`'s and `review-security`'s finding (a forbidden import that breaks the policy test), not yours.
+- `tools/nextbump` running `git` through `os/exec`: it's a dev tool, excluded from the forbidden-imports policy test (the ASCII test still walks it) and from `gosec` by path in `.golangci.yml`. This is placement, not a quality finding; if a diff adds a similar exec call inside any of `shippedDirs` (`cmd/`, `internal/`, `pace/`, or `timefmt/`), that's `review-architecture`'s and `review-security`'s finding (a forbidden import that breaks the policy test), not yours.
 - Output glyphs written as `\u` escapes in Go string literals (`middleDot`, `hourglass`, the arrow runes in `internal/render/render.go`), never as literal non-ASCII bytes: this is the ASCII-source rule, not a readability nit.
 - No `go.sum`, no third-party dependencies: don't suggest pulling one in to simplify code.
 
@@ -155,7 +155,7 @@ Write exactly this to the report file:
 ```
 ## Quality findings
 App: paceline | Base: <base> | Shard: <k/n or none>
-Checked: <one line: what you examined, for example "4 files across internal/pace and internal/config; searched for existing helpers and importers">
+Checked: <one line: what you examined, for example "4 files across pace and internal/config; searched for existing helpers and importers">
 N findings (B x, W y, N z) | No findings.
 
 ### [B|W|N] <short title that names the problem, not the fix>

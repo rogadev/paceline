@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/rogadev/paceline/internal/config"
-	"github.com/rogadev/paceline/internal/pace"
 	"github.com/rogadev/paceline/internal/payload"
 	"github.com/rogadev/paceline/internal/progress"
+	"github.com/rogadev/paceline/pace"
 )
 
 // The parity fixtures were generated in UTC, so every test here runs in UTC.

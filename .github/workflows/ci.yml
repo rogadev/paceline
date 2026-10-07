@@ -69,7 +69,7 @@ jobs:
           go-version-input: stable
       - name: Coverage (90% minimum)
         run: |
-          go test -coverprofile=coverage.out ./cmd/... ./internal/...
+          go test -coverprofile=coverage.out ./cmd/... ./internal/... ./pace/... ./timefmt/...
           total=$(go tool cover -func=coverage.out | awk '/^total:/ {sub("%", "", $3); print $3}')
           echo "Total coverage: ${total}%" | tee -a "$GITHUB_STEP_SUMMARY"
           awk -v t="$total" 'BEGIN { exit (t >= 90) ? 0 : 1 }'

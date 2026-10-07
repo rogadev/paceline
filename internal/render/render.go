@@ -12,11 +12,11 @@ import (
 
 	"github.com/rogadev/paceline/internal/color"
 	"github.com/rogadev/paceline/internal/config"
-	"github.com/rogadev/paceline/internal/pace"
 	"github.com/rogadev/paceline/internal/payload"
 	"github.com/rogadev/paceline/internal/progress"
 	"github.com/rogadev/paceline/internal/sanitize"
-	"github.com/rogadev/paceline/internal/timefmt"
+	"github.com/rogadev/paceline/pace"
+	"github.com/rogadev/paceline/timefmt"
 )
 
 const (

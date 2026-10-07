@@ -107,7 +107,7 @@ Known values on 2026-09-24 (recompute if `internal/color` changed):
 
 - `internal/render/render.go`: `Render` builds every segment in order (model, effort, fast mode, project and branch, session, week, today, context, cache, duration); `project` builds the folder and branch; `renderToday` builds today's budget and the last-day line. The `style` type (`red`, `green`, `yellow`, `cyan`, `dim`, `rgb`) is the only place escape codes are made. `arrows` maps `pace.Up`, `pace.Even`, and `pace.Down` to glyphs.
 - `internal/color/color.go`: `HeadroomLevel`, `OklchToRGB`, `RelativeLuminance`, `ContrastRatio`, `ProjectSlot`, `SlotColor`.
-- `internal/timefmt/timefmt.go`: `Clock` and `Duration` are the only time formats a user sees.
+- `timefmt/timefmt.go`: `Clock` and `Duration` are the only time formats a user sees.
 - `internal/sanitize`: `Text(s, maxRunes)` strips unsafe characters and adds the ellipsis when it truncates.
 - `cmd/paceline/main.go`: `help`, `run` (commands, aliases `-v`, `version`, `-h`, `help`, the unknown-command message), `renderFromStdin` (the `Claude Code` fallback; `NO_COLOR` read with `os.LookupEnv`), `runInstall`, `runUninstall`, and the `go run` refusal in `executablePath`.
 - `internal/install/install.go`: the error messages and the `Status` values (`installed`, `updated`, `unchanged`, `uninstalled`, `not-installed`); `runInstall` prints the status word inside a sentence, so a new status value must read as a past-tense verb there.

@@ -20,10 +20,10 @@ import (
 	"github.com/rogadev/paceline/internal/config"
 	"github.com/rogadev/paceline/internal/gitinfo"
 	"github.com/rogadev/paceline/internal/install"
-	"github.com/rogadev/paceline/internal/pace"
 	"github.com/rogadev/paceline/internal/payload"
 	"github.com/rogadev/paceline/internal/progress"
 	"github.com/rogadev/paceline/internal/render"
+	"github.com/rogadev/paceline/pace"
 )
 
 // version is set at release time with -ldflags "-X main.version=1.2.3".
@@ -112,7 +112,7 @@ func renderFromStdin(stdin io.Reader, stdout io.Writer) {
 			return ""
 		}
 		dir := config.Dir()
-		statePath := filepath.Join(dir, "paceline-day.json")
+		statePath := pace.SnapshotPath(dir)
 		_, noColor := os.LookupEnv("NO_COLOR")
 		// The branch and the progress bar both need the git dir; find it once.
 		gitDirs := map[string]string{}

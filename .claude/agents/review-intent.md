@@ -76,7 +76,7 @@ paceline has no issue or PR templates, so requirements are written in plain pros
 ### 4.2 Core ask
 
 - Restate the title and first paragraph as one outcome ("a user with `NO_COLOR` set sees plain text for the budget arrow"). Does the change deliver that outcome end to end?
-- A bug issue's core ask is that the described failure no longer happens. Check the fix reaches the path the issue names (a rollover bug reported against `internal/pace` is not fixed by a change only to `internal/render`).
+- A bug issue's core ask is that the described failure no longer happens. Check the fix reaches the path the issue names (a rollover bug reported against `pace` is not fixed by a change only to `internal/render`).
 - A fix that addresses one platform while the issue's reproduction spans several (Windows path separators, for example) is Partial.
 
 ### 4.3 Unrequested scope
@@ -138,7 +138,7 @@ N findings (B x, W y, N z) | No findings.
 ### Requirement checklist
 | # | Requirement (source) | Status | Evidence |
 | --- | --- | --- | --- |
-| 1 | <short paraphrase> (#12 AC1) | Done | `internal/pace/pace.go:38` |
+| 1 | <short paraphrase> (#12 AC1) | Done | `pace/pace.go:38` |
 | 2 | <short paraphrase> (#12 AC3) | Partial | segment computed, README table not updated |
 
 ### [B|W|N] <short title that names the problem, not the fix>

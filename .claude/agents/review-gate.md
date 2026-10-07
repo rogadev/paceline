@@ -29,7 +29,7 @@ You are the check gate for `/deep-review` in paceline, a Go CLI that Claude Code
 ## 3. Scoping and budget
 
 - **Every check that applies runs in full.** paceline is small; there is no scoped/related-files mode here the way a large monorepo needs. `go test ./...` and `go vet ./...` already cover the whole module in seconds.
-- **Budget: about 10 minutes of wall time in total.** Run the fastest checks first (format, vet) so a hard failure surfaces immediately. `go test -coverprofile=... ./cmd/... ./internal/...` and, when it runs, `go test -race ./...` are the slowest steps; if the budget is tight, run coverage (it is required for the verdict) before the race run, and mark the race run `skipped (budget)` with its estimated time if it will not fit.
+- **Budget: about 10 minutes of wall time in total.** Run the fastest checks first (format, vet) so a hard failure surfaces immediately. `go test -coverprofile=... ./cmd/... ./internal/... ./pace/... ./timefmt/...` and, when it runs, `go test -race ./...` are the slowest steps; if the budget is tight, run coverage (it is required for the verdict) before the race run, and mark the race run `skipped (budget)` with its estimated time if it will not fit.
 - **Never build a release** (GoReleaser) and never run `paceline install`/`uninstall` against any config, real or scratch, unless the brief explicitly asks.
 
 ## 4. Running commands
@@ -66,13 +66,13 @@ Times are rough for a warm local machine; record the real seconds in the table.
 | 2 | Vet | `go vet ./...` | Suspicious constructs | ~5 to 15 s |
 | 3 | Tests | `go test ./...` | Full suite across every package | ~10 to 30 s |
 | 4 | Race | `go test -race ./...` (only when `go env CGO_ENABLED` is `1` and a C compiler is on PATH) | Data races; CI itself only runs this on Linux | ~30 to 90 s, or `not run: no cgo` |
-| 5 | Coverage | `go test -coverprofile=<scratch>/coverage.out ./cmd/... ./internal/...` then `go tool cover -func=<scratch>/coverage.out \| awk '/^total:/ {print $3}'` | 90% total floor (CI "quality" job) | ~15 to 30 s |
+| 5 | Coverage | `go test -coverprofile=<scratch>/coverage.out ./cmd/... ./internal/... ./pace/... ./timefmt/...` then `go tool cover -func=<scratch>/coverage.out \| awk '/^total:/ {print $3}'` | 90% total floor (CI "quality" job) | ~15 to 30 s |
 | 6 | Lint | `golangci-lint run` (only if installed) | gosec, errorlint, misspell, unconvert, gocritic, gofmt, per `.golangci.yml` | ~10 to 30 s, or `not run: not installed; CI runs it` |
 | 7 | Vulnerabilities | `govulncheck ./...` (only if installed) | Known vulnerabilities in Go stdlib code actually called | ~10 to 30 s, or `not run: not installed; CI runs it` |
 | 8 | Release tooling tests | `npm test` (only when a release-tooling file changed: `.github/**`, `.goreleaser.yaml`, `release.config.js`, `package.json`, `package-lock.json`, `commitlint.config.js`, `.githooks/**`, `test/**`, and `node_modules/` exists) | `test/release-config.test.js` renders release notes through the real semantic-release plugins | ~5 to 15 s, or `skipped (not affected)` / `not run: node_modules missing` |
 | 9 | Commit messages | `npx commitlint --from <base> --to HEAD` (only when `node_modules/` exists and `git rev-list --count <base>..HEAD` is greater than 0) | Conventional Commits on every commit in range | ~2 to 5 s, or `skipped (no commits in range)` / `not run: node_modules missing` |
 
-- For row 5, use the exact module paths from `.github/workflows/ci.yml`: `./cmd/... ./internal/...` (not `./...`, which would also weigh `tools/nextbump`, excluded from the floor).
+- For row 5, use the exact module paths from `.github/workflows/ci.yml`: `./cmd/... ./internal/... ./pace/... ./timefmt/...` (not `./...`, which would also weigh `tools/nextbump`, excluded from the floor).
 - For row 9, `<base>` is the same `Base` the brief gave for the diff; if it is not a ref `git rev-list` can use, report the check as `not run: base is not a resolvable ref`.
 - Do not run `go build`, `goreleaser`, or `paceline install`/`uninstall` unless the brief explicitly asks; none of them are part of this table.
 

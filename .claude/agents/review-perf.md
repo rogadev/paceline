@@ -25,7 +25,7 @@ Because paceline is a **new process each time, not a long-lived server**, the us
 ## 2. Method
 
 1. Read the app profile, the change map, and the intent file. Note `Lanes running`.
-2. Read the diff. Mark every hunk on the render path: `cmd/paceline/main.go`, `internal/render`, `internal/pace`, `internal/config`, `internal/gitinfo`, `internal/payload`, `internal/color`, `internal/sanitize`, `internal/timefmt`; and anything touching `go.mod` or a new top-level import.
+2. Read the diff. Mark every hunk on the render path: `cmd/paceline/main.go`, `internal/render`, `pace`, `internal/config`, `internal/gitinfo`, `internal/payload`, `internal/color`, `internal/sanitize`, `timefmt`; and anything touching `go.mod` or a new top-level import.
 3. Read the full file for each such hunk, and the neighbours that already do the same job. The accepted neighbour is the convention (see section 4).
 4. **Size it.** For every candidate, before you decide it is a finding, write down:
    - **Frequency**: once per refresh (every few seconds while the terminal is visible), once per process (startup), or once ever (install/uninstall, which a user runs by hand and where startup cost does not matter).
@@ -45,7 +45,7 @@ Every render is a fresh process: Go runtime init, `main()`, then `renderFromStdi
 Every file paceline reads on the render path already caps its size before or during the read, so the cost is bounded:
 - **stdin** (`cmd/paceline/main.go`): `io.LimitReader(stdin, maxStdinBytes+1)` caps at 1 MiB before allocating.
 - **config** (`internal/config/config.go` `Load`): `os.Stat` first, and skips the read entirely when `info.Size() > maxConfigBytes` (64 KiB); the read happens only when the size check passes.
-- **pace snapshot** (`internal/pace/pace.go` `ReadSnapshot`): reads the whole file with `os.ReadFile`, then checks `len(data) > maxSnapshotSize` (4 KiB) **after** the read. This is a read-then-check, not a stat-then-read like config; flag a change that grows this file's expected size (a new `Snapshot` field of unbounded length) since the cap only bounds allocation, not the read itself, and the file is trusted to be paceline's own.
+- **pace snapshot** (`pace/pace.go` `ReadSnapshot`): reads the whole file with `os.ReadFile`, then checks `len(data) > maxSnapshotSize` (4 KiB) **after** the read. This is a read-then-check, not a stat-then-read like config; flag a change that grows this file's expected size (a new `Snapshot` field of unbounded length) since the cap only bounds allocation, not the read itself, and the file is trusted to be paceline's own.
 - **git HEAD** (`internal/gitinfo/gitinfo.go` `firstLine`): `io.LimitReader(f, maxHeadBytes)` (512 bytes) wraps the reader before `ReadString('\n')`, so the read itself is bounded, not just the result.
 A new file read on the render path needs the same shape: bound the read (a stat-then-skip like config, or a limited reader like stdin and git HEAD), not just validate the result afterward. A read with no cap at all, of a file whose size a user or another program controls, is a finding regardless of how unlikely a huge file is today.
 
@@ -70,7 +70,7 @@ Verify before you rely on these; report drift.
 - **Payload**: a few KB per the app profile; `internal/payload/payload.go` decodes a small, fixed set of fields.
 - **stdin cap**: `maxStdinBytes = 1 << 20` (1 MiB), `cmd/paceline/main.go`.
 - **Config cap**: `maxConfigBytes = 64 * 1024`, `internal/config/config.go`, checked via `os.Stat` before the read.
-- **Snapshot cap**: `maxSnapshotSize = 4096`, `internal/pace/pace.go`, checked after `os.ReadFile`.
+- **Snapshot cap**: `maxSnapshotSize = 4096`, `pace/pace.go`, checked after `os.ReadFile`.
 - **git HEAD cap**: `maxHeadBytes = 512`, `internal/gitinfo/gitinfo.go`, enforced by `io.LimitReader` during the read.
 - **Branch display cap**: `maxBranchLength = 32` runes, `internal/gitinfo/gitinfo.go`.
 - **Render frequency**: every few seconds while the terminal is visible and active, one fresh process per render; contrast with `install`/`uninstall`, run once by a human.

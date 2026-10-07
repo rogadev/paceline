@@ -32,11 +32,18 @@ var forbidden = map[string]string{
 	"crypto/tls": "network access",
 }
 
+// publicPackages sit at the module root because other modules import them.
+var publicPackages = []string{"pace", "timefmt"}
+
+// shippedDirs holds every directory whose non-test Go files end up in a
+// shipped binary.
+var shippedDirs = append([]string{"cmd", "internal"}, publicPackages...)
+
 // shippedFiles lists non-test Go files that end up in the paceline binary.
 func shippedFiles(t *testing.T) []string {
 	t.Helper()
 	var files []string
-	for _, dir := range []string{"cmd", "internal"} {
+	for _, dir := range shippedDirs {
 		err := filepath.WalkDir(filepath.Join(root, dir), func(path string, d fs.DirEntry, err error) error {
 			if err != nil {
 				return err
@@ -54,6 +61,25 @@ func shippedFiles(t *testing.T) []string {
 		t.Fatal("found no source files; is root correct?")
 	}
 	return files
+}
+
+// TestShippedFilesReachPublicPackages proves the import walk sees the
+// packages at the module root, so a forbidden import there would be caught.
+func TestShippedFilesReachPublicPackages(t *testing.T) {
+	files := shippedFiles(t)
+	for _, dir := range publicPackages {
+		prefix := filepath.Join(root, dir) + string(filepath.Separator)
+		found := false
+		for _, file := range files {
+			if strings.HasPrefix(file, prefix) {
+				found = true
+				break
+			}
+		}
+		if !found {
+			t.Errorf("shippedFiles found no file under %s", dir)
+		}
+	}
 }
 
 func TestShippedCodeImportsNothingDangerous(t *testing.T) {
@@ -80,7 +106,7 @@ func TestShippedCodeImportsNothingDangerous(t *testing.T) {
 // can make code read differently than it compiles. Non-ASCII text belongs in
 // string literals as \u escapes, where reviewers can see it.
 func TestGoSourceIsASCII(t *testing.T) {
-	for _, dir := range []string{"cmd", "internal", "tools"} {
+	for _, dir := range append([]string{"tools"}, shippedDirs...) {
 		err := filepath.WalkDir(filepath.Join(root, dir), func(path string, d fs.DirEntry, err error) error {
 			if err != nil || d.IsDir() || !strings.HasSuffix(path, ".go") {
 				return err
