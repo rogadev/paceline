@@ -1,6 +1,7 @@
 package pace
 
 import (
+	"fmt"
 	"math"
 	"os"
 	"path/filepath"
@@ -132,6 +133,24 @@ func TestSnapshotFileRejectsBadState(t *testing.T) {
 	}
 	if WriteSnapshot(filepath.Join(dir, "no", "such", "dir.json"), Snapshot{}) == nil {
 		t.Error("write into a missing directory reported success")
+	}
+}
+
+func TestSnapshotFileFailedRenameRemovesTemp(t *testing.T) {
+	// A non-empty directory at the target makes the rename fail on every OS.
+	path := filepath.Join(t.TempDir(), "day.json")
+	if err := os.Mkdir(path, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(path, "keep"), nil, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if WriteSnapshot(path, Snapshot{}) == nil {
+		t.Error("rename onto a non-empty directory reported success")
+	}
+	tmp := fmt.Sprintf("%s.%d.tmp", path, os.Getpid())
+	if _, err := os.Stat(tmp); !os.IsNotExist(err) {
+		t.Errorf("temp file left behind: %s (stat err %v)", tmp, err)
 	}
 }
 
