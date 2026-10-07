@@ -220,7 +220,7 @@ func TestTodayOverBudgetIsRed(t *testing.T) {
 	snap := &pace.Snapshot{Date: "20260924", ResetsAt: 1790899200, UsedAtStart: 10}
 	c.ReadSnapshot = func() *pace.Snapshot { return snap }
 	got := Render(decode(t, `{"rate_limits":{"seven_day":{"used_percentage":21.3,"resets_at":1790899200}}}`), c)
-	if want := "[38;2;185;47;47mt over 1%[0m [2mof 11%[0m"; got != want {
+	if want := "\x1b[38;2;185;47;47mt over 1%\x1b[0m \x1b[2mof 11%\x1b[0m"; got != want {
 		t.Errorf("got %q, want %q", got, want)
 	}
 }
