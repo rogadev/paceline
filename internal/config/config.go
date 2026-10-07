@@ -31,6 +31,9 @@ type Config struct {
 	// Verbose spells out the usage labels ("session 18%") instead of the
 	// one-letter form ("s 18%").
 	Verbose bool
+	// Feed writes the latest usage to paceline-feed.json on each render, for
+	// other local tools such as paceline-tray.
+	Feed bool
 }
 
 // Default returns the built-in configuration.
@@ -67,6 +70,7 @@ type fileShape struct {
 	QuietEfforts json.RawMessage            `json:"quietEfforts"`
 	ProjectSlots map[string]json.RawMessage `json:"projectSlots"`
 	Verbose      json.RawMessage            `json:"verbose"`
+	Feed         json.RawMessage            `json:"feed"`
 }
 
 // Merge applies a paceline.json document to the defaults. Only known keys
@@ -118,6 +122,11 @@ func Merge(data []byte) Config {
 	var verbose bool
 	if len(f.Verbose) > 0 && json.Unmarshal(f.Verbose, &verbose) == nil {
 		c.Verbose = verbose
+	}
+
+	var feed bool
+	if len(f.Feed) > 0 && json.Unmarshal(f.Feed, &feed) == nil {
+		c.Feed = feed
 	}
 	return c
 }

@@ -44,6 +44,117 @@ func TestWritesDaySnapshot(t *testing.T) {
 
 func jsonNum(n int64) string { b, _ := json.Marshal(n); return string(b) }
 
+// feedConfigDir points CLAUDE_CONFIG_DIR at a new directory, with config as
+// its paceline.json when config is not empty, and turns color off.
+func feedConfigDir(t *testing.T, config string) string {
+	t.Helper()
+	dir := t.TempDir()
+	t.Setenv("CLAUDE_CONFIG_DIR", dir)
+	t.Setenv("NO_COLOR", "1")
+	if config != "" {
+		if err := os.WriteFile(filepath.Join(dir, "paceline.json"), []byte(config), 0o600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	return dir
+}
+
+func renderStdin(stdin string) (code int, stdout string) {
+	var out, errOut bytes.Buffer
+	code = run(nil, strings.NewReader(stdin), &out, &errOut)
+	return code, out.String()
+}
+
+// usagePayload reports 21% of the session and 46% of the week, with resets
+// well inside each window and a fraction of a second on the session reset.
+func usagePayload() string {
+	now := time.Now()
+	fiveHour := jsonNum(now.Add(3*time.Hour).Unix()) + ".5"
+	sevenDay := jsonNum(now.Add(4 * 24 * time.Hour).Unix())
+	return `{"rate_limits":{"five_hour":{"used_percentage":21,"resets_at":` + fiveHour +
+		`},"seven_day":{"used_percentage":46,"resets_at":` + sevenDay + `}}}`
+}
+
+func TestWritesFeedWhenOn(t *testing.T) {
+	dir := feedConfigDir(t, `{"feed": true}`)
+	in := usagePayload()
+	before := time.Now().Unix()
+	if code, out := renderStdin(in); code != 0 || out == fallback {
+		t.Fatalf("code %d, stdout %q", code, out)
+	}
+	after := time.Now().Unix()
+
+	data, err := os.ReadFile(filepath.Join(dir, "paceline-feed.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	type window struct{ UsedPct, ResetsAt float64 }
+	var got struct {
+		Version            int
+		FiveHour, SevenDay *window
+		WrittenAt          float64
+	}
+	if err := json.Unmarshal(data, &got); err != nil {
+		t.Fatal(err)
+	}
+	if got.Version != 1 || got.FiveHour == nil || got.SevenDay == nil {
+		t.Fatalf("feed %s", data)
+	}
+	if got.FiveHour.UsedPct != 21 || got.SevenDay.UsedPct != 46 {
+		t.Errorf("usage in feed %s", data)
+	}
+	if got.FiveHour.ResetsAt != float64(int64(got.FiveHour.ResetsAt)) || got.FiveHour.ResetsAt < float64(before) {
+		t.Errorf("fiveHour resetsAt is not whole seconds: %s", data)
+	}
+	if got.WrittenAt < float64(before) || got.WrittenAt > float64(after) {
+		t.Errorf("writtenAt %v outside the render [%d, %d]", got.WrittenAt, before, after)
+	}
+}
+
+func TestNoFeedWhenOff(t *testing.T) {
+	for _, config := range []string{"", `{"feed": false}`, `{"verbose": true}`} {
+		dir := feedConfigDir(t, config)
+		renderStdin(usagePayload())
+		if _, err := os.Stat(filepath.Join(dir, "paceline-feed.json")); !os.IsNotExist(err) {
+			t.Errorf("config %q: feed file exists (stat err %v)", config, err)
+		}
+	}
+}
+
+func TestFeedKeptWithoutRateLimits(t *testing.T) {
+	dir := feedConfigDir(t, `{"feed": true}`)
+	path := filepath.Join(dir, "paceline-feed.json")
+	seed := []byte(`{"version":1,"sevenDay":{"usedPct":3,"resetsAt":5},"writtenAt":7}`)
+	if err := os.WriteFile(path, seed, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if _, out := renderStdin(`{"model":{"display_name":"Opus 5.5"}}`); out != "Opus 5.5" {
+		t.Errorf("stdout %q", out)
+	}
+	if got, _ := os.ReadFile(path); !bytes.Equal(got, seed) {
+		t.Errorf("feed changed to %s", got)
+	}
+}
+
+func TestFailedFeedWriteKeepsStatusLine(t *testing.T) {
+	dir := feedConfigDir(t, `{"feed": true}`)
+	path := filepath.Join(dir, "paceline-feed.json")
+	// A non-empty directory at the feed path makes the write fail on every OS.
+	if err := os.Mkdir(path, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(path, "keep"), nil, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	code, out := renderStdin(usagePayload())
+	if code != 0 || out == fallback || !strings.Contains(out, "s 21%") || !strings.Contains(out, "w 46%") {
+		t.Errorf("code %d, stdout %q", code, out)
+	}
+	if info, err := os.Stat(path); err != nil || !info.IsDir() {
+		t.Errorf("feed path is no longer a directory (err %v)", err)
+	}
+}
+
 func TestRendersProgressFromTheRepo(t *testing.T) {
 	repo := t.TempDir()
 	sub := filepath.Join(repo, "src")

@@ -97,3 +97,15 @@ func TestMergeVerbose(t *testing.T) {
 		t.Error("a non-boolean verbose was taken")
 	}
 }
+
+func TestMergeFeed(t *testing.T) {
+	if Default().Feed {
+		t.Error("feed is on by default")
+	}
+	if !Merge([]byte(`{"feed": true}`)).Feed {
+		t.Error("feed: true was ignored")
+	}
+	if Merge([]byte(`{"feed": "yes"}`)).Feed {
+		t.Error("a non-boolean feed was taken")
+	}
+}

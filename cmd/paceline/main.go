@@ -18,6 +18,7 @@ import (
 	"time"
 
 	"github.com/rogadev/paceline/internal/config"
+	"github.com/rogadev/paceline/internal/feed"
 	"github.com/rogadev/paceline/internal/gitinfo"
 	"github.com/rogadev/paceline/internal/install"
 	"github.com/rogadev/paceline/internal/payload"
@@ -124,15 +125,23 @@ func renderFromStdin(stdin io.Reader, stdout io.Writer) {
 			gitDirs[dir] = g
 			return g
 		}
-		return render.Render(p, render.Context{
-			Now:           time.Now(),
-			Config:        config.Load(filepath.Join(dir, "paceline.json")),
+		now := time.Now()
+		cfg := config.Load(filepath.Join(dir, "paceline.json"))
+		line := render.Render(p, render.Context{
+			Now:           now,
+			Config:        cfg,
 			NoColor:       noColor,
 			ReadSnapshot:  func() *pace.Snapshot { return pace.ReadSnapshot(statePath) },
 			WriteSnapshot: func(s pace.Snapshot) { _ = pace.WriteSnapshot(statePath, s) },
 			GitBranch:     func(dir string) string { return gitinfo.BranchIn(gitDir(dir)) },
 			Progress:      func(dir string) *progress.Run { return progress.Current(gitDir(dir), p.SessionID.V) },
 		})
+		if cfg.Feed {
+			// The feed is optional: a failed write must never change the
+			// status line, and the next render retries.
+			_ = feed.Write(feed.Path(dir), p, now)
+		}
+		return line
 	}()
 	if line == "" {
 		line = fallback
