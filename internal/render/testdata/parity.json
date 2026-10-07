@@ -33,7 +33,7 @@
             "total_duration_ms": 960000
           }
         },
-        "want": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;73;207;252mtechcentral\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 16%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 4%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 0%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m16m\u001b[0m"
+        "want": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;73;207;252mtechcentral\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 84%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 96%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 100%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m16m\u001b[0m"
       }
     ]
   },
@@ -51,7 +51,7 @@
             }
           }
         },
-        "want": "\u001b[32mw 0%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 0%\u001b[0m \u001b[2mof 14%\u001b[0m"
+        "want": "\u001b[32mw 100%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 100%\u001b[0m \u001b[2mof 14%\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -63,7 +63,7 @@
             }
           }
         },
-        "want": "\u001b[32mw 10%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 70%\u001b[0m \u001b[2mof 14%\u001b[0m"
+        "want": "\u001b[32mw 90%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 30%\u001b[0m \u001b[2mof 14%\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -75,7 +75,7 @@
             }
           }
         },
-        "want": "\u001b[32mw 14%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt 98%\u001b[0m \u001b[2mof 14%\u001b[0m"
+        "want": "\u001b[32mw 86%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt 2%\u001b[0m \u001b[2mof 14%\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -87,7 +87,7 @@
             }
           }
         },
-        "want": "\u001b[32mw 15%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt 105%\u001b[0m \u001b[2mof 14%\u001b[0m"
+        "want": "\u001b[32mw 85%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt over 5%\u001b[0m \u001b[2mof 14%\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -99,7 +99,7 @@
             }
           }
         },
-        "want": "\u001b[32mw 20%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt 140%\u001b[0m \u001b[2mof 14%\u001b[0m"
+        "want": "\u001b[32mw 80%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt over 40%\u001b[0m \u001b[2mof 14%\u001b[0m"
       }
     ]
   },
@@ -117,7 +117,7 @@
             }
           }
         },
-        "want": "\u001b[32mw 0%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 0%\u001b[0m \u001b[2mof 14%\u001b[0m"
+        "want": "\u001b[32mw 100%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 100%\u001b[0m \u001b[2mof 14%\u001b[0m"
       },
       {
         "now": "2026-09-25T09:00:00Z",
@@ -129,7 +129,7 @@
             }
           }
         },
-        "want": "\u001b[32mw 5%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 0%\u001b[0m \u001b[2mof 16%\u001b[0m"
+        "want": "\u001b[32mw 95%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 100%\u001b[0m \u001b[2mof 16%\u001b[0m"
       }
     ]
   },
@@ -147,7 +147,7 @@
             }
           }
         },
-        "want": "\u001b[38;2;185;47;47mw 88%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 0%\u001b[0m \u001b[2mof 5%\u001b[0m"
+        "want": "\u001b[38;2;185;47;47mw 12%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 100%\u001b[0m \u001b[2mof 5%\u001b[0m"
       }
     ]
   },
@@ -165,7 +165,7 @@
             }
           }
         },
-        "want": "\u001b[38;2;185;47;47mw 92%\u001b[0m \u001b[2m·\u001b[0m \u001b[36m⏳ last day, resets 9pm\u001b[0m"
+        "want": "\u001b[38;2;185;47;47mw 8%\u001b[0m \u001b[2m·\u001b[0m \u001b[36m⏳ last day, resets 9pm\u001b[0m"
       }
     ]
   },
@@ -183,7 +183,7 @@
             }
           }
         },
-        "want": "\u001b[32mw 60%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 0%\u001b[0m \u001b[2mof 39%\u001b[0m"
+        "want": "\u001b[32mw 40%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 100%\u001b[0m \u001b[2mof 39%\u001b[0m"
       }
     ]
   },
@@ -219,7 +219,7 @@
             }
           }
         },
-        "want": "\u001b[32ms 18%\u001b[0m"
+        "want": "\u001b[32ms 82%\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -243,7 +243,7 @@
             }
           }
         },
-        "want": "\u001b[33ms 82% (resets 12:52pm)\u001b[0m"
+        "want": "\u001b[33ms 18% (resets 12:52pm)\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -255,7 +255,7 @@
             }
           }
         },
-        "want": "\u001b[38;2;185;47;47ms 90% (resets 12:52pm)\u001b[0m"
+        "want": "\u001b[38;2;185;47;47ms 10% (resets 12:52pm)\u001b[0m"
       },
       {
         "now": "2026-09-24T10:00:00Z",
@@ -267,7 +267,7 @@
             }
           }
         },
-        "want": "\u001b[38;2;185;47;47ms 101% (resets 12:52pm)\u001b[0m"
+        "want": "\u001b[38;2;185;47;47ms 0% (resets 12:52pm)\u001b[0m"
       }
     ]
   },
@@ -452,7 +452,7 @@
             "total_duration_ms": 60000
           }
         },
-        "want": "\u001b[2mmedium effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mtechcentral\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[33ms 55% (resets 12pm)\u001b[0m"
+        "want": "\u001b[2mmedium effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mtechcentral\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[33ms 45% (resets 12pm)\u001b[0m"
       }
     ]
   },

@@ -78,7 +78,7 @@ Read `$SKILL/references/apps/paceline.md` and `$SKILL/references/lanes.md`. Star
 
 - A wording or separator change in `internal/render` with no logic: `review-output`, plus `review-tests` if `parity.json` changed, and the gate. Not security, unless the change prints a new outside value.
 - A new or changed segment: `review-output` and `review-logic` are strong; `review-security` if it prints anything from the payload, a file, or the environment; `review-tests` for hostile-input and parity coverage; `review-intent` to check the README segment table and config keys moved with it.
-- Pace or time math (`internal/pace`, `internal/timefmt`): `review-logic` on opus (see escalation), `review-tests` strong. DST, local midnight, and the last-day boundary are where it breaks.
+- Pace or time math (`pace`, `timefmt`): `review-logic` on opus (see escalation), `review-tests` strong. DST, local midnight, and the last-day boundary are where it breaks.
 - Installer (`internal/install`, `runInstall`, `runUninstall`): `review-security` and `review-logic` are strong and never dropped; `review-output` for the messages.
 - A change to `.github/`, `.goreleaser.yaml`, `release.config.js`, `package.json`, or `go.mod`: `review-release` and `review-security`. A dependency added to `go.mod` breaks the zero-dependency rule and fails the policy test; say so rather than waiting for three lanes to find it.
 - A PR from `dev` into `main`: add `review-release` even when no release file changed, because the commit types decide the version this merge ships.
@@ -90,7 +90,7 @@ Read `$SKILL/references/apps/paceline.md` and `$SKILL/references/lanes.md`. Star
 
 **Arguments override.** `quick` forces the tier 1 budget. `full` runs every qualifying lane with no budget. `+lane` adds a lane (`+perf` means `review-perf`), `-lane` removes one (removing `security` requires the user to have typed `-security`).
 
-**Sharding** (tier 3 and 4). A lane whose share of the change exceeds about 15 files or 1,200 changed lines gets split into shards by area (for example `cmd` and `internal/install`; `internal/render`, `color`, and `timefmt`; `internal/pace`, `payload`, `config`, `gitinfo`, and `sanitize`; CI and release files), each with its own file list `$D/files-<lane>-<k>.txt` and report `$D/<lane>-<k>.md`. Never shard the gate, the verifier, or the advisor. Prefer sharding the lanes that read every line (`review-logic`, `review-quality`, `review-security`) over the ones that judge the whole (`review-intent`, `review-architecture`, `review-release`).
+**Sharding** (tier 3 and 4). A lane whose share of the change exceeds about 15 files or 1,200 changed lines gets split into shards by area (for example `cmd` and `internal/install`; `internal/render`, `color`, and `timefmt`; `pace`, `payload`, `config`, `gitinfo`, and `sanitize`; CI and release files), each with its own file list `$D/files-<lane>-<k>.txt` and report `$D/<lane>-<k>.md`. Never shard the gate, the verifier, or the advisor. Prefer sharding the lanes that read every line (`review-logic`, `review-quality`, `review-security`) over the ones that judge the whole (`review-intent`, `review-architecture`, `review-release`).
 
 **Model escalation.** Lanes default to the model in their own file. Pass `model: "opus"` to `review-logic` for pace or time math, install and uninstall state transitions, or concurrent snapshot writes; to `review-architecture` when a package is added, removed, or split. Never override `review-gate` (haiku) or `review-security`.
 

@@ -1,9 +1,11 @@
 // Command paceline-mcp is an MCP server that lets agents report a long job's
-// progress, which the paceline status line draws as a bar.
+// progress, which the paceline status line draws as a bar, and check how much
+// of today's Claude usage budget is left.
 //
-// Claude Code starts it over stdio. Its only effect is writing the progress
-// file in a repository's git directory: it starts no processes and never
-// touches the network.
+// Claude Code starts it over stdio. Its only write is the progress file in a
+// repository's git directory. It reads the usage feed and the day anchor in
+// Claude Code's config directory but never writes them, starts no processes,
+// and never touches the network.
 package main
 
 import (

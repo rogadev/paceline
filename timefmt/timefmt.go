@@ -1,4 +1,7 @@
 // Package timefmt formats reset times and durations in local time.
+//
+// The exported API is a public contract: other modules, such as
+// paceline-tray, import this package, so changing it is a breaking change.
 package timefmt
 
 import (

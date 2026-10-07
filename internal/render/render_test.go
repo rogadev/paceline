@@ -4,15 +4,14 @@ import (
 	"encoding/json"
 	"os"
 	"regexp"
-	"strconv"
 	"strings"
 	"testing"
 	"time"
 
 	"github.com/rogadev/paceline/internal/config"
-	"github.com/rogadev/paceline/internal/pace"
 	"github.com/rogadev/paceline/internal/payload"
 	"github.com/rogadev/paceline/internal/progress"
+	"github.com/rogadev/paceline/pace"
 )
 
 // The parity fixtures were generated in UTC, so every test here runs in UTC.
@@ -43,7 +42,7 @@ var fixtureBranches = map[string]string{
 // TestParityWithJavaScript proves the Go port prints exactly what 1.0 printed,
 // ANSI codes included, across every segment and edge case in the fixtures.
 // The usage segments' wants were later rewritten to the "s N%", "w N%", and
-// "t N% of M%" form, all as % used; every other byte is still 1.0's.
+// "t N% of M%" form, all as % left; every other byte is still 1.0's.
 func TestParityWithJavaScript(t *testing.T) {
 	data, err := os.ReadFile("testdata/parity.json")
 	if err != nil {
@@ -96,7 +95,7 @@ func TestNoColorEmitsNoEscapes(t *testing.T) {
 	if strings.Contains(got, "\x1b") {
 		t.Errorf("escape in NO_COLOR output: %q", got)
 	}
-	if got != "Opus "+middleDot+" app "+middleDot+" s 90%" {
+	if got != "Opus "+middleDot+" app "+middleDot+" s 10%" {
 		t.Errorf("got %q", got)
 	}
 }
@@ -118,7 +117,7 @@ func TestNilPayloadAndMissingCallbacks(t *testing.T) {
 	// No snapshot or branch functions: renders without them.
 	got := Render(decode(t, `{"workspace":{"current_dir":"/r/app"},
 		"rate_limits":{"seven_day":{"used_percentage":5,"resets_at":1790899200}}}`), c)
-	if !strings.Contains(got, " t 0% of ") || !strings.HasPrefix(got, "app") {
+	if !strings.Contains(got, " t 100% of ") || !strings.HasPrefix(got, "app") {
 		t.Errorf("got %q", got)
 	}
 }
@@ -155,27 +154,74 @@ func TestLongFieldsAreBounded(t *testing.T) {
 	}
 }
 
-// Today reads as % used both under and over the budget, followed by the
-// budget itself.
-func TestTodayReadsAsUsedOfBudget(t *testing.T) {
-	c := ctx()
-	var snap *pace.Snapshot
-	c.ReadSnapshot = func() *pace.Snapshot { return snap }
-	c.WriteSnapshot = func(s pace.Snapshot) { snap = &s }
-	payloadAt := func(used int) *payload.Payload {
-		return decode(t, `{"rate_limits":{"seven_day":{"used_percentage":`+strconv.Itoa(used)+`,"resets_at":1790899200}}}`)
+// Session and week count down from 100%: the number is what's left.
+func TestSessionAndWeekShowWhatIsLeft(t *testing.T) {
+	in := `{"rate_limits":{"five_hour":{"used_percentage":16},"seven_day":{"used_percentage":4}}}`
+	tests := []struct {
+		name    string
+		verbose bool
+		want    string
+	}{
+		{name: "regular", want: "s 84% " + middleDot + " w 96%"},
+		{name: "verbose", verbose: true, want: "session 84% left " + middleDot + " week 96% left"},
 	}
-	c.Config.Segments.Week = false
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			c := ctx()
+			c.Config.Verbose = tt.verbose
+			if got := Render(decode(t, in), c); got != tt.want {
+				t.Errorf("got %q, want %q", got, tt.want)
+			}
+		})
+	}
+}
 
-	// 90% left over 8 days is an 11% budget.
-	if got, want := Render(payloadAt(10), c), "t 0% of 11%"; got != want {
-		t.Errorf("start of day: got %q, want %q", got, want)
+// Today counts down what's left of its budget, then reads as how far over it
+// you are: never a negative number and never "over 0%".
+func TestTodayCountsDownThenGoesOver(t *testing.T) {
+	// 90% left over 8 days is an 11.25% budget, anchored at 10% used.
+	tests := []struct {
+		name    string
+		used    string
+		regular string
+		verbose string
+	}{
+		{name: "start of day", used: "10", regular: "t 100% of 11%", verbose: "today 100% left of 11% budget"},
+		{name: "under budget", used: "16", regular: "t 47% of 11%", verbose: "today 47% left of 11% budget"},
+		{name: "at budget", used: "21.25", regular: "t 0% of 11%", verbose: "today 0% left of 11% budget"},
+		// 100.4% used rounds to 100, but it is over, so it reads "over 1%".
+		{name: "just over budget", used: "21.3", regular: "t over 1% of 11%", verbose: "today over 1% of 11% budget"},
+		{name: "well over budget", used: "30", regular: "t over 78% of 11%", verbose: "today over 78% of 11% budget"},
 	}
-	if got, want := Render(payloadAt(16), c), "t 53% of 11%"; got != want {
-		t.Errorf("under budget: got %q, want %q", got, want)
+	for _, tt := range tests {
+		for _, verbose := range []bool{false, true} {
+			want := tt.regular
+			if verbose {
+				want = tt.verbose
+			}
+			c := ctx()
+			c.Config.Verbose = verbose
+			c.Config.Segments.Week = false
+			snap := &pace.Snapshot{Date: "20260924", ResetsAt: 1790899200, UsedAtStart: 10}
+			c.ReadSnapshot = func() *pace.Snapshot { return snap }
+			in := `{"rate_limits":{"seven_day":{"used_percentage":` + tt.used + `,"resets_at":1790899200}}}`
+			if got := Render(decode(t, in), c); got != want {
+				t.Errorf("%s (verbose %v): got %q, want %q", tt.name, verbose, got, want)
+			}
+		}
 	}
-	if got, want := Render(payloadAt(30), c), "t 178% of 11%"; got != want {
-		t.Errorf("over budget: got %q, want %q", got, want)
+}
+
+// Over budget is red, and the budget after it stays dim.
+func TestTodayOverBudgetIsRed(t *testing.T) {
+	c := ctx()
+	c.NoColor = false
+	c.Config.Segments.Week = false
+	snap := &pace.Snapshot{Date: "20260924", ResetsAt: 1790899200, UsedAtStart: 10}
+	c.ReadSnapshot = func() *pace.Snapshot { return snap }
+	got := Render(decode(t, `{"rate_limits":{"seven_day":{"used_percentage":21.3,"resets_at":1790899200}}}`), c)
+	if want := "\x1b[38;2;185;47;47mt over 1%\x1b[0m \x1b[2mof 11%\x1b[0m"; got != want {
+		t.Errorf("got %q, want %q", got, want)
 	}
 }
 
@@ -184,14 +230,28 @@ func TestVerboseSpellsOutLabels(t *testing.T) {
 	c.Config.Verbose = true
 	got := Render(decode(t, `{"rate_limits":{"five_hour":{"used_percentage":18},
 		"seven_day":{"used_percentage":10,"resets_at":1790899200}}}`), c)
-	if want := "session 18% " + middleDot + " week 10% " + middleDot + " today 0% of 11% budget"; got != want {
+	if want := "session 82% left " + middleDot + " week 90% left " + middleDot + " today 100% left of 11% budget"; got != want {
 		t.Errorf("got %q, want %q", got, want)
 	}
 }
 
+// The reset time shows once less than headroomGreen is left, after what's left.
 func TestSessionResetTimeFollowsUsage(t *testing.T) {
-	got := Render(decode(t, `{"rate_limits":{"five_hour":{"used_percentage":80,"resets_at":1790251200}}}`), ctx())
-	if want := "s 80% (resets 12pm)"; got != want {
+	in := `{"rate_limits":{"five_hour":{"used_percentage":80,"resets_at":1790251200}}}`
+	if got, want := Render(decode(t, in), ctx()), "s 20% (resets 12pm)"; got != want {
+		t.Errorf("regular: got %q, want %q", got, want)
+	}
+	c := ctx()
+	c.Config.Verbose = true
+	if got, want := Render(decode(t, in), c), "session 20% left (resets 12pm)"; got != want {
+		t.Errorf("verbose: got %q, want %q", got, want)
+	}
+}
+
+// A reading past 100% shows nothing left, never a negative number.
+func TestUsageOverTheLimitShowsZeroLeft(t *testing.T) {
+	in := `{"rate_limits":{"five_hour":{"used_percentage":100.5,"resets_at":1790251200},"seven_day":{"used_percentage":100.5}}}`
+	if got, want := Render(decode(t, in), ctx()), "s 0% (resets 12pm) "+middleDot+" w 0%"; got != want {
 		t.Errorf("got %q, want %q", got, want)
 	}
 }

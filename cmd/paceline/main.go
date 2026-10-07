@@ -2,7 +2,8 @@
 // and shows, at a glance, where every session stands.
 //
 // With no arguments it reads Claude Code's status JSON on stdin and prints
-// the status line; install and uninstall edit settings.json.
+// the status line; install and uninstall edit settings.json, and style and
+// feed change options in paceline.json.
 package main
 
 import (
@@ -18,12 +19,13 @@ import (
 	"time"
 
 	"github.com/rogadev/paceline/internal/config"
+	"github.com/rogadev/paceline/internal/feed"
 	"github.com/rogadev/paceline/internal/gitinfo"
 	"github.com/rogadev/paceline/internal/install"
-	"github.com/rogadev/paceline/internal/pace"
 	"github.com/rogadev/paceline/internal/payload"
 	"github.com/rogadev/paceline/internal/progress"
 	"github.com/rogadev/paceline/internal/render"
+	"github.com/rogadev/paceline/pace"
 )
 
 // version is set at release time with -ldflags "-X main.version=1.2.3".
@@ -56,10 +58,13 @@ func help() string {
 
 Usage:
   paceline install [--force]   set paceline as your Claude Code status line
-    [--regular | --verbose]    label style: "s 18%%" or "session 18%%" (asks if omitted)
+    [--regular | --verbose]    label style: "s 82%%" or "session 82%% left"
+                               (asks if omitted)
   paceline uninstall           remove it and restore the previous status line
   paceline style [regular | verbose]
                                show or change the label style
+  paceline feed [on | off]     show or change the usage feed, a local file
+                               other tools such as paceline-tray read
   paceline --version
   paceline --help
 
@@ -92,6 +97,8 @@ func run(args []string, stdin io.Reader, stdout, stderr io.Writer) int {
 		return runUninstall(stdout, stderr)
 	case "style":
 		return runStyle(args[1:], stdout, stderr)
+	case "feed":
+		return runFeed(args[1:], stdout, stderr)
 	default:
 		fmt.Fprintf(stderr, "Unknown command: %s\n\n%s", args[0], help())
 		return 1
@@ -112,7 +119,7 @@ func renderFromStdin(stdin io.Reader, stdout io.Writer) {
 			return ""
 		}
 		dir := config.Dir()
-		statePath := filepath.Join(dir, "paceline-day.json")
+		statePath := pace.SnapshotPath(dir)
 		_, noColor := os.LookupEnv("NO_COLOR")
 		// The branch and the progress bar both need the git dir; find it once.
 		gitDirs := map[string]string{}
@@ -124,15 +131,23 @@ func renderFromStdin(stdin io.Reader, stdout io.Writer) {
 			gitDirs[dir] = g
 			return g
 		}
-		return render.Render(p, render.Context{
-			Now:           time.Now(),
-			Config:        config.Load(filepath.Join(dir, "paceline.json")),
+		now := time.Now()
+		cfg := config.Load(filepath.Join(dir, "paceline.json"))
+		line := render.Render(p, render.Context{
+			Now:           now,
+			Config:        cfg,
 			NoColor:       noColor,
 			ReadSnapshot:  func() *pace.Snapshot { return pace.ReadSnapshot(statePath) },
 			WriteSnapshot: func(s pace.Snapshot) { _ = pace.WriteSnapshot(statePath, s) },
 			GitBranch:     func(dir string) string { return gitinfo.BranchIn(gitDir(dir)) },
 			Progress:      func(dir string) *progress.Run { return progress.Current(gitDir(dir), p.SessionID.V) },
 		})
+		if cfg.Feed {
+			// The feed is optional: a failed write must never change the
+			// status line, and the next render retries.
+			_ = feed.Write(feed.Path(dir), p, now)
+		}
+		return line
 	}()
 	if line == "" {
 		line = fallback
@@ -204,8 +219,8 @@ func chooseStyle(args []string, interactive, current bool, stdin io.Reader, stdo
 		def = "2"
 	}
 	fmt.Fprint(stdout, "Choose a label style (s = session, w = week, t = today):\n"+
-		"  1) Regular   s 18% \u00b7 w 86% \u00b7 t 13% of 8%\n"+
-		"  2) Verbose   session 18% \u00b7 week 86% \u00b7 today 13% of 8% budget\n"+
+		"  1) Regular   s 82% \u00b7 w 14% \u00b7 t 75% of 8%\n"+
+		"  2) Verbose   session 82% left \u00b7 week 14% left \u00b7 today 75% left of 8% budget\n"+
 		"Style ["+def+"]: ")
 	answer, err := bufio.NewReader(stdin).ReadString('\n')
 	switch strings.ToLower(strings.TrimSpace(answer)) {
@@ -259,6 +274,40 @@ func runSetStyle(verbose bool, stdout, stderr io.Writer) int {
 		style = "verbose"
 	}
 	fmt.Fprintf(stdout, "Label style: %s. Change it any time with 'paceline style'.\n", style)
+	return 0
+}
+
+// runFeed shows whether the usage feed is on, or turns it on or off.
+func runFeed(args []string, stdout, stderr io.Writer) int {
+	dir := config.Dir()
+	if len(args) == 0 {
+		state := "off"
+		if config.Load(filepath.Join(dir, "paceline.json")).Feed {
+			state = "on"
+		}
+		fmt.Fprintf(stdout, "Usage feed: %s. Change it with 'paceline feed on' or 'paceline feed off'.\n", state)
+		return 0
+	}
+	switch strings.ToLower(args[0]) {
+	case "on":
+		return runSetFeed(dir, true, stdout, stderr)
+	case "off":
+		return runSetFeed(dir, false, stdout, stderr)
+	}
+	fmt.Fprintf(stderr, "Unknown feed setting: %s. Choose on or off.\n", args[0])
+	return 1
+}
+
+func runSetFeed(dir string, on bool, stdout, stderr io.Writer) int {
+	if err := install.SetFeed(dir, on); err != nil {
+		fmt.Fprintln(stderr, err)
+		return 1
+	}
+	if on {
+		fmt.Fprintf(stdout, "Usage feed: on. Each status line refresh saves your latest usage to %s.\n", feed.Path(dir))
+		return 0
+	}
+	fmt.Fprintln(stdout, "Usage feed: off. paceline stops updating the feed file; turn it back on with 'paceline feed on'.")
 	return 0
 }
 

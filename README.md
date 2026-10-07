@@ -3,12 +3,12 @@
 A Claude Code status line that paces your usage limits and shows, at a glance, where every session stands.
 
 ```
-Opus 5.5 · techcentral (dev) · s 16% · w 4% · t 46% of 28% · 16m
+Opus 5.5 · techcentral (dev) · s 84% · w 96% · t 54% of 28% · 16m
 ```
 
-Every number is how much you've used, so higher always means closer to a limit: `s` is your five-hour session, `w` your week, and `t` today. Prefer words? The verbose style reads `session 16% · week 4% · today 46% of 28% budget`.
+Every number is how much is left, counting down from 100%, so lower always means closer to a limit: `s` is your five-hour session, `w` your week, and `t` today. Past today's budget, `t` shows how far over you are instead. Prefer words? The verbose style reads `session 84% left · week 96% left · today 54% left of 28% budget`.
 
-Your weekly limit resets on a fixed schedule, but the status line only tells you how much is left, not whether that's a lot or a little for the days remaining. paceline divides what's left by the days until the reset and gives you **today's budget**, then shows how much of it you've used as you work. A light week gives you a big budget; a heavy one, a small budget. It's most useful on weekends, when you're deciding whether to go hard on side projects or save the rest for Monday.
+Your weekly limit resets on a fixed schedule, but the status line only tells you how much is left, not whether that's a lot or a little for the days remaining. paceline divides what's left by the days until the reset and gives you **today's budget**, then counts down how much of it is left as you work. A light week gives you a big budget; a heavy one, a small budget. It's most useful on weekends, when you're deciding whether to go hard on side projects or save the rest for Monday.
 
 The rest of the line tells your sessions apart and shows where each one stands: the model and effort, the project in its own color with its git branch, your session and weekly limits, and warnings when the context window fills up or the prompt cache goes cold.
 
@@ -29,7 +29,7 @@ go install github.com/rogadev/paceline/cmd/paceline@latest
 paceline install
 ```
 
-`paceline install` points Claude Code's `statusLine` in `~/.claude/settings.json` at the binary you ran. It backs up the file first, keeps your other settings and their order, and won't replace a status line you already have unless you pass `--force`. It also asks which label style you want, regular (`s 16%`) or verbose (`session 16%`); pass `--regular` or `--verbose` to skip the question. Change the style any time:
+`paceline install` points Claude Code's `statusLine` in `~/.claude/settings.json` at the binary you ran. It backs up the file first, keeps your other settings and their order, and won't replace a status line you already have unless you pass `--force`. It also asks which label style you want, regular (`s 84%`) or verbose (`session 84% left`); pass `--regular` or `--verbose` to skip the question. Change the style any time:
 
 ```sh
 paceline style verbose     # or: paceline style regular
@@ -47,7 +47,7 @@ That removes paceline and restores whatever status line it replaced. If you move
 
 Claude Code runs whatever binary is at the installed path, so updating is replacing that file. There's nothing to uninstall or reinstall, and your `paceline.json` config and today's budget carry over.
 
-- **Built with Go:** run `go install github.com/rogadev/paceline/cmd/paceline@latest` again, and `go install github.com/rogadev/paceline/cmd/paceline-mcp@latest` if you use the progress tools.
+- **Built with Go:** run `go install github.com/rogadev/paceline/cmd/paceline@latest` again, and `go install github.com/rogadev/paceline/cmd/paceline-mcp@latest` if you use the progress or budget tools.
 - **Downloaded a release:** extract the new archive over the old binary.
 
 The next status line refresh uses the new version. Run `paceline --version` to check which one you have. paceline never touches the network, so it can't tell you when a new release is out: watch the [releases page](https://github.com/rogadev/paceline/releases) for that. On Windows, if replacing the file fails because it's in use, try again; paceline only runs for a moment on each refresh.
@@ -70,15 +70,15 @@ gh attestation verify paceline_1.1.0_linux_amd64.tar.gz --repo rogadev/paceline
 | Effort | `high effort` | Only when effort is above `low` or `medium`. |
 | Fast mode | `fast mode` | Only while fast mode is on. |
 | Project | `techcentral (dev)` | The folder, in a color unique to the project, and the git branch. |
-| Session | `s 82% (resets 3:40pm)` | Five-hour limit used. The reset time appears once it passes 70%. Verbose: `session 82%`. |
-| Week | `w 4%` | Weekly limit used. Verbose: `week 4%`. |
-| Today | `t 46% of 28%` | How much of today's budget you've used, then the budget: today's share of the weekly limit, fixed for the day. Climbs past 100% when you go over. Verbose: `today 46% of 28% budget`. |
+| Session | `s 18% (resets 3:40pm)` | How much of the five-hour limit is left. The reset time appears once less than 30% is left. Verbose: `session 18% left`. |
+| Week | `w 96%` | How much of the weekly limit is left. Verbose: `week 96% left`. |
+| Today | `t 54% of 28%` | How much of today's budget is left, then the budget: today's share of the weekly limit, fixed for the day. Once you go over, it shows how far over you are instead, in red: `t over 18% of 28%`. Verbose: `today 54% left of 28% budget`, or `today over 18% of 28% budget`. |
 | Context | `ctx 72%` | Only when the context window is 70% or more full. |
 | Cache | `cache cold: 82k @ ~2x` | Only when the prompt cache has expired. |
 | Progress | `loop ▰▰▰▰▱ #44 3/5` | Only while an agent reports a long job's progress. See [Progress bar](#progress-bar). On a narrow pane, hide it with `"segments": {"progress": false}`. |
 | Duration | `16m` | Session wall-clock time. Always last, at the right edge. |
 
-**Today's budget** is the weekly percentage left at the start of the day, divided by the days from midnight to the reset. It stays fixed all day, and the today segment shows how much of it you've used. Whatever you don't spend spreads over the remaining days, so a light week gives you bigger budgets later on. The color is your pace advice: green while you have room, yellow from 70% of the budget, and red from 85% and once you go over. On the final day before the reset, the segment shows `⏳ last day, resets 9pm` instead.
+**Today's budget** is the weekly percentage left at the start of the day, divided by the days from midnight to the reset. It stays fixed all day, and the today segment counts down how much of it is left. Whatever you don't spend spreads over the remaining days, so a light week gives you bigger budgets later on. The color is your pace advice: green while you have room, yellow once less than 30% of the budget is left, and red below 15%. Past the budget, the segment turns red and shows how far over you are, as a share of the budget: `t over 18% of 28%` means you've spent 118% of today's 28%. On the final day before the reset, the segment shows `⏳ last day, resets 9pm` instead.
 
 **Project colors** come from a hash of the project folder name, mapped to one of 12 evenly spaced hues in the OKLCH color space. Every color is equally bright and easy to read on a dark terminal. Each project keeps its color everywhere, including in subfolders.
 
@@ -104,7 +104,7 @@ The bar comes from a small file in the git directory of the repository you're wo
 
 ### Let agents report progress
 
-`paceline-mcp` is an MCP server that ships in the same release archive as `paceline`. It gives agents five tools: `progress_start`, `progress_step`, `progress_label`, `progress_add_steps`, and `progress_finish`. Register it once for every project:
+`paceline-mcp` is an MCP server that ships in the same release archive as `paceline`. It gives agents five progress tools: `progress_start`, `progress_step`, `progress_label`, `progress_add_steps`, and `progress_finish`. It also gives them two read-only budget tools, described in [Let Claude check your budget](#let-claude-check-your-budget). Register it once for every project:
 
 ```sh
 claude mcp add --scope user paceline -- /path/to/paceline-mcp
@@ -118,9 +118,20 @@ The tools tell the agent when to use them, so a long job reports progress withou
 
 **Plan first for an accurate bar.** Without a plan, the bar counts steps, so a big step and a small one move it equally. When the agent starts the run with each step's `weight` (its size relative to the others) and the `stages` it will pass through (for example, `design`, `build`, `review`, `commit`), paceline shows a weighted percentage that also moves as a step advances through its stages.
 
+### Let Claude check your budget
+
+The same server gives Claude two read-only tools for checking your usage, so it can plan around it, for example by checking before a long task or a batch of subagents and choosing a smaller batch when today's budget is nearly spent. You can also ask Claude "how's my budget today?". Both tools need the [usage feed](#usage-feed) on, and the descriptions tell Claude when to call them.
+
+- **`get_usage`**: your five-hour session and weekly limits, each as a percentage used and left, and when each resets, both as a date and time and as clock text such as `Thu 9pm`. A limit the feed has no reading for is reported as missing, not as 0%.
+- **`get_today_budget`**: today's budget as the status line's today segment shows it: the budget and what you've spent today, both in percentage points of the week; how much of the budget you've used and have left; whether you're over; and whether today's budget is larger or smaller than an even share of the week. On the last day before the reset, it says that everything left in the week is today's.
+
+Each answer is a short summary followed by the full set of fields as a JSON object, including how old the reading is in seconds. A reading over 10 minutes old still gets an answer, but the answer starts with its age, for example "This reading is 3h0m old". If paceline has never written the feed file, the tools say so and tell you to run `paceline feed on` rather than failing. After `paceline feed off`, the file stays, so the tools answer from the last reading and lead with its age.
+
+The budget tools never write anything. `get_today_budget` reads the day's starting point that the status line saves, but only the status line updates it.
+
 ### Works with orc-pack
 
-[orc-pack](https://github.com/rogadev/orc-pack), an autonomous orchestrator for Claude Code, reports its runs through these tools. With `paceline-mcp` registered, an `/orc` run or an `/orc-loop` batch plans its steps and shows up as a bar, such as `orc ▰▰▱▱ #42 review 55%`, with no extra setup.
+[orc-pack](https://github.com/rogadev/orc-pack), an autonomous orchestrator for Claude Code, reports its runs through the progress tools. With `paceline-mcp` registered, an `/orc` run or an `/orc-loop` batch plans its steps and shows up as a bar, such as `orc ▰▰▱▱ #42 review 55%`, with no extra setup.
 
 ### Progress file format
 
@@ -165,17 +176,56 @@ Create `~/.claude/paceline.json` (or `$CLAUDE_CONFIG_DIR/paceline.json`) to chan
   "thresholds": { "headroomGreen": 30, "headroomYellow": 15, "contextWarn": 70, "contextCritical": 85 },
   "quietEfforts": ["low", "medium"],
   "projectSlots": { "website": 4 },
-  "verbose": false
+  "verbose": false,
+  "feed": false
 }
 ```
 
 - `segments`: turn any segment off: `model`, `effort`, `fastMode`, `project`, `branch`, `session`, `week`, `today`, `context`, `cache`, `duration`, `progress`.
-- `thresholds`: percentages where colors change from green to yellow to red, and where the context warning appears. `headroomGreen` and `headroomYellow` count what's left of a limit, so the defaults turn session, week, and today yellow at 70% used and red at 85%.
+- `thresholds`: percentages where colors change from green to yellow to red, and where the context warning appears. `headroomGreen` and `headroomYellow` count what's left of a limit, so the defaults turn session, week, and today yellow once less than 30% is left and red below 15%.
 - `quietEfforts`: effort levels that don't need a label.
 - `projectSlots`: pin a project to a color slot from 0 to 11 when two projects you use together get the same color.
-- `verbose`: spell out the labels (`session 16%`) instead of one letter (`s 16%`). `paceline style` changes it for you.
+- `verbose`: spell out the labels (`session 84% left`) instead of one letter (`s 84%`). `paceline style` changes it for you.
+- `feed`: save your latest usage to a local file other tools can read. Off by default. `paceline feed on` changes it for you; see [Usage feed](#usage-feed).
 
 paceline respects [`NO_COLOR`](https://no-color.org).
+
+## Usage feed
+
+paceline already sees your latest usage every time it draws the status line. Turn on the usage feed and it also saves those numbers to a small file on your computer, so other local tools can read them without asking Anthropic. [paceline-tray](https://github.com/rogadev/paceline-tray) reads it to show your budget in the system tray, and `paceline-mcp` reads it to [answer Claude's questions about your budget](#let-claude-check-your-budget). Nothing leaves your machine.
+
+The feed is off by default. Turn it on or off, or check its state, with:
+
+```sh
+paceline feed on      # or: paceline feed off
+paceline feed         # shows whether it's on
+```
+
+That sets `feed` in `paceline.json` and keeps your other settings. The file is `~/.claude/paceline-feed.json` (or `$CLAUDE_CONFIG_DIR/paceline-feed.json`).
+
+paceline writes it on each status line refresh, through a temp file and a rename, so a reader never sees half of it. When your usage hasn't changed, it rewrites the file at most every 30 seconds. When Claude Code reports no usable usage limits, paceline leaves the file as it is. Turning the feed off stops the updates but doesn't delete the file.
+
+### Feed file format
+
+```json
+{
+  "version": 1,
+  "fiveHour": { "usedPct": 21, "resetsAt": 1790283000 },
+  "sevenDay": { "usedPct": 46, "resetsAt": 1790838000 },
+  "writtenAt": 1790277013
+}
+```
+
+| Field | Meaning |
+|---|---|
+| `version` | Always `1`. |
+| `fiveHour` | Your five-hour session limit. Left out when Claude Code didn't report it, or reported a value out of range. |
+| `sevenDay` | Your weekly limit. Left out when Claude Code didn't report it, or reported a value out of range. |
+| `usedPct` | How much of the limit you've used, from 0 to 100. It can have a fraction. |
+| `resetsAt` | When the limit resets, in whole Unix seconds. |
+| `writtenAt` | When paceline last wrote the file, in whole Unix seconds. Use it, rather than the file's modified time, to tell how fresh the numbers are. |
+
+The file holds only these fields: no session IDs, paths, or model names. paceline-tray ignores a file over 4 KB, a `version` other than `1`, or a value outside the ranges above.
 
 ## Security
 
@@ -184,7 +234,7 @@ paceline runs on every status line refresh, so it's built to do very little:
 - No dependencies. It uses only the Go standard library, and a test fails if that changes.
 - It never starts processes or touches the network. A test fails the build if the shipped code imports `os/exec`, `net`, `syscall`, `unsafe`, or `plugin`. The git branch is read from `.git/HEAD` directly, so a repo's git config or hooks can't run code when paceline renders.
 - It strips control characters, zero-width characters, and bidi overrides from every folder name, branch name, payload field, and progress label before printing, so a hostile repo name can't send escape sequences to your terminal.
-- `paceline-mcp` follows the same import rules. Its only effect is writing the progress file in a repository's git directory.
+- `paceline-mcp` follows the same import rules. Its only effect is writing the progress file in a repository's git directory. The budget tools only read the usage feed, today's budget file, and `paceline.json`.
 - The installer never overwrites a settings file it can't parse, and it writes through a temp file so a crash can't truncate your settings.
 - Releases are reproducible builds with signed provenance attestations.
 

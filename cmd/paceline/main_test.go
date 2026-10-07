@@ -10,6 +10,11 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/rogadev/paceline/internal/config"
+	"github.com/rogadev/paceline/internal/payload"
+	"github.com/rogadev/paceline/internal/render"
+	"github.com/rogadev/paceline/pace"
 )
 
 // runCLI calls run with an isolated CLAUDE_CONFIG_DIR and color off.
@@ -34,7 +39,7 @@ func TestWritesDaySnapshot(t *testing.T) {
 	resets := time.Now().Add(4 * 24 * time.Hour).Unix()
 	in := `{"rate_limits":{"seven_day":{"used_percentage":10,"resets_at":` + jsonNum(resets) + `}}}`
 	_, out, _, dir := runCLI(t, in)
-	if !strings.Contains(out, "t 0% of ") {
+	if !strings.Contains(out, "t 100% of ") {
 		t.Errorf("stdout %q", out)
 	}
 	if _, err := os.Stat(filepath.Join(dir, "paceline-day.json")); err != nil {
@@ -43,6 +48,117 @@ func TestWritesDaySnapshot(t *testing.T) {
 }
 
 func jsonNum(n int64) string { b, _ := json.Marshal(n); return string(b) }
+
+// feedConfigDir points CLAUDE_CONFIG_DIR at a new directory, with config as
+// its paceline.json when config is not empty, and turns color off.
+func feedConfigDir(t *testing.T, config string) string {
+	t.Helper()
+	dir := t.TempDir()
+	t.Setenv("CLAUDE_CONFIG_DIR", dir)
+	t.Setenv("NO_COLOR", "1")
+	if config != "" {
+		if err := os.WriteFile(filepath.Join(dir, "paceline.json"), []byte(config), 0o600); err != nil {
+			t.Fatal(err)
+		}
+	}
+	return dir
+}
+
+func renderStdin(stdin string) (code int, stdout string) {
+	var out, errOut bytes.Buffer
+	code = run(nil, strings.NewReader(stdin), &out, &errOut)
+	return code, out.String()
+}
+
+// usagePayload reports 21% of the session and 46% of the week, with resets
+// well inside each window and a fraction of a second on the session reset.
+func usagePayload() string {
+	now := time.Now()
+	fiveHour := jsonNum(now.Add(3*time.Hour).Unix()) + ".5"
+	sevenDay := jsonNum(now.Add(4 * 24 * time.Hour).Unix())
+	return `{"rate_limits":{"five_hour":{"used_percentage":21,"resets_at":` + fiveHour +
+		`},"seven_day":{"used_percentage":46,"resets_at":` + sevenDay + `}}}`
+}
+
+func TestWritesFeedWhenOn(t *testing.T) {
+	dir := feedConfigDir(t, `{"feed": true}`)
+	in := usagePayload()
+	before := time.Now().Unix()
+	if code, out := renderStdin(in); code != 0 || out == fallback {
+		t.Fatalf("code %d, stdout %q", code, out)
+	}
+	after := time.Now().Unix()
+
+	data, err := os.ReadFile(filepath.Join(dir, "paceline-feed.json"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	type window struct{ UsedPct, ResetsAt float64 }
+	var got struct {
+		Version            int
+		FiveHour, SevenDay *window
+		WrittenAt          float64
+	}
+	if err := json.Unmarshal(data, &got); err != nil {
+		t.Fatal(err)
+	}
+	if got.Version != 1 || got.FiveHour == nil || got.SevenDay == nil {
+		t.Fatalf("feed %s", data)
+	}
+	if got.FiveHour.UsedPct != 21 || got.SevenDay.UsedPct != 46 {
+		t.Errorf("usage in feed %s", data)
+	}
+	if got.FiveHour.ResetsAt != float64(int64(got.FiveHour.ResetsAt)) || got.FiveHour.ResetsAt < float64(before) {
+		t.Errorf("fiveHour resetsAt is not whole seconds: %s", data)
+	}
+	if got.WrittenAt < float64(before) || got.WrittenAt > float64(after) {
+		t.Errorf("writtenAt %v outside the render [%d, %d]", got.WrittenAt, before, after)
+	}
+}
+
+func TestNoFeedWhenOff(t *testing.T) {
+	for _, config := range []string{"", `{"feed": false}`, `{"verbose": true}`} {
+		dir := feedConfigDir(t, config)
+		renderStdin(usagePayload())
+		if _, err := os.Stat(filepath.Join(dir, "paceline-feed.json")); !os.IsNotExist(err) {
+			t.Errorf("config %q: feed file exists (stat err %v)", config, err)
+		}
+	}
+}
+
+func TestFeedKeptWithoutRateLimits(t *testing.T) {
+	dir := feedConfigDir(t, `{"feed": true}`)
+	path := filepath.Join(dir, "paceline-feed.json")
+	seed := []byte(`{"version":1,"sevenDay":{"usedPct":3,"resetsAt":5},"writtenAt":7}`)
+	if err := os.WriteFile(path, seed, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if _, out := renderStdin(`{"model":{"display_name":"Opus 5.5"}}`); out != "Opus 5.5" {
+		t.Errorf("stdout %q", out)
+	}
+	if got, _ := os.ReadFile(path); !bytes.Equal(got, seed) {
+		t.Errorf("feed changed to %s", got)
+	}
+}
+
+func TestFailedFeedWriteKeepsStatusLine(t *testing.T) {
+	dir := feedConfigDir(t, `{"feed": true}`)
+	path := filepath.Join(dir, "paceline-feed.json")
+	// A non-empty directory at the feed path makes the write fail on every OS.
+	if err := os.Mkdir(path, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(path, "keep"), nil, 0o600); err != nil {
+		t.Fatal(err)
+	}
+	code, out := renderStdin(usagePayload())
+	if code != 0 || out == fallback || !strings.Contains(out, "s 79%") || !strings.Contains(out, "w 54%") {
+		t.Errorf("code %d, stdout %q", code, out)
+	}
+	if info, err := os.Stat(path); err != nil || !info.IsDir() {
+		t.Errorf("feed path is no longer a directory (err %v)", err)
+	}
+}
 
 func TestRendersProgressFromTheRepo(t *testing.T) {
 	repo := t.TempDir()
@@ -279,6 +395,56 @@ func TestStyleCommand(t *testing.T) {
 	}
 }
 
+func TestFeedCommand(t *testing.T) {
+	configDir := t.TempDir()
+	t.Setenv("CLAUDE_CONFIG_DIR", configDir)
+	configPath := filepath.Join(configDir, "paceline.json")
+	cli := func(args ...string) (int, string, string) {
+		var out, errOut bytes.Buffer
+		code := run(args, strings.NewReader(""), &out, &errOut)
+		return code, out.String(), errOut.String()
+	}
+
+	if code, out, _ := cli("feed"); code != 0 || !strings.Contains(out, "Usage feed: off.") || !strings.Contains(out, "paceline feed on") {
+		t.Errorf("default feed: code %d, stdout %q", code, out)
+	}
+	if err := os.WriteFile(configPath, []byte(`{"verbose":true}`), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	code, out, _ := cli("feed", "ON")
+	if code != 0 || !strings.Contains(out, "Usage feed: on.") || !strings.Contains(out, filepath.Join(configDir, "paceline-feed.json")) {
+		t.Errorf("feed on: code %d, stdout %q", code, out)
+	}
+	if got, err := os.ReadFile(configPath); err != nil || !strings.Contains(string(got), `"verbose": true`) || !strings.Contains(string(got), `"feed": true`) {
+		t.Errorf("after feed on: err %v, paceline.json %s", err, got)
+	}
+	if _, out, _ := cli("feed"); !strings.Contains(out, "Usage feed: on.") {
+		t.Errorf("after on: %q", out)
+	}
+	if code, out, _ := cli("feed", "off"); code != 0 || !strings.Contains(out, "Usage feed: off.") {
+		t.Errorf("feed off: code %d, stdout %q", code, out)
+	}
+	if _, out, _ := cli("feed"); !strings.Contains(out, "Usage feed: off.") {
+		t.Errorf("after off: %q", out)
+	}
+	if code, out, errOut := cli("feed", "maybe"); code != 1 || out != "" || !strings.Contains(errOut, "Unknown feed setting: maybe") {
+		t.Errorf("unknown setting: code %d, stdout %q, stderr %q", code, out, errOut)
+	}
+
+	if err := os.WriteFile(configPath, []byte(`{broken`), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if code, _, errOut := cli("feed", "on"); code != 1 || !strings.Contains(errOut, "refusing to edit") {
+		t.Errorf("broken config: code %d, stderr %q", code, errOut)
+	}
+}
+
+func TestHelpListsFeed(t *testing.T) {
+	if _, out, _, _ := runCLI(t, "", "--help"); !strings.Contains(out, "paceline feed [on | off]") {
+		t.Errorf("--help = %q", out)
+	}
+}
+
 func TestInstallRecordsStyleOnlyWhenChosen(t *testing.T) {
 	configDir := t.TempDir()
 	t.Setenv("CLAUDE_CONFIG_DIR", configDir)
@@ -336,5 +502,41 @@ func TestChooseStyle(t *testing.T) {
 	chooseStyle(nil, true, true, strings.NewReader(""), &out)
 	if !strings.Contains(out.String(), "Style [2]: ") {
 		t.Errorf("prompt does not default to the current style: %q", out.String())
+	}
+}
+
+// The style examples in the install prompt and --help are what the status line
+// prints for the same usage, so they show what's left, not what's used.
+func TestStyleExamplesMatchTheStatusLine(t *testing.T) {
+	now := time.Date(2026, 9, 24, 10, 0, 0, 0, time.UTC)
+	resets := float64(now.Add(38 * time.Hour).Unix()) // two days from midnight
+	// The day started at 84% of the week used, so today's budget is 16/2 = 8%;
+	// 2 of those 8 points are spent.
+	snap := &pace.Snapshot{Date: "20260924", ResetsAt: resets, UsedAtStart: 84}
+	line := func(t *testing.T, in string, verbose bool) string {
+		t.Helper()
+		p, err := payload.Decode([]byte(in))
+		if err != nil {
+			t.Fatal(err)
+		}
+		cfg := config.Default()
+		cfg.Verbose = verbose
+		return render.Render(p, render.Context{Now: now, Config: cfg, NoColor: true,
+			ReadSnapshot: func() *pace.Snapshot { return snap }})
+	}
+	session := `{"rate_limits":{"five_hour":{"used_percentage":18}}}`
+	full := `{"rate_limits":{"five_hour":{"used_percentage":18},` +
+		`"seven_day":{"used_percentage":86,"resets_at":` + jsonNum(int64(resets)) + `}}}`
+
+	var prompt bytes.Buffer
+	chooseStyle(nil, true, false, strings.NewReader("\n"), &prompt)
+	for _, verbose := range []bool{false, true} {
+		if want := line(t, full, verbose); !strings.Contains(prompt.String(), want) {
+			t.Errorf("prompt does not show the status line %q:\n%s", want, prompt.String())
+		}
+	}
+	want := `label style: "` + line(t, session, false) + `" or "` + line(t, session, true) + `"`
+	if !strings.Contains(help(), want) {
+		t.Errorf("--help does not show %s:\n%s", want, help())
 	}
 }

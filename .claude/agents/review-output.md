@@ -35,7 +35,7 @@ Your two failure modes are equally bad. The first is missing what a user will ac
 
 ## 3. Renders: read first, then confirm in source
 
-The brief's `Renders:` line points to `<scratch>/renders/summary.md` or says `not rendered`. When renders exist, the summary lists each sample payload and the status line it produced twice: once with the ANSI escapes made visible (for example `ESC[32m84% session ESC[0m`) and once with `NO_COLOR` set, as plain text.
+The brief's `Renders:` line points to `<scratch>/renders/summary.md` or says `not rendered`. When renders exist, the summary lists each sample payload and the status line it produced twice: once with the ANSI escapes made visible (for example `ESC[32ms 84%ESC[0m`) and once with `NO_COLOR` set, as plain text.
 
 - **Read the plain version for words, order, and width.** Count the visible columns of the longest line. Note where each segment starts, so you can say which one falls off an 80-column or 100-column terminal.
 - **Read the escaped version for color.** Name which SGR code wraps which text: basic colors (`31` red, `32` green, `33` yellow, `36` cyan), `2` dim, and truecolor `38;2;R;G;B`. Check that every opening code has its `ESC[0m` reset, so color never bleeds into the next segment or into Claude Code's own text.
@@ -51,9 +51,9 @@ The brief's `Renders:` line points to `<scratch>/renders/summary.md` or says `no
 - Inner punctuation matches siblings: the branch in dim parentheses after the folder, the reset time in parentheses after the session.
 
 ### 4.2 Glyphs and font coverage
-- Output glyphs today: the up and down triangles and the black circle for pace direction, the middle dot separator, the hourglass on the last day, and the ellipsis that `sanitize.Text` adds when it truncates. Arrows, dots, and the ellipsis come from Latin-1 and Geometric Shapes, which common monospace fonts cover (Cascadia, Consolas, Menlo, SF Mono, DejaVu).
+- Output glyphs today: the middle dot separator, the hourglass on the last day, the progress bar's filled and hollow cells (U+25B0, U+25B1) and its check mark (U+2713), and the ellipsis that `sanitize.Text` adds when it truncates and the progress bar adds when it windows a long run. The dot, cells, check mark, and ellipsis come from Latin-1, Geometric Shapes, Dingbats, and General Punctuation, which common monospace fonts cover (Cascadia, Consolas, Menlo, SF Mono, DejaVu).
 - The hourglass (U+23F3) is an emoji-presentation character: it is two cells wide in most terminals, may render in color, and can misalign or show as a box in fonts without emoji. It is established; a **new** emoji, a Nerd Font private-use glyph, or a symbol outside common font coverage is a finding (Warning when it carries meaning, such as a new state indicator).
-- Width ambiguity: the triangles, the circle, the middle dot, and the ellipsis are "ambiguous width" in Unicode and take two cells in some CJK locales. Do not flag the existing ones; do weigh it when a change adds more.
+- Width ambiguity: the middle dot and the ellipsis are "ambiguous width" in Unicode and take two cells in some CJK locales. Do not flag the existing ones; do weigh it when a change adds more.
 - In Go source, every non-ASCII glyph is a backslash-u escape in a string literal (for example the `middleDot` and `hourglass` constants in `render.go`). That is required by `TestGoSourceIsASCII`, not a finding. A literal non-ASCII character in `.go` source fails the gate; mention it only if `review-gate` is not running.
 
 ### 4.3 Color and contrast
@@ -63,8 +63,8 @@ The brief's `Renders:` line points to `<scratch>/renders/summary.md` or says `no
 - Resets: every styled run ends with `ESC[0m` (the `style.wrap` helper does this). Hand-built escape strings that skip `wrap` are a finding.
 
 ### 4.4 Meaning never carried by color alone
-- Headroom color (green, yellow, red from `color.HeadroomLevel`) always travels with a number and a word (`84% session`, `96% week`). Pace direction travels with an arrow **and** the words "left" or "used". The context and cache warnings appear only past their thresholds, so their presence is the signal.
-- A change that drops the arrow, the words, or the number and leaves only a color change hides the state from users with `NO_COLOR`, on a non-color terminal, or with color vision deficiency. That is a Warning, or a Blocker when it hides being over budget.
+- Headroom color (green, yellow, red from `color.HeadroomLevel`) always travels with a number and a label (`s 84%`, `w 96%`). Over budget travels with the word `over` as well as red (`t over 18% of 28%`). The context and cache warnings appear only past their thresholds, so their presence is the signal.
+- A change that drops the `over` word, the label, or the number and leaves only a color change hides the state from users with `NO_COLOR`, on a non-color terminal, or with color vision deficiency. That is a Warning, or a Blocker when it hides being over budget.
 - `NO_COLOR` output must be complete: every word, number, glyph, and separator, with no stray escape codes. Any new styling must go through the `style` type so `NoColor` switches it off.
 
 ### 4.5 Width and truncation
@@ -73,7 +73,7 @@ The brief's `Renders:` line points to `<scratch>/renders/summary.md` or says `no
 - The model segment strips a trailing parenthetical (`modelSuffix`). A change there must still leave a readable model name, never an empty segment or a dangling parenthesis.
 
 ### 4.6 Numbers and time
-- Percentages are integers rounded half up (`round`), followed by `%` with no space: `84% session`, `ctx 72%`. Today reads `<arrow> N% today · M% budget`: N is the share of today's budget used, which only climbs and can exceed 100, and the budget is its own dim segment. Check that new wording keeps N unambiguous as "used" and never prints a negative percentage.
+- Percentages are integers rounded half up (`round`), followed by `%` with no space: `s 84%`, `ctx 72%`. Session, week, and today count down what's left from 100% (verbose adds "left": `session 84% left`); only the context warning reads as used. Today reads `t N% of M%`: N is the share of today's budget left, and the budget after it is dim. Past the budget it reads `t over N% of M%` in red, where N is how far over, at least 1. Check that new wording keeps N unambiguous as "left" and never prints a negative percentage or "over 0%".
 - Times come from `timefmt.Clock`: `9pm`, `3:40pm`, and `Thu 9pm` when the reset is on another local day. Durations come from `timefmt.Duration`: `1h5m`, `12m`, `40s`. A new time or duration uses these helpers, never a new layout string, so the formats stay consistent. Watch for `12:00am` style edge cases and for a weekday prefix that is missing when the reset is tomorrow.
 - A Go formatting mistake prints `%!d(MISSING)`, `%!s(<nil>)`, `<nil>`, or `NaN` into the status line. That is a Blocker on any common payload.
 
@@ -105,9 +105,9 @@ Known values on 2026-09-24 (recompute if `internal/color` changed):
 
 ## 6. paceline specifics
 
-- `internal/render/render.go`: `Render` builds every segment in order (model, effort, fast mode, project and branch, session, week, today, context, cache, duration); `project` builds the folder and branch; `renderToday` builds today's budget and the last-day line. The `style` type (`red`, `green`, `yellow`, `cyan`, `dim`, `rgb`) is the only place escape codes are made. `arrows` maps `pace.Up`, `pace.Even`, and `pace.Down` to glyphs.
+- `internal/render/render.go`: `Render` builds every segment in order (model, effort, fast mode, project and branch, session, week, today, context, cache, duration); `project` builds the folder and branch; `renderToday` builds today's budget and the last-day line. The `style` type (`red`, `green`, `yellow`, `cyan`, `dim`, `rgb`) is the only place escape codes are made.
 - `internal/color/color.go`: `HeadroomLevel`, `OklchToRGB`, `RelativeLuminance`, `ContrastRatio`, `ProjectSlot`, `SlotColor`.
-- `internal/timefmt/timefmt.go`: `Clock` and `Duration` are the only time formats a user sees.
+- `timefmt/timefmt.go`: `Clock` and `Duration` are the only time formats a user sees.
 - `internal/sanitize`: `Text(s, maxRunes)` strips unsafe characters and adds the ellipsis when it truncates.
 - `cmd/paceline/main.go`: `help`, `run` (commands, aliases `-v`, `version`, `-h`, `help`, the unknown-command message), `renderFromStdin` (the `Claude Code` fallback; `NO_COLOR` read with `os.LookupEnv`), `runInstall`, `runUninstall`, and the `go run` refusal in `executablePath`.
 - `internal/install/install.go`: the error messages and the `Status` values (`installed`, `updated`, `unchanged`, `uninstalled`, `not-installed`); `runInstall` prints the status word inside a sentence, so a new status value must read as a past-tense verb there.
@@ -125,7 +125,7 @@ Known values on 2026-09-24 (recompute if `internal/color` changed):
 
 ## 8. Severity examples for this lane
 
-- **B**: the status line prints nothing, a Go error, `%!d(MISSING)`, or `<nil>` for a common payload; a color code without its reset bleeds into Claude Code's own text; over budget shows only as a color change with the "used" wording gone; the README `go install` path or install steps no longer work; a change makes a README "Security" or `SECURITY.md` promise untrue.
+- **B**: the status line prints nothing, a Go error, `%!d(MISSING)`, or `<nil>` for a common payload; a color code without its reset bleeds into Claude Code's own text; over budget shows only as a color change with the "over" wording gone; the README `go install` path or install steps no longer work; a change makes a README "Security" or `SECURITY.md` promise untrue.
 - **W**: a new segment unreadable on a light terminal because it uses a fixed light truecolor for text that matters; a state carried only by color; a new emoji or uncommon glyph that carries meaning; a README table example or config key that no longer matches the code; an error that names the failure but not the next step; a failed command that exits 0; a new flag missing from `--help`; a width increase that pushes today's budget off an 80-column pane for a typical long folder and branch.
 - **N**: inconsistent capitalization (`Fast mode` beside `fast mode`); a double space or missing space around a separator; a missing serial comma in README prose; a help line that does not align with its siblings.
 

@@ -8,16 +8,20 @@
 //
 // Unspent budget rolls over by spreading across the remaining days, since the
 // next day's budget divides whatever the week still has.
+//
+// The exported API is a public contract: other modules, such as
+// paceline-tray, import this package, so changing it is a breaking change.
 package pace
 
 import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 	"regexp"
 	"time"
 
-	"github.com/rogadev/paceline/internal/timefmt"
+	"github.com/rogadev/paceline/timefmt"
 )
 
 const (
@@ -55,9 +59,9 @@ type Direction int
 
 // Directions.
 const (
-	Even Direction = iota
-	Up
-	Down
+	Even Direction = iota // between 0.8x and 1.25x of an even pace
+	Up                    // 1.25x an even pace or more
+	Down                  // 0.8x an even pace or less
 )
 
 // Result is the computed state of today's segment.
@@ -118,6 +122,13 @@ func Compute(usedPct, resetsAt float64, now time.Time, snap *Snapshot) Result {
 		r.Pace = Down
 	}
 	return r
+}
+
+// SnapshotPath is where the day snapshot lives inside configDir, the Claude
+// config directory. Every reader and writer of the snapshot uses this path so
+// they agree on one file.
+func SnapshotPath(configDir string) string {
+	return filepath.Join(configDir, "paceline-day.json")
 }
 
 // ReadSnapshot loads a snapshot, returning nil for a missing, oversized,

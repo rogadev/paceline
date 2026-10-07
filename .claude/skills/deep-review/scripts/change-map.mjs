@@ -184,8 +184,8 @@ const RX = {
 	testdata: /(^|\/)testdata\//,
 	goFile: /\.go$/,
 	cli: /^cmd\/paceline\//,
-	output: /^internal\/(render|color|timefmt)\//,
-	timeMath: /^internal\/(pace|timefmt)\//,
+	output: /^(internal\/(render|color)|timefmt)\//,
+	timeMath: /^(pace|timefmt)\//,
 	untrusted: /^internal\/(payload|gitinfo|config|sanitize)\//,
 	installer: /^internal\/install\//,
 	policy: /^internal\/policy\//,
@@ -197,7 +197,7 @@ const RX = {
 };
 
 // Paths on the status line's render path: they run on every refresh.
-const RENDER_PATH = /^(cmd\/paceline\/main\.go|internal\/(render|pace|color|timefmt|payload|gitinfo|config|sanitize)\/)/;
+const RENDER_PATH = /^(cmd\/paceline\/main\.go|internal\/(render|color|payload|gitinfo|config|sanitize)\/|(pace|timefmt)\/)/;
 
 const FILE_IO = /\bos\.(WriteFile|ReadFile|Open|OpenFile|Create|CreateTemp|Rename|Remove|RemoveAll|MkdirAll|Mkdir|Symlink|Readlink|Lstat|Stat|Chmod|ReadDir)\b|\bio\.ReadAll\b|\bfilepath\.(EvalSymlinks|Walk|WalkDir|Glob)\b/;
 const PRINTS = /\bfmt\.(Fprint|Fprintf|Fprintln|Print|Printf|Println|Sprintf)\b|\.WriteString\(|\bstyle\(|\.rgb\(/;
@@ -276,12 +276,12 @@ function classify(f) {
 	if (!f.surfaces.length) add('other');
 }
 
-// For each changed internal package, how many other packages import it.
+// For each changed internal or public package, how many other packages import it.
 function blastRadius(list) {
 	const out = [];
 	const pkgs = new Set();
 	for (const f of list) {
-		const m = f.path.match(/^(internal\/[^/]+)\/[^/]+\.go$/);
+		const m = f.path.match(/^(internal\/[^/]+|pace|timefmt)\/[^/]+\.go$/);
 		if (m && !RX.goTest.test(f.path) && f.status !== 'added') pkgs.add(m[1]);
 	}
 	for (const pkg of pkgs) {
@@ -322,7 +322,7 @@ function suggestTier(sz, surf, br) {
 	// A new package: a directory where every changed file is newly added.
 	function list() {
 		const dirs = new Map();
-		for (const f of files.filter((x) => /^(internal|cmd|tools)\/.+\.go$/.test(x.path))) {
+		for (const f of files.filter((x) => /^(internal|cmd|tools|pace|timefmt)\/.+\.go$/.test(x.path))) {
 			const d = dirname(f.path);
 			dirs.set(d, (dirs.get(d) ?? true) && f.status === 'added');
 		}

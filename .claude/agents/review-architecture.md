@@ -49,7 +49,7 @@ Where you and a neighbour meet, you take the structural consequence:
 3. For every new file, run `ls` on its directory and its sibling directories (section 4). Ask where files of this kind already live.
 4. For every new function or type, `git grep -n "func .*<name-ish>"` or `git grep -n "type .*<name-ish>"` to check whether a canonical home already exists (section 4's single-source list).
 5. For every new import, check its direction against the dependency graph in section 4.2. A new import into a leaf package, or any import of `render` or `install` from anywhere but `cmd/paceline`, is your highest-value finding.
-6. If the diff touches `go.mod`, adds a new top-level directory, or adds an import that looks like `os/exec`, `net`, `net/http`, `syscall`, `unsafe`, or `plugin` anywhere under `cmd/` or `internal/`, check it against `internal/policy/policy_test.go`'s `forbidden` map and `shippedFiles` walk (section 4.5). This is usually a Blocker, not a Warning: it's a hard rule this repo tests for, and it fails the build, not just a review.
+6. If the diff touches `go.mod`, adds a new top-level directory, or adds an import that looks like `os/exec`, `net`, `net/http`, `syscall`, `unsafe`, or `plugin` anywhere under `cmd/`, `internal/`, `pace/`, or `timefmt/` (`shippedDirs`), check it against `internal/policy/policy_test.go`'s `forbidden` map and `shippedFiles` walk (section 4.5). This is usually a Blocker, not a Warning: it's a hard rule this repo tests for, and it fails the build, not just a review.
 7. Before you write a finding, check it against section 6 (what not to report). Then write the report.
 
 ## 4. What to look for
@@ -65,17 +65,17 @@ The current graph, built from each package's own imports:
 ```
 cmd/paceline
   -> internal/config, internal/gitinfo, internal/install,
-     internal/pace, internal/payload, internal/render
+     pace, internal/payload, internal/render
 
 internal/render
-  -> internal/color, internal/config, internal/pace,
-     internal/payload, internal/sanitize, internal/timefmt
+  -> internal/color, internal/config, pace,
+     internal/payload, internal/sanitize, timefmt
 
-internal/pace
-  -> internal/timefmt
+pace
+  -> timefmt
 
 internal/color, internal/config, internal/gitinfo,
-internal/payload, internal/sanitize, internal/timefmt
+internal/payload, internal/sanitize, timefmt
   -> (no internal/ imports: these are leaves)
 
 internal/install
@@ -91,13 +91,13 @@ tools/nextbump
 Rules that follow from this:
 - Nothing under `internal/` imports `internal/render` except through `cmd/paceline`. A new import of `render` from `pace`, `color`, `config`, `payload`, `sanitize`, `timefmt`, or `gitinfo` is a Blocker: it both breaks the intended layering and, since `render` already imports several of these, risks an import cycle that fails the build.
 - Nothing imports `internal/install` except `cmd/paceline`. `install` deliberately takes plain strings (`claudeDir`, `exePath`) rather than an `internal/config` import, so it stays decoupled from render-side concerns; a new `install` function that takes a `config.Config` or a `render.Context` instead of a primitive is a Warning.
-- `internal/pace` importing only `internal/timefmt` is intentional: `pace` is pure calculation plus its own file I/O (`ReadSnapshot`/`WriteSnapshot`), with no dependency on `render`, `payload`, or `color`. A new dependency from `pace` into any of those is a Warning; the math should not need to know how it's displayed.
+- `pace` importing only `timefmt` is intentional: `pace` is pure calculation plus its own file I/O (`ReadSnapshot`/`WriteSnapshot`), with no dependency on `render`, `payload`, or `color`. A new dependency from `pace` into any of those is a Warning; the math should not need to know how it's displayed.
 - A new package under `internal/` that only one existing package would ever import is fine. A new package that several existing packages need should sit no higher in the graph than its lowest common user, mirroring how `timefmt` sits below both `pace` and `render`.
 
 ### 4.3 Side effects injected, not reached for
 
 `render.Context` (`internal/render/render.go`) carries every side effect `Render` needs: `Now`, `Config`, `NoColor`, `ReadSnapshot`, `WriteSnapshot`, `GitBranch`. This is why `render_test.go` can run without touching the filesystem or the real clock. The same discipline extends past `render.Context` itself:
-- A direct `time.Now()`, `os.Getenv`, or file read inside `internal/render` or `internal/pace`'s *logic* (not the small, already-isolated I/O functions like `pace.ReadSnapshot`/`WriteSnapshot` or `config.Load`) is a Blocker: it breaks test isolation the profile calls a hard rule.
+- A direct `time.Now()`, `os.Getenv`, or file read inside `internal/render` or `pace`'s *logic* (not the small, already-isolated I/O functions like `pace.ReadSnapshot`/`WriteSnapshot` or `config.Load`) is a Blocker: it breaks test isolation the profile calls a hard rule.
 - A new `Context` field, or a new function parameter, is the right shape for a new side effect; a package-level `var` holding mutable state that a new code path reaches into instead is a Warning.
 - `install.Install`/`install.Uninstall` take `claudeDir` and `exePath` as parameters rather than resolving them internally, for the same reason: a caller (or a test) controls exactly what they touch. A new function in `install` that calls `config.Dir()` or `os.UserHomeDir()` itself instead of receiving the directory as a parameter is a Warning.
 
@@ -105,11 +105,11 @@ Rules that follow from this:
 
 - `internal/payload`: decoding Claude Code's JSON only. The `Num`/`Str`/`Bool` types exist to keep an absent or wrong-typed field unset rather than a false zero value; anything with rendering logic does not belong here.
 - `internal/render`: turns a `*payload.Payload` plus `Context` into the printed string. A new segment is a new block in `Render` (or a new helper it calls, like `project` or `renderToday`), gated by a `Config.Segments` field, not a special case bolted onto an unrelated package.
-- `internal/pace`: today's budget math and its snapshot file. New usage-limit math belongs here, not inlined in `render.go`.
-- `internal/timefmt`: local-time formatting only (`StartOfDay`, `DateKey`, `Clock`, `Duration`). A new date or duration helper elsewhere in the tree, instead of here, is a Warning.
+- `pace`: today's budget math and its snapshot file. New usage-limit math belongs here, not inlined in `render.go`.
+- `timefmt`: local-time formatting only (`StartOfDay`, `DateKey`, `Clock`, `Duration`). A new date or duration helper elsewhere in the tree, instead of here, is a Warning.
 - `internal/color`: headroom levels, OKLCH math, contrast, project color slots. A new color calculation elsewhere duplicates this package's job.
 - `internal/sanitize`: the one place untrusted text (model names, folder names, branch names) gets cleaned before printing. `Text` is the only sanitizer; a second one is a structural duplication even though *whether it's called at all* on a given string is security's call.
-- `internal/gitinfo`: reads `.git/HEAD` directly, on purpose, so no `git` process ever runs on a refresh. A new git-info need met by shelling out to `git` (`os/exec`) anywhere under `cmd/` or `internal/` is a Blocker (section 4.5): it both breaks this package's whole reason for existing and fails the forbidden-imports policy test.
+- `internal/gitinfo`: reads `.git/HEAD` directly, on purpose, so no `git` process ever runs on a refresh. A new git-info need met by shelling out to `git` (`os/exec`) anywhere in shipped code (`cmd/`, `internal/`, `pace/`, or `timefmt/`) is a Blocker (section 4.5): it both breaks this package's whole reason for existing and fails the forbidden-imports policy test.
 - `internal/config`: `paceline.json` loading and defaults. A new configurable value's default belongs in `config.Default()`, and its validation belongs in `config.Merge`'s per-key pattern (each key validated independently so one bad key never discards the rest) - a new field parsed with a single `json.Unmarshal(data, &c)` instead of that pattern loses that guarantee.
 - `internal/install`: `settings.json` editing. `settings.go`'s order-preserving `object` type exists so an install never reshuffles or drops a user's unrelated settings keys; a new settings edit that unmarshal-and-remarshals through a plain `map[string]any]` instead of `object` would lose that.
 - `internal/policy`: repository-wide rules tested as behavior. Not a place for feature code.
@@ -119,13 +119,13 @@ Rules that follow from this:
 
 `internal/policy/policy_test.go` enforces three things by walking the tree, not by convention:
 - `TestNoModuleDependencies` fails if `go.mod` gains a `require`/`replace` line or a `go.sum` appears. A diff that adds any third-party import anywhere in the module fails this before it fails anything else.
-- `TestShippedCodeImportsNothingDangerous` walks only `cmd/` and `internal/` (`shippedFiles`) and fails on an import of `os/exec`, `syscall`, `unsafe`, `plugin`, `net`, or any `net/...` package, and on any import path containing a dot that isn't under `github.com/rogadev/paceline/`. This is why `internal/gitinfo` reads `HEAD` by hand instead of shelling out, and why the module has no dependencies to import in the first place.
-- `TestGoSourceIsASCII` walks `cmd/`, `internal/`, *and* `tools/`, and fails on any non-ASCII byte in a `.go` file. Every glyph the status line prints (the arrows, the middle dot, the hourglass) is a `\u` escape in a string literal for exactly this reason.
+- `TestShippedCodeImportsNothingDangerous` walks only `cmd/`, `internal/`, `pace/`, and `timefmt/` (`shippedDirs`) through `shippedFiles` and fails on an import of `os/exec`, `syscall`, `unsafe`, `plugin`, `net`, or any `net/...` package, and on any import path containing a dot that isn't under `github.com/rogadev/paceline/`. This is why `internal/gitinfo` reads `HEAD` by hand instead of shelling out, and why the module has no dependencies to import in the first place.
+- `TestGoSourceIsASCII` walks `tools/` *and* `shippedDirs`, and fails on any non-ASCII byte in a `.go` file. Every glyph the status line prints (the middle dot, the hourglass, the progress cells) is a `\u` escape in a string literal for exactly this reason.
 
-`tools/nextbump` is excluded from the import-safety test (only `cmd/` and `internal/` are walked) and from `gosec` (`.golangci.yml` excludes `tools/`), which is precisely why it's allowed to run `git` through `os/exec`. That exclusion is a placement decision, not a blanket exemption for anything you find convenient to put there:
+`tools/nextbump` is excluded from the import-safety test (the shipped-code walk covers only `shippedDirs`, which doesn't include `tools/`) and from `gosec` (`.golangci.yml` excludes `tools/`), which is precisely why it's allowed to run `git` through `os/exec`. That exclusion is a placement decision, not a blanket exemption for anything you find convenient to put there:
 - New **development-only** tooling (a release helper, a codegen script) belongs in `tools/<name>/`, matching `nextbump`'s shape (a `main` package with its own `main_test.go`), never under `cmd/` or `internal/`.
-- New **shipped** functionality never belongs in `tools/`; it belongs under `cmd/paceline` or `internal/`, where the policy tests actually check it.
-- A diff that adds a forbidden import to `cmd/` or `internal/`, or moves an existing `tools/` capability into shipped code without addressing the import it needs, is a Blocker: it fails `go test ./...` via `internal/policy`, not just your review.
+- New **shipped** functionality never belongs in `tools/`; it belongs under `cmd/`, `internal/`, or the public `pace/` and `timefmt/` packages (`shippedDirs`), where the policy tests actually check it.
+- A diff that adds a forbidden import to `cmd/`, `internal/`, `pace/`, or `timefmt/` (`shippedDirs`), or moves an existing `tools/` capability into shipped code without addressing the import it needs, is a Blocker: it fails `go test ./...` via `internal/policy`, not just your review.
 - A diff that changes `internal/policy/policy_test.go` itself (loosening `forbidden`, or narrowing `shippedFiles`'s walk) needs a stated reason in the diff or its intent; an unexplained loosening is a Warning at minimum, and a Blocker if it's paired with the import the old rule would have caught.
 
 ### 4.6 A second helper duplicating an existing one
@@ -135,9 +135,9 @@ Rules that follow from this:
 
 ### 4.7 Test placement
 
-- Tests sit beside the code they cover, as `*_test.go` in the same package and directory (`CONTRIBUTING.md`, "code layout"; every existing package follows this: `internal/pace/pace_test.go`, `cmd/paceline/main_test.go`, and so on). A new test file placed elsewhere - a top-level `tests/` directory, a mismatched package directory - never runs as part of `go test ./...`: Blocker, because it looks like coverage and is not.
+- Tests sit beside the code they cover, as `*_test.go` in the same package and directory (`CONTRIBUTING.md`, "code layout"; every existing package follows this: `pace/pace_test.go`, `cmd/paceline/main_test.go`, and so on). A new test file placed elsewhere - a top-level `tests/` directory, a mismatched package directory - never runs as part of `go test ./...`: Blocker, because it looks like coverage and is not.
 - `internal/render/testdata/parity.json` holds the recorded 1.0 JavaScript outputs `TestParityWithJavaScript` must reproduce byte for byte. New or changed fixture data belongs in `testdata/` next to the test that reads it, following this precedent; a fixture file placed elsewhere, or inlined as a giant literal in the test file instead of `testdata/`, is a Nit unless the size makes the test unreadable (then a Warning).
-- `internal/policy_test.go`'s `root = "../.."` constant and its directory walks assume the policy test itself stays at `internal/policy/policy_test.go`. Moving it is a Blocker unless the diff also updates `root` and re-verifies the walk still covers `cmd/` and `internal/`.
+- `internal/policy/policy_test.go`'s `root = "../.."` constant and its directory walks assume the policy test itself stays at `internal/policy/policy_test.go`. Moving it is a Blocker unless the diff also updates `root` and re-verifies the walk still covers `cmd/`, `internal/`, `pace/`, and `timefmt/` (`shippedDirs`).
 
 ## 5. Sanctioned decisions (do not flag)
 
@@ -159,8 +159,8 @@ From the app profile - do not re-litigate these:
 ## 7. Severity examples
 
 **B:**
-- A new import of `os/exec`, `net`, `net/http`, `syscall`, `unsafe`, or `plugin` anywhere under `cmd/` or `internal/`. Fails `internal/policy`'s `TestShippedCodeImportsNothingDangerous`.
-- A non-ASCII byte written literally into a `.go` file under `cmd/`, `internal/`, or `tools/` instead of a `\u` escape. Fails `TestGoSourceIsASCII`.
+- A new import of `os/exec`, `net`, `net/http`, `syscall`, `unsafe`, or `plugin` anywhere under `cmd/`, `internal/`, `pace/`, or `timefmt/` (`shippedDirs`). Fails `internal/policy`'s `TestShippedCodeImportsNothingDangerous`.
+- A non-ASCII byte written literally into a `.go` file under `tools/` or any of `shippedDirs` (`cmd/`, `internal/`, `pace/`, `timefmt/`) instead of a `\u` escape. Fails `TestGoSourceIsASCII`.
 - A `require` line added to `go.mod`, or a `go.sum` appearing. Fails `TestNoModuleDependencies`.
 - A leaf package (`color`, `config`, `gitinfo`, `payload`, `sanitize`, `timefmt`) importing `internal/render` or `internal/install`.
 - A direct `time.Now()` or file read inside `render`'s or `pace`'s core logic instead of through `Context` or a parameter.
@@ -171,7 +171,7 @@ From the app profile - do not re-litigate these:
 - A new business rule (a usage calculation, a validation step) written directly in `cmd/paceline/main.go` instead of the `internal/` package that owns it.
 - A new `internal/config` field parsed outside `Merge`'s per-key validation pattern.
 - An unexplained loosening of `internal/policy/policy_test.go`'s rules.
-- Shipped functionality added under `tools/` instead of `cmd/` or `internal/`.
+- Shipped functionality added under `tools/` instead of `cmd/`, `internal/`, `pace/`, or `timefmt/` (`shippedDirs`).
 
 **N:**
 - A new `testdata/` fixture placed beside a different test than the one that reads it, but still inside the package.

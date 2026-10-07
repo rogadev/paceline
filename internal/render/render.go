@@ -12,11 +12,11 @@ import (
 
 	"github.com/rogadev/paceline/internal/color"
 	"github.com/rogadev/paceline/internal/config"
-	"github.com/rogadev/paceline/internal/pace"
 	"github.com/rogadev/paceline/internal/payload"
 	"github.com/rogadev/paceline/internal/progress"
 	"github.com/rogadev/paceline/internal/sanitize"
-	"github.com/rogadev/paceline/internal/timefmt"
+	"github.com/rogadev/paceline/pace"
+	"github.com/rogadev/paceline/timefmt"
 )
 
 const (
@@ -76,9 +76,10 @@ func leaf(p string) string {
 	return path.Base(strings.ReplaceAll(trailingSeps.ReplaceAllString(p, ""), `\`, "/"))
 }
 
-// round rounds halves up, like JavaScript's Math.round, so output matches the
+// Round rounds halves up, like JavaScript's Math.round, so output matches the
 // 1.0 release exactly. math.Round rounds halves away from zero (-2.5 -> -3).
-func round(v float64) int { return int(math.Floor(v + 0.5)) }
+// Anything that reports a number the status line also shows rounds with it.
+func Round(v float64) int { return int(math.Floor(v + 0.5)) }
 
 // Render returns the status line for p.
 func Render(p *payload.Payload, ctx Context) string {
@@ -124,21 +125,22 @@ func Render(p *payload.Payload, ctx Context) string {
 		}
 	}
 
-	// Usage limits: session, week, then today's share of the week.
+	// Usage limits: session, week, then today's share of the week. Each counts
+	// down what's left, so a number falling toward 0 is the signal to slow down.
+	// A reading past 100% shows 0 left, never a negative number.
 	if rl := p.RateLimits; rl != nil {
 		if fh := rl.FiveHour; on.Session && fh != nil && fh.UsedPercentage.Set {
-			used := round(fh.UsedPercentage.V)
-			left := 100 - used
+			left := max(0, 100-Round(fh.UsedPercentage.V))
 			when := ""
 			if float64(left) < th.HeadroomGreen && fh.ResetsAt.Set {
 				when = " (resets " + timefmt.Clock(fh.ResetsAt.V, ctx.Now) + ")"
 			}
-			parts = append(parts, headroom(left, fmt.Sprintf("%s %d%%%s", label(ctx, "s", "session"), used, when)))
+			parts = append(parts, headroom(left, fmt.Sprintf("%s %d%%%s%s", label(ctx, "s", "session"), left, label(ctx, "", " left"), when)))
 		}
 		if sd := rl.SevenDay; sd != nil && sd.UsedPercentage.Set {
 			if on.Week {
-				used := round(sd.UsedPercentage.V)
-				parts = append(parts, headroom(100-used, fmt.Sprintf("%s %d%%", label(ctx, "w", "week"), used)))
+				left := max(0, 100-Round(sd.UsedPercentage.V))
+				parts = append(parts, headroom(left, fmt.Sprintf("%s %d%%%s", label(ctx, "w", "week"), left, label(ctx, "", " left"))))
 			}
 			if on.Today && sd.ResetsAt.Set {
 				if today := renderToday(sd.UsedPercentage.V, sd.ResetsAt.V, ctx, st, headroom); today != "" {
@@ -150,7 +152,7 @@ func Render(p *payload.Payload, ctx Context) string {
 
 	// Context-window warning, silent while there is headroom.
 	if on.Context && p.ContextWindow != nil && p.ContextWindow.UsedPercentage.Set {
-		used := round(p.ContextWindow.UsedPercentage.V)
+		used := Round(p.ContextWindow.UsedPercentage.V)
 		switch {
 		case float64(used) >= th.ContextCritical:
 			parts = append(parts, st.red(fmt.Sprintf("ctx %d%%", used)))
@@ -163,7 +165,7 @@ func Render(p *payload.Payload, ctx Context) string {
 	if pc := p.PromptCache; on.Cache && pc != nil && pc.ExpiresAt.Set && pc.ExpiresAt.V <= float64(ctx.Now.Unix()) {
 		text := "cache cold: ~2x"
 		if pc.RecacheTokensIfCold.Set {
-			text = fmt.Sprintf("cache cold: %dk @ ~2x", round(pc.RecacheTokensIfCold.V/1000))
+			text = fmt.Sprintf("cache cold: %dk @ ~2x", Round(pc.RecacheTokensIfCold.V/1000))
 		}
 		parts = append(parts, st.red(text))
 	}
@@ -238,15 +240,20 @@ func renderToday(usedPct, resetsAt float64, ctx Context, st style, headroom func
 		ctx.WriteSnapshot(r.Snapshot)
 	}
 
-	// Usage reads as % used, like session and week, so the number only climbs
-	// and the overshoot shows (118%). The budget is dim: it is fixed for the
-	// day, so it is context, not a warning.
-	budget := " " + st.dim(fmt.Sprintf("of %d%%%s", round(r.Budget), label(ctx, "", " budget")))
-	today := fmt.Sprintf("%s %d%%", label(ctx, "t", "today"), round(r.PctUsed))
+	// Today counts down what's left of its budget, like session and week. Past
+	// the budget a countdown would go negative, so it reads as how far over
+	// you are instead ("t over 18% of 28%"), in red. Over is at least 1: a
+	// reading just past the budget rounds to 100% used, and "over 0%" would
+	// contradict the red. The budget is dim: it is fixed for the day, so it is
+	// context, not a warning.
+	budget := " " + st.dim(fmt.Sprintf("of %d%%%s", Round(r.Budget), label(ctx, "", " budget")))
+	name := label(ctx, "t", "today")
 	if r.Over {
-		return st.red(today) + budget
+		over := max(Round(r.PctUsed)-100, 1)
+		return st.red(fmt.Sprintf("%s over %d%%", name, over)) + budget
 	}
-	return headroom(round(r.PctLeft), today) + budget
+	left := Round(r.PctLeft)
+	return headroom(left, fmt.Sprintf("%s %d%%%s", name, left, label(ctx, "", " left"))) + budget
 }
 
 func separator(st style) string { return " " + st.dim(middleDot) + " " }

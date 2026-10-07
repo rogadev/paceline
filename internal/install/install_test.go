@@ -338,3 +338,39 @@ func TestSetVerboseCreatesConfigAndRefusesBrokenOne(t *testing.T) {
 		t.Errorf("err %v, file %q", err, read(t, path))
 	}
 }
+
+func TestSetFeedKeepsOtherKeys(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "paceline.json")
+	if err := os.WriteFile(path, []byte(`{"verbose":true,"feed":false,"projectSlots":{"web":4}}`), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if err := SetFeed(dir, true); err != nil {
+		t.Fatal(err)
+	}
+	got := read(t, path)
+	verbose, feed, slots := strings.Index(got, `"verbose": true`), strings.Index(got, `"feed": true`), strings.Index(got, `"projectSlots"`)
+	if verbose < 0 || feed < 0 || slots < 0 || verbose >= feed || feed >= slots {
+		t.Errorf("paceline.json = %s", got)
+	}
+}
+
+func TestSetFeedCreatesConfigAndRefusesBrokenOne(t *testing.T) {
+	dir := filepath.Join(t.TempDir(), "new")
+	if err := SetFeed(dir, true); err != nil {
+		t.Fatal(err)
+	}
+	path := filepath.Join(dir, "paceline.json")
+	if got := read(t, path); !strings.Contains(got, `"feed": true`) {
+		t.Errorf("paceline.json = %s", got)
+	}
+	if err := SetFeed(dir, false); err != nil || !strings.Contains(read(t, path), `"feed": false`) {
+		t.Errorf("feed off: err %v, file %s", err, read(t, path))
+	}
+	if err := os.WriteFile(path, []byte(`{broken`), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	if err := SetFeed(dir, true); err == nil || read(t, path) != `{broken` {
+		t.Errorf("err %v, file %q", err, read(t, path))
+	}
+}
