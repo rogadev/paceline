@@ -8,7 +8,9 @@ import (
 	"go/token"
 	"io/fs"
 	"os"
+	"os/exec"
 	"path/filepath"
+	"slices"
 	"strconv"
 	"strings"
 	"testing"
@@ -31,6 +33,17 @@ var forbidden = map[string]string{
 	"net/url":    "network URLs",
 	"crypto/tls": "network access",
 }
+
+// forbiddenDeps lists packages that must not appear anywhere in a shipped
+// binary's dependency graph, including through the standard library. It is
+// narrower than forbidden because the graph always reaches packages such as
+// syscall and unsafe through os, so only the capabilities paceline promises
+// never to use are checked there. Each is also in forbidden, which gives the
+// reason.
+var forbiddenDeps = []string{"net", "net/http", "os/exec"}
+
+// binaries lists the main packages that paceline ships.
+var binaries = []string{"./cmd/paceline", "./cmd/paceline-mcp"}
 
 // publicPackages sit at the module root because other modules import them.
 var publicPackages = []string{"pace", "timefmt"}
@@ -131,6 +144,64 @@ func TestGoSourceIsASCII(t *testing.T) {
 			t.Fatal(err)
 		}
 	}
+}
+
+// TestBinariesDependOnNothingDangerous checks each binary's full dependency
+// graph, which catches a forbidden package pulled in indirectly by another
+// package that the per-file import check cannot see.
+func TestBinariesDependOnNothingDangerous(t *testing.T) {
+	goBin, err := exec.LookPath("go")
+	if err != nil {
+		t.Skip("go is not on PATH, so the dependency graph cannot be listed")
+	}
+	for _, binary := range binaries {
+		imports := binaryImports(t, goBin, binary)
+		for _, dep := range forbiddenDeps {
+			if _, linked := imports[dep]; linked {
+				t.Errorf("%s depends on %s (%s), imported directly by: %s",
+					binary, dep, forbidden[dep], strings.Join(importersOf(imports, dep), ", "))
+			}
+		}
+	}
+}
+
+// binaryImports maps every package that binary links to the packages it
+// imports directly. Test-only dependencies are excluded, because they never
+// ship.
+func binaryImports(t *testing.T, goBin, binary string) map[string][]string {
+	t.Helper()
+	// Each output line is a package path followed by its direct imports.
+	cmd := exec.Command(goBin, "list", "-deps", "-f", `{{.ImportPath}} {{join .Imports " "}}`, binary)
+	cmd.Dir = root
+	var stderr strings.Builder
+	cmd.Stderr = &stderr
+	out, err := cmd.Output()
+	if err != nil {
+		t.Fatalf("go list -deps %s: %v\n%s", binary, err, stderr.String())
+	}
+	imports := map[string][]string{}
+	for _, line := range strings.Split(strings.TrimSpace(string(out)), "\n") {
+		if fields := strings.Fields(line); len(fields) > 0 {
+			imports[fields[0]] = fields[1:]
+		}
+	}
+	if len(imports) == 0 {
+		t.Fatalf("go list -deps %s listed no packages", binary)
+	}
+	return imports
+}
+
+// importersOf returns the packages in imports that import dep directly,
+// sorted so failure messages are stable.
+func importersOf(imports map[string][]string, dep string) []string {
+	var importers []string
+	for pkg, pkgImports := range imports {
+		if slices.Contains(pkgImports, dep) {
+			importers = append(importers, pkg)
+		}
+	}
+	slices.Sort(importers)
+	return importers
 }
 
 func TestNoModuleDependencies(t *testing.T) {
