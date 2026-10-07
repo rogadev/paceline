@@ -255,9 +255,9 @@ func TestTodayBudgetAnswers(t *testing.T) {
 		},
 		{
 			name:     "last day",
-			sevenDay: windowJSON(46.5, eightPM), kind: "last_day",
-			summary: []string{"Last day before the weekly reset at 8pm", "all 53% left in the week is today's"},
-			fields:  map[string]any{"weekLeftPct": 53.0, "weekResetsClock": "8pm"},
+			sevenDay: windowJSON(46.5, eightPM), kind: "budget",
+			summary: []string{"100% of today's budget left (0% used).", "the week resets 8pm"},
+			fields:  map[string]any{"budgetPct": 54.0, "leftPct": 100.0, "weekResetsClock": "8pm"},
 		},
 		{
 			name:     "reset already passed",
