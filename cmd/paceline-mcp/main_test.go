@@ -151,8 +151,8 @@ func TestStepBeforeStart(t *testing.T) {
 
 func TestToolSchemasAreValidJSON(t *testing.T) {
 	tools := testTools("").tools()
-	if len(tools) != 5 {
-		t.Errorf("want 5 tools, got %d", len(tools))
+	if len(tools) != 7 {
+		t.Errorf("want 7 tools, got %d", len(tools))
 	}
 	for _, tool := range tools {
 		var s struct {
@@ -164,8 +164,15 @@ func TestToolSchemasAreValidJSON(t *testing.T) {
 			t.Errorf("%s: schema is not valid JSON: %v", tool.Name, err)
 			continue
 		}
-		if s.Type != "object" || s.Properties["cwd"] == nil || len(s.Required) == 0 {
+		takesArgs := strings.HasPrefix(tool.Name, "progress_")
+		if s.Type != "object" || s.Properties == nil {
 			t.Errorf("%s: schema = %+v", tool.Name, s)
+		}
+		if takesArgs && (s.Properties["cwd"] == nil || len(s.Required) == 0) {
+			t.Errorf("%s: a progress tool needs cwd and a required argument: %+v", tool.Name, s)
+		}
+		if !takesArgs && (len(s.Properties) != 0 || len(s.Required) != 0) {
+			t.Errorf("%s: a usage tool takes no arguments: %+v", tool.Name, s)
 		}
 		for _, r := range s.Required {
 			if s.Properties[r] == nil {

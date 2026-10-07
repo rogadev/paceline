@@ -7,18 +7,20 @@ import (
 	"os"
 	"time"
 
+	"github.com/rogadev/paceline/internal/config"
 	"github.com/rogadev/paceline/internal/gitinfo"
 	"github.com/rogadev/paceline/internal/mcp"
 	"github.com/rogadev/paceline/internal/progress"
 )
 
-const instructions = `Reports a long job's progress to the paceline status line as a bar.
-Use it for work with three or more steps that will run a while, such as a batch of issues or a multi-task build.
+const instructions = `paceline shows Claude Code usage and a long job's progress in the status line.
+Usage: call get_today_budget before starting a long or expensive task, or a batch of subagents, to see how much of today's usage budget is left, and get_usage for the five-hour session and weekly limits. Both are read-only and any agent may call them.
+Progress: use the progress tools for work with three or more steps that will run a while, such as a batch of issues or a multi-task build.
 Plan first: before starting, call progress_start once with every step you expect, in order. Give each step a weight (its size relative to the others, for example 1 for a small fix and 5 for a feature) and the stages it will pass through (for example ["design", "build", "review", "commit"]). With weights and stages, the bar shows an accurate percentage that moves within a step.
 Then report as you go: progress_step when a step starts, changes stage, or ends; progress_add_steps if the plan grows; progress_finish at the end.
-Only the agent that owns the plan reports; subagents do not call these tools.`
+Only the agent that owns the plan reports progress; subagents do not call the progress tools.`
 
-// cwdProp is the optional cwd argument shared by every tool.
+// cwdProp is the optional cwd argument shared by every progress tool.
 const cwdProp = `"cwd": {"type": "string", "description": "Directory inside the repository the run belongs to. Defaults to the server's working directory, which is normally the project."}`
 
 const stepsSchema = `{
@@ -40,13 +42,17 @@ const stepsSchema = `{
 const sessionEnv = "CLAUDE_CODE_SESSION_ID"
 
 // toolset holds what the tools need from the environment, so tests can point
-// them at a temporary repo, a fixed clock, and a session of their choosing.
+// them at a temporary repo, a temporary config directory, a fixed clock, and
+// a session of their choosing.
 type toolset struct {
 	getwd func() (string, error)
 	now   func() time.Time
-	// session is the Claude Code session whose run these tools write, or ""
-	// for the shared run when the server is started some other way.
+	// session is the Claude Code session whose run the progress tools write,
+	// or "" for the shared run when the server is started some other way.
 	session string
+	// configDir is Claude Code's config directory, which holds the usage feed
+	// and the day anchor the usage tools read.
+	configDir string
 }
 
 func (t toolset) gitDir(cwd string) (string, error) {
@@ -113,7 +119,7 @@ func schema(required string, props ...string) json.RawMessage {
 }
 
 func (t toolset) tools() []mcp.Tool {
-	return []mcp.Tool{
+	return append([]mcp.Tool{
 		{
 			Name: "progress_start",
 			Description: "Start a progress bar for a long job, replacing any earlier run in this session. " +
@@ -197,13 +203,13 @@ func (t toolset) tools() []mcp.Tool {
 				return t.update(gitDir, func(r *progress.Run) error { return r.Finish(a.Outcome) })
 			},
 		},
-	}
+	}, t.usageTools()...)
 }
 
 var errNoArgs = errors.New("paceline-mcp takes no arguments besides --version; Claude Code starts it over stdio")
 
 func defaultToolset() toolset {
-	t := toolset{getwd: os.Getwd, now: time.Now}
+	t := toolset{getwd: os.Getwd, now: time.Now, configDir: config.Dir()}
 	if s := os.Getenv(sessionEnv); progress.ValidSession(s) {
 		t.session = s
 	}

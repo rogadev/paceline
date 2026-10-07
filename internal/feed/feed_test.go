@@ -3,7 +3,9 @@ package feed
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -25,10 +27,10 @@ const (
 var t0 = time.Unix(1790277013, 600_000_000)
 
 // wantBoth is the feed bothWindows produces at t0.
-var wantBoth = file{
+var wantBoth = Reading{
 	Version:   1,
-	FiveHour:  &window{UsedPct: 21, ResetsAt: 1790283000},
-	SevenDay:  &window{UsedPct: 46.5, ResetsAt: 1790838000},
+	FiveHour:  &Window{UsedPct: 21, ResetsAt: 1790283000},
+	SevenDay:  &Window{UsedPct: 46.5, ResetsAt: 1790838000},
 	WrittenAt: 1790277013,
 }
 
@@ -41,24 +43,28 @@ func decode(t *testing.T, in string) *payload.Payload {
 	return p
 }
 
-func readFeed(t *testing.T, path string) file {
+// readFeed loads the feed at path with Read, after checking that
+// paceline-tray would accept its bytes too.
+func readFeed(t *testing.T, path string) Reading {
 	t.Helper()
 	data, err := os.ReadFile(path)
 	if err != nil {
 		t.Fatal(err)
 	}
-	assertReaderAccepts(t, data)
-	var f file
-	if err := json.Unmarshal(data, &f); err != nil {
+	if reason := trayRejects(data); reason != "" {
+		t.Errorf("%s: %s", reason, data)
+	}
+	f, err := Read(path)
+	if err != nil {
 		t.Fatal(err)
 	}
 	return f
 }
 
-// assertReaderAccepts applies paceline-tray's feed rules (internal/usage/feed)
-// to data, so the writer never produces a file the tray would reject.
-func assertReaderAccepts(t *testing.T, data []byte) {
-	t.Helper()
+// trayRejects applies paceline-tray's feed rules (internal/usage/feed) to
+// data and returns why the tray would reject it, or "" when it would accept
+// it.
+func trayRejects(data []byte) string {
 	type readerWindow struct{ UsedPct, ResetsAt float64 }
 	var f struct {
 		Version            int
@@ -71,15 +77,119 @@ func assertReaderAccepts(t *testing.T, data []byte) {
 	}
 	switch {
 	case len(data) > 4096:
-		t.Errorf("feed is %d bytes, over the reader's 4096", len(data))
+		return fmt.Sprintf("feed is %d bytes, over the reader's 4096", len(data))
 	case json.Unmarshal(data, &f) != nil:
-		t.Errorf("feed does not parse: %s", data)
+		return "feed does not parse"
 	case f.Version != 1 || !inRange(f.WrittenAt):
-		t.Errorf("reader rejects version or writtenAt: %s", data)
+		return "reader rejects version or writtenAt"
 	case f.FiveHour == nil && f.SevenDay == nil:
-		t.Errorf("reader rejects a feed with no window: %s", data)
+		return "reader rejects a feed with no window"
 	case !validWindow(f.FiveHour) || !validWindow(f.SevenDay):
-		t.Errorf("reader rejects a window: %s", data)
+		return "reader rejects a window"
+	}
+	return ""
+}
+
+func TestReadReturnsWhatWriteWrote(t *testing.T) {
+	path := Path(t.TempDir())
+	if err := Write(path, decode(t, bothWindows), t0); err != nil {
+		t.Fatal(err)
+	}
+	if got, err := Read(path); err != nil || !reflect.DeepEqual(got, wantBoth) {
+		t.Errorf("Read = %+v, %v; want %+v", got, err, wantBoth)
+	}
+
+	// The range edges, and a null window, are accepted as the tray accepts them.
+	edges := `{"version":1,"fiveHour":null,"sevenDay":{"usedPct":100,"resetsAt":1},"writtenAt":8589934592}`
+	if err := os.WriteFile(path, []byte(edges), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	want := Reading{Version: 1, SevenDay: &Window{UsedPct: 100, ResetsAt: 1}, WrittenAt: 1 << 33}
+	if got, err := Read(path); err != nil || !reflect.DeepEqual(got, want) {
+		t.Errorf("Read = %+v, %v; want %+v", got, err, want)
+	}
+}
+
+func TestReadSizeLimit(t *testing.T) {
+	valid := feedText(1, "1790283000", t0.Unix())
+	for size, accepted := range map[int]bool{4096: true, 4097: false} {
+		t.Run(fmt.Sprint(size), func(t *testing.T) {
+			// Trailing spaces are valid JSON, so only the size can reject the file.
+			data := valid + strings.Repeat(" ", size-len(valid))
+			if trayAccepts := trayRejects([]byte(data)) == ""; trayAccepts != accepted {
+				t.Fatalf("the tray model accepts %d bytes: %v, want %v", size, trayAccepts, accepted)
+			}
+			path := Path(t.TempDir())
+			if err := os.WriteFile(path, []byte(data), 0o600); err != nil {
+				t.Fatal(err)
+			}
+			got, err := Read(path)
+			if accepted && (err != nil || !reflect.DeepEqual(got, wantBoth)) {
+				t.Errorf("a %d-byte feed: Read = %+v, %v; want %+v", size, got, err, wantBoth)
+			}
+			if !accepted && err == nil {
+				t.Errorf("a %d-byte feed was accepted", size)
+			}
+		})
+	}
+}
+
+func TestReadMissingFile(t *testing.T) {
+	if _, err := Read(Path(t.TempDir())); !errors.Is(err, fs.ErrNotExist) {
+		t.Errorf("a missing feed should match fs.ErrNotExist, got %v", err)
+	}
+}
+
+func TestReadRejectsWhatTheTrayRejects(t *testing.T) {
+	week := `"sevenDay":{"usedPct":46.5,"resetsAt":1790838000}`
+	tests := map[string]string{
+		"empty file":         ``,
+		"not JSON":           `{not json`,
+		"not an object":      `[1]`,
+		"other version":      `{"version":2,` + week + `,"writtenAt":1790277013}`,
+		"no version":         `{` + week + `,"writtenAt":1790277013}`,
+		"no writtenAt":       `{"version":1,` + week + `}`,
+		"writtenAt zero":     `{"version":1,` + week + `,"writtenAt":0}`,
+		"writtenAt negative": `{"version":1,` + week + `,"writtenAt":-5}`,
+		"writtenAt too late": `{"version":1,` + week + `,"writtenAt":8589934593}`,
+		"no window":          `{"version":1,"writtenAt":1790277013}`,
+		"both windows null":  `{"version":1,"fiveHour":null,"sevenDay":null,"writtenAt":1790277013}`,
+		"usedPct negative":   `{"version":1,"sevenDay":{"usedPct":-1,"resetsAt":1790838000},"writtenAt":1790277013}`,
+		"usedPct over 100":   `{"version":1,"sevenDay":{"usedPct":101,"resetsAt":1790838000},"writtenAt":1790277013}`,
+		"resetsAt missing":   `{"version":1,"fiveHour":{"usedPct":21},` + week + `,"writtenAt":1790277013}`,
+		"resetsAt zero":      `{"version":1,"fiveHour":{"usedPct":21,"resetsAt":0},` + week + `,"writtenAt":1790277013}`,
+		"resetsAt too late":  `{"version":1,"fiveHour":{"usedPct":21,"resetsAt":8589934593},` + week + `,"writtenAt":1790277013}`,
+		"empty window":       `{"version":1,"fiveHour":{},` + week + `,"writtenAt":1790277013}`,
+		"oversized":          `{"version":1,` + week + `,"writtenAt":1790277013,"pad":"` + strings.Repeat("x", 4096) + `"}`,
+	}
+	for name, data := range tests {
+		t.Run(name, func(t *testing.T) {
+			if trayRejects([]byte(data)) == "" {
+				t.Fatalf("the tray model accepts this case, so it proves nothing about Read: %.200s", data)
+			}
+			path := Path(t.TempDir())
+			if err := os.WriteFile(path, []byte(data), 0o600); err != nil {
+				t.Fatal(err)
+			}
+			_, err := Read(path)
+			if err == nil {
+				t.Fatalf("Read accepted a feed the tray rejects: %.200s", data)
+			}
+			if errors.Is(err, fs.ErrNotExist) {
+				t.Errorf("an invalid feed reads as missing: %v", err)
+			}
+		})
+	}
+}
+
+func TestReadUnreadableFileIsNotMissing(t *testing.T) {
+	// A directory at the feed's path exists but cannot be read as a file.
+	path := Path(t.TempDir())
+	if err := os.Mkdir(path, 0o700); err != nil {
+		t.Fatal(err)
+	}
+	if _, err := Read(path); err == nil || errors.Is(err, fs.ErrNotExist) {
+		t.Errorf("a directory at the feed path: err = %v, want an error that is not fs.ErrNotExist", err)
 	}
 }
 
@@ -249,7 +359,7 @@ func TestWriteSkipsAnUnchangedRecentFeed(t *testing.T) {
 func TestWriteLeavesOutInvalidWindows(t *testing.T) {
 	tests := []struct {
 		fiveHour string
-		want     *window
+		want     *Window
 	}{
 		{`null`, nil},
 		{`{}`, nil},
@@ -263,10 +373,10 @@ func TestWriteLeavesOutInvalidWindows(t *testing.T) {
 		{`{"used_percentage":21,"resets_at":0}`, nil},
 		{`{"used_percentage":21,"resets_at":-5}`, nil},
 		{`{"used_percentage":21,"resets_at":8589934593}`, nil},
-		{`{"used_percentage":0,"resets_at":1790283000}`, &window{UsedPct: 0, ResetsAt: 1790283000}},
-		{`{"used_percentage":100,"resets_at":1790283000}`, &window{UsedPct: 100, ResetsAt: 1790283000}},
-		{`{"used_percentage":21,"resets_at":1}`, &window{UsedPct: 21, ResetsAt: 1}},
-		{`{"used_percentage":21,"resets_at":8589934592}`, &window{UsedPct: 21, ResetsAt: 1 << 33}},
+		{`{"used_percentage":0,"resets_at":1790283000}`, &Window{UsedPct: 0, ResetsAt: 1790283000}},
+		{`{"used_percentage":100,"resets_at":1790283000}`, &Window{UsedPct: 100, ResetsAt: 1790283000}},
+		{`{"used_percentage":21,"resets_at":1}`, &Window{UsedPct: 21, ResetsAt: 1}},
+		{`{"used_percentage":21,"resets_at":8589934592}`, &Window{UsedPct: 21, ResetsAt: 1 << 33}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.fiveHour, func(t *testing.T) {
