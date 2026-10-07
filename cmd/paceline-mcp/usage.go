@@ -182,7 +182,7 @@ func windowFor(w *feed.Window, now time.Time) *windowAnswer {
 	used := render.Round(w.UsedPct)
 	return &windowAnswer{
 		UsedPct:     used,
-		LeftPct:     100 - used,
+		LeftPct:     max(0, 100-used),
 		ResetsAt:    rfc3339(w.ResetsAt, now),
 		ResetsClock: timefmt.Clock(float64(w.ResetsAt), now),
 		ResetPassed: w.ResetsAt <= now.Unix(),
@@ -215,7 +215,7 @@ func todayFor(r feed.Reading, f freshness, now time.Time, snap *pace.Snapshot) (
 	// With the reset still ahead, Compute returns LastDay or Budget, never None.
 	res := pace.Compute(week.UsedPct, anchorResetsAt(week.ResetsAt, snap), now, snap)
 	if res.Kind == pace.LastDay {
-		left := 100 - render.Round(week.UsedPct)
+		left := max(0, 100-render.Round(week.UsedPct))
 		return fmt.Sprintf("Last day before the weekly reset at %s: all %d%% left in the week is today's.", clock, left),
 			lastDayAnswer{Kind: kindLastDay, WeekLeftPct: left, WeekResetsAt: rfc3339(week.ResetsAt, now), WeekResetsClock: clock, freshness: f}
 	}
@@ -231,8 +231,11 @@ func todayFor(r feed.Reading, f freshness, now time.Time, snap *pace.Snapshot) (
 		WeekResetsClock: clock,
 		freshness:       f,
 	}
-	if res.Budget > 0 {
-		a.LeftPct = max(0, 100-a.UsedPct)
+	// LeftPct is the number the status line shows, rounded from what's left
+	// rather than derived from the rounded used figure, so the tool and the
+	// status line never disagree at a half-point tie. Over budget or with no budget, it is 0.
+	if res.Budget > 0 && !res.Over {
+		a.LeftPct = render.Round(res.PctLeft)
 	}
 	return budgetSummary(a, res), a
 }

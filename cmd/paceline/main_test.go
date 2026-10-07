@@ -34,7 +34,7 @@ func TestWritesDaySnapshot(t *testing.T) {
 	resets := time.Now().Add(4 * 24 * time.Hour).Unix()
 	in := `{"rate_limits":{"seven_day":{"used_percentage":10,"resets_at":` + jsonNum(resets) + `}}}`
 	_, out, _, dir := runCLI(t, in)
-	if !strings.Contains(out, "t 0% of ") {
+	if !strings.Contains(out, "t 100% of ") {
 		t.Errorf("stdout %q", out)
 	}
 	if _, err := os.Stat(filepath.Join(dir, "paceline-day.json")); err != nil {
@@ -147,7 +147,7 @@ func TestFailedFeedWriteKeepsStatusLine(t *testing.T) {
 		t.Fatal(err)
 	}
 	code, out := renderStdin(usagePayload())
-	if code != 0 || out == fallback || !strings.Contains(out, "s 21%") || !strings.Contains(out, "w 46%") {
+	if code != 0 || out == fallback || !strings.Contains(out, "s 79%") || !strings.Contains(out, "w 54%") {
 		t.Errorf("code %d, stdout %q", code, out)
 	}
 	if info, err := os.Stat(path); err != nil || !info.IsDir() {

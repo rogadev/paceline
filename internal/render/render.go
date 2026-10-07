@@ -125,21 +125,22 @@ func Render(p *payload.Payload, ctx Context) string {
 		}
 	}
 
-	// Usage limits: session, week, then today's share of the week.
+	// Usage limits: session, week, then today's share of the week. Each counts
+	// down what's left, so a number falling toward 0 is the signal to slow down.
+	// A reading past 100% shows 0 left, never a negative number.
 	if rl := p.RateLimits; rl != nil {
 		if fh := rl.FiveHour; on.Session && fh != nil && fh.UsedPercentage.Set {
-			used := Round(fh.UsedPercentage.V)
-			left := 100 - used
+			left := max(0, 100-Round(fh.UsedPercentage.V))
 			when := ""
 			if float64(left) < th.HeadroomGreen && fh.ResetsAt.Set {
 				when = " (resets " + timefmt.Clock(fh.ResetsAt.V, ctx.Now) + ")"
 			}
-			parts = append(parts, headroom(left, fmt.Sprintf("%s %d%%%s", label(ctx, "s", "session"), used, when)))
+			parts = append(parts, headroom(left, fmt.Sprintf("%s %d%%%s%s", label(ctx, "s", "session"), left, label(ctx, "", " left"), when)))
 		}
 		if sd := rl.SevenDay; sd != nil && sd.UsedPercentage.Set {
 			if on.Week {
-				used := Round(sd.UsedPercentage.V)
-				parts = append(parts, headroom(100-used, fmt.Sprintf("%s %d%%", label(ctx, "w", "week"), used)))
+				left := max(0, 100-Round(sd.UsedPercentage.V))
+				parts = append(parts, headroom(left, fmt.Sprintf("%s %d%%%s", label(ctx, "w", "week"), left, label(ctx, "", " left"))))
 			}
 			if on.Today && sd.ResetsAt.Set {
 				if today := renderToday(sd.UsedPercentage.V, sd.ResetsAt.V, ctx, st, headroom); today != "" {
@@ -239,15 +240,20 @@ func renderToday(usedPct, resetsAt float64, ctx Context, st style, headroom func
 		ctx.WriteSnapshot(r.Snapshot)
 	}
 
-	// Usage reads as % used, like session and week, so the number only climbs
-	// and the overshoot shows (118%). The budget is dim: it is fixed for the
-	// day, so it is context, not a warning.
+	// Today counts down what's left of its budget, like session and week. Past
+	// the budget a countdown would go negative, so it reads as how far over
+	// you are instead ("t over 18% of 28%"), in red. Over is at least 1: a
+	// reading just past the budget rounds to 100% used, and "over 0%" would
+	// contradict the red. The budget is dim: it is fixed for the day, so it is
+	// context, not a warning.
 	budget := " " + st.dim(fmt.Sprintf("of %d%%%s", Round(r.Budget), label(ctx, "", " budget")))
-	today := fmt.Sprintf("%s %d%%", label(ctx, "t", "today"), Round(r.PctUsed))
+	name := label(ctx, "t", "today")
 	if r.Over {
-		return st.red(today) + budget
+		over := max(Round(r.PctUsed)-100, 1)
+		return st.red(fmt.Sprintf("%s over %d%%", name, over)) + budget
 	}
-	return headroom(Round(r.PctLeft), today) + budget
+	left := Round(r.PctLeft)
+	return headroom(left, fmt.Sprintf("%s %d%%%s", name, left, label(ctx, "", " left"))) + budget
 }
 
 func separator(st style) string { return " " + st.dim(middleDot) + " " }

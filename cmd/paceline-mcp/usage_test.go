@@ -131,9 +131,14 @@ func TestTodayBudgetMatchesTheStatusLine(t *testing.T) {
 		{name: "below an even pace", anchorStart: 80, used: 82, resets: whole, pace: "down"},
 		{name: "about an even pace", anchorStart: 60, used: 61.5, resets: whole, pace: "even"},
 		{name: "week used up", anchorStart: 100, used: 100, resets: whole, pace: "down"},
+		// A 20% budget with 6.5 spent is exactly 32.5% used and 67.5% left, a
+		// tie both ways: the line shows 68 left, where 100 - 33 used is 67.
+		{name: "half-point tie", anchorStart: 42.5, used: 49, resets: whole, pace: "up"},
 		{name: "no anchor yet", anchorStart: -1, used: 46.5, resets: fractional, pace: "up"},
 	}
-	statusToday := regexp.MustCompile(`t (\d+)% of (\d+)%`)
+	// The status line shows what's left of today's budget, or how far over it
+	// you are: "t 54% of 28%" or "t over 18% of 28%".
+	statusToday := regexp.MustCompile(`t (over )?(\d+)% of (\d+)%`)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ts, dir := usageTools(t)
@@ -169,8 +174,22 @@ func TestTodayBudgetMatchesTheStatusLine(t *testing.T) {
 			if got["kind"] != "budget" {
 				t.Fatalf("kind = %v, want budget; answer %v", got["kind"], got)
 			}
-			if fmt.Sprint(got["usedPct"]) != m[1] || fmt.Sprint(got["budgetPct"]) != m[2] {
-				t.Errorf("tool says %v%% of %v%%, status line says %s", got["usedPct"], got["budgetPct"], m[0])
+			if fmt.Sprint(got["budgetPct"]) != m[3] {
+				t.Errorf("tool says a %v%% budget, status line says %s", got["budgetPct"], m[0])
+			}
+			// Under budget, the line's number is the tool's leftPct: what's left of
+			// the budget, rounded on its own, and 0 when there is none. Over
+			// budget, it is how far usedPct is past 100.
+			isOver := m[1] != ""
+			n, _ := strconv.Atoi(m[2])
+			if got["over"] != isOver {
+				t.Errorf("tool says over = %v, status line says %s", got["over"], m[0])
+			}
+			if !isOver && fmt.Sprint(got["leftPct"]) != m[2] {
+				t.Errorf("tool says %v%% left (%v%% used), status line says %s", got["leftPct"], got["usedPct"], m[0])
+			}
+			if isOver && fmt.Sprint(got["usedPct"]) != strconv.Itoa(100+n) {
+				t.Errorf("tool says %v%% used, status line says %s", got["usedPct"], m[0])
 			}
 			if got["pace"] != tt.pace {
 				t.Errorf("pace = %v, want %s", got["pace"], tt.pace)
@@ -410,6 +429,15 @@ func TestUsageReportsBothWindows(t *testing.T) {
 	}
 	if got["ageSeconds"] != 42.0 || got["stale"] != false {
 		t.Errorf("ageSeconds, stale = %v, %v", got["ageSeconds"], got["stale"])
+	}
+}
+
+// The feed never holds a reading past 100%, but Claude Code can report one,
+// and what's left must not go negative if it does.
+func TestUsageLeftNeverGoesNegative(t *testing.T) {
+	w := windowFor(&feed.Window{UsedPct: 100.5, ResetsAt: weekReset.Unix()}, now)
+	if w.UsedPct != 101 || w.LeftPct != 0 {
+		t.Errorf("usedPct, leftPct = %d, %d, want 101, 0", w.UsedPct, w.LeftPct)
 	}
 }
 
