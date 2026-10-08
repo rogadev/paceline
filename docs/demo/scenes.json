@@ -1,0 +1,3660 @@
+{
+  "version": 1,
+  "columns": 110,
+  "palette": {
+    "background": "#0c0c0c",
+    "foreground": "#cccccc",
+    "dim": "#767676",
+    "black": "#0c0c0c",
+    "red": "#c50f1f",
+    "green": "#13a10e",
+    "yellow": "#c19c00",
+    "blue": "#0037da",
+    "magenta": "#881798",
+    "cyan": "#3a96dd",
+    "white": "#cccccc",
+    "brightBlack": "#767676",
+    "brightRed": "#e74856",
+    "brightGreen": "#16c60c",
+    "brightYellow": "#f9f1a5",
+    "brightBlue": "#3b78ff",
+    "brightMagenta": "#b4009e",
+    "brightCyan": "#61d6d6",
+    "brightWhite": "#f2f2f2",
+    "reply": "#f2f2f2",
+    "spinner": "#d77757",
+    "promptRule": "#4eba65",
+    "modeLine": "#ff6b80"
+  },
+  "scenes": [
+    {
+      "id": "fresh-day",
+      "title": "Fresh day",
+      "caption": "Each morning, today's budget is set from what's left in the week, and it starts full.",
+      "layout": "terminal",
+      "durationMs": 5000,
+      "steps": [
+        {
+          "durationMs": 2500,
+          "now": "2026-10-09T09:02:00Z",
+          "reply": "Found it. The date picker formats in UTC. Switching it to the user's timezone now.",
+          "spinner": {
+            "verb": "Crafting",
+            "activity": "12s · ↓ 0.8k tokens"
+          },
+          "prompt": "also check the invoice dates while you're in there",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 98%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 80%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 100%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 98% · w 80% · t 100% of 28% · 2m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "acme-portal",
+                  "color": "#fd97d2"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "dev"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 98%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 80%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 100%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "2m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "durationMs": 2500,
+          "now": "2026-10-09T09:06:00Z",
+          "reply": "Found it. The date picker formats in UTC. Switching it to the user's timezone now.",
+          "spinner": {
+            "verb": "Crafting",
+            "activity": "41s · ↓ 2.6k tokens"
+          },
+          "prompt": "also check the invoice dates while you're in there",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 96%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 80%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 99%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m6m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 96% · w 80% · t 99% of 28% · 6m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "acme-portal",
+                  "color": "#fd97d2"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "dev"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 96%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 80%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 99%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "6m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "working-day",
+      "title": "Working through the day",
+      "caption": "As you work, every number counts down, and today turns yellow, then red, as its budget runs low.",
+      "layout": "terminal",
+      "durationMs": 7800,
+      "steps": [
+        {
+          "durationMs": 1800,
+          "now": "2026-10-09T12:10:00Z",
+          "reply": "Offline sync is in. Moving the queue logic into its own module next.",
+          "spinner": {
+            "verb": "Refactoring",
+            "activity": "2m 10s · ↓ 6.8k tokens"
+          },
+          "prompt": "go ahead and do the conflict handling too",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 80%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 74%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 79%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m40m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (feat/offline) · s 80% · w 74% · t 79% of 28% · 40m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "field-app",
+                  "color": "#b7b5fc"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "feat/offline"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 80%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 74%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 79%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "40m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "durationMs": 1800,
+          "now": "2026-10-09T13:20:00Z",
+          "reply": "Offline sync is in. Moving the queue logic into its own module next.",
+          "spinner": {
+            "verb": "Refactoring",
+            "activity": "5m 02s · ↓ 14.1k tokens"
+          },
+          "prompt": "go ahead and do the conflict handling too",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 55%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 66%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 50%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h50m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (feat/offline) · s 55% · w 66% · t 50% of 28% · 1h50m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "field-app",
+                  "color": "#b7b5fc"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "feat/offline"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 55%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 66%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 50%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "1h50m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "durationMs": 1800,
+          "now": "2026-10-09T14:30:00Z",
+          "reply": "Offline sync is in. Moving the queue logic into its own module next.",
+          "spinner": {
+            "verb": "Refactoring",
+            "activity": "8m 47s · ↓ 22.9k tokens"
+          },
+          "prompt": "go ahead and do the conflict handling too",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 38%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 59%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 25%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h0m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (feat/offline) · s 38% · w 59% · t 25% of 28% · 3h0m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "field-app",
+                  "color": "#b7b5fc"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "feat/offline"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 38%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 59%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 25%",
+                  "color": "yellow"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "3h0m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "durationMs": 2400,
+          "now": "2026-10-09T15:40:00Z",
+          "reply": "Offline sync is in. Moving the queue logic into its own module next.",
+          "spinner": {
+            "verb": "Refactoring",
+            "activity": "11m 30s · ↓ 31.4k tokens"
+          },
+          "prompt": "go ahead and do the conflict handling too",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 32%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 55%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt 11%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m4h10m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (feat/offline) · s 32% · w 55% · t 11% of 28% · 4h10m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "field-app",
+                  "color": "#b7b5fc"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "feat/offline"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 32%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 55%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 11%",
+                  "color": "#b92f2f"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "4h10m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "over-budget",
+      "title": "Over budget",
+      "caption": "Past today's budget, it shows how far over you are, in red.",
+      "layout": "terminal",
+      "durationMs": 6200,
+      "steps": [
+        {
+          "durationMs": 1800,
+          "now": "2026-10-09T16:10:00Z",
+          "reply": "Webhook retries now back off properly. Adding a test for the duplicate event case.",
+          "spinner": {
+            "verb": "Debugging",
+            "activity": "52s · ↓ 3.1k tokens"
+          },
+          "prompt": "log the event id when a duplicate is skipped",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 48%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 51%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt over 4%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h10m\u001b[0m",
+              "plain": "Opus 5.5 · billing-api (fix/webhooks) · s 48% · w 51% · t over 4% of 28% · 2h10m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "billing-api",
+                  "color": "#96d273"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "fix/webhooks"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 48%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 51%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t over 4%",
+                  "color": "#b92f2f"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "2h10m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "durationMs": 1800,
+          "now": "2026-10-09T16:25:00Z",
+          "reply": "Webhook retries now back off properly. Adding a test for the duplicate event case.",
+          "spinner": {
+            "verb": "Debugging",
+            "activity": "1m 37s · ↓ 5.9k tokens"
+          },
+          "prompt": "log the event id when a duplicate is skipped",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 43%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 49%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt over 13%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h25m\u001b[0m",
+              "plain": "Opus 5.5 · billing-api (fix/webhooks) · s 43% · w 49% · t over 13% of 28% · 2h25m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "billing-api",
+                  "color": "#96d273"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "fix/webhooks"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 43%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 49%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t over 13%",
+                  "color": "#b92f2f"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "2h25m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "durationMs": 2600,
+          "now": "2026-10-09T16:40:00Z",
+          "reply": "Webhook retries now back off properly. Adding a test for the duplicate event case.",
+          "spinner": {
+            "verb": "Debugging",
+            "activity": "2m 20s · ↓ 8.4k tokens"
+          },
+          "prompt": "log the event id when a duplicate is skipped",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 47%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt over 18%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h40m\u001b[0m",
+              "plain": "Opus 5.5 · billing-api (fix/webhooks) · s 39% · w 47% · t over 18% of 28% · 2h40m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "billing-api",
+                  "color": "#96d273"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "fix/webhooks"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 39%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 47%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t over 18%",
+                  "color": "#b92f2f"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "2h40m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "session-low",
+      "title": "Session running low",
+      "caption": "When the five-hour session runs low, it shows when it resets, and a filling context window gets a warning.",
+      "layout": "terminal",
+      "durationMs": 6200,
+      "steps": [
+        {
+          "durationMs": 1800,
+          "now": "2026-10-09T13:10:00Z",
+          "reply": "The flaky test is a race in the session refresh. Tracing where the token gets swapped.",
+          "spinner": {
+            "verb": "Investigating",
+            "activity": "1m 12s · ↓ 9.2k tokens"
+          },
+          "prompt": "add a regression test for the token refresh once it's fixed",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 34%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 62%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 34%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h45m\u001b[0m",
+              "plain": "Opus 5.5 · high effort · acme-portal (dev) · s 34% · w 62% · t 34% of 28% · 2h45m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "high effort",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "acme-portal",
+                  "color": "#fd97d2"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "dev"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 34%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 62%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 34%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "2h45m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "durationMs": 1800,
+          "now": "2026-10-09T13:50:00Z",
+          "reply": "The flaky test is a race in the session refresh. Tracing where the token gets swapped.",
+          "spinner": {
+            "verb": "Investigating",
+            "activity": "2m 58s · ↓ 18.4k tokens"
+          },
+          "prompt": "add a regression test for the token refresh once it's fixed",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[33ms 26% (resets 3:40pm)\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 60%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 27%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mctx 72%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h25m\u001b[0m",
+              "plain": "Opus 5.5 · high effort · acme-portal (dev) · s 26% (resets 3:40pm) · w 60% · t 27% of 28% · ctx 72% · 3h25m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "high effort",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "acme-portal",
+                  "color": "#fd97d2"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "dev"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 26% (resets 3:40pm)",
+                  "color": "yellow"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 60%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 27%",
+                  "color": "yellow"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "ctx 72%",
+                  "color": "yellow"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "3h25m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "durationMs": 2600,
+          "now": "2026-10-09T14:30:00Z",
+          "reply": "The flaky test is a race in the session refresh. Tracing where the token gets swapped.",
+          "spinner": {
+            "verb": "Investigating",
+            "activity": "4m 31s · ↓ 27.7k tokens"
+          },
+          "prompt": "add a regression test for the token refresh once it's fixed",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47ms 12% (resets 3:40pm)\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 58%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 20%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mctx 86%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m4h5m\u001b[0m",
+              "plain": "Opus 5.5 · high effort · acme-portal (dev) · s 12% (resets 3:40pm) · w 58% · t 20% of 28% · ctx 86% · 4h5m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "high effort",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "acme-portal",
+                  "color": "#fd97d2"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "dev"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 12% (resets 3:40pm)",
+                  "color": "#b92f2f"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 58%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 20%",
+                  "color": "yellow"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "ctx 86%",
+                  "color": "#b92f2f"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "4h5m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cache-cold",
+      "title": "Cache went cold",
+      "caption": "After a long pause the prompt cache expires, so it warns that the next message costs about twice as much.",
+      "layout": "terminal",
+      "durationMs": 5000,
+      "steps": [
+        {
+          "durationMs": 2200,
+          "now": "2026-10-09T15:00:00Z",
+          "reply": "The docs build is green. Let me know what to tackle next.",
+          "prompt": "",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mdocs-site\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 63%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 70%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 63%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m47m\u001b[0m",
+              "plain": "Opus 5.5 · docs-site (main) · s 63% · w 70% · t 63% of 28% · 47m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "docs-site",
+                  "color": "#b7b5fc"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "main"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 63%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 70%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 63%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "47m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "durationMs": 2800,
+          "now": "2026-10-09T15:12:00Z",
+          "reply": "The docs build is green. Let me know what to tackle next.",
+          "prompt": "add a search box to the docs sidebar",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mdocs-site\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 63%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 70%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 63%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mcache cold: 82k @ ~2x\u001b[0m \u001b[2m·\u001b[0m \u001b[2m59m\u001b[0m",
+              "plain": "Opus 5.5 · docs-site (main) · s 63% · w 70% · t 63% of 28% · cache cold: 82k @ ~2x · 59m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "docs-site",
+                  "color": "#b7b5fc"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "main"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 63%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 70%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 63%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "cache cold: 82k @ ~2x",
+                  "color": "#b92f2f"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "59m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "agent-job",
+      "title": "Agent job",
+      "caption": "An agent working through a batch reports its progress, one cell per step, until the job is done.",
+      "layout": "terminal",
+      "durationMs": 8000,
+      "steps": [
+        {
+          "durationMs": 1800,
+          "now": "2026-10-09T11:00:00Z",
+          "reply": "#327 passed review. Committing, then picking up #328.",
+          "spinner": {
+            "verb": "Orchestrating",
+            "activity": "6m 12s · ↓ 24.9k tokens"
+          },
+          "prompt": "work through the open issues on the board",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle) · /tasks to see subagents · ← 4 agents",
+          "subagents": [
+            {
+              "name": "main"
+            },
+            {
+              "name": "ui-implementer",
+              "task": "Fix round 1 #328 t2"
+            },
+            {
+              "name": "api-implementer",
+              "task": "Build #328 t1"
+            },
+            {
+              "name": "quality-reviewer",
+              "task": "Review #327"
+            },
+            {
+              "name": "test",
+              "task": "Run suite #327"
+            }
+          ],
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 70%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 66%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 48%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱▱\u001b[0m #328 2/5 \u001b[2m·\u001b[0m \u001b[2m1h30m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 70% · w 66% · t 48% of 28% · loop ▰▰▰▱▱ #328 2/5 · 1h30m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "acme-portal",
+                  "color": "#fd97d2"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "dev"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 70%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 66%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 48%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " loop "
+                },
+                {
+                  "text": "▰▰",
+                  "color": "green"
+                },
+                {
+                  "text": "▰",
+                  "color": "cyan"
+                },
+                {
+                  "text": "▱▱",
+                  "dim": true
+                },
+                {
+                  "text": " #328 2/5 "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "1h30m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "durationMs": 1800,
+          "now": "2026-10-09T11:20:00Z",
+          "reply": "#328 passed review. Committing, then picking up #329.",
+          "spinner": {
+            "verb": "Orchestrating",
+            "activity": "9m 40s · ↓ 38.2k tokens"
+          },
+          "prompt": "work through the open issues on the board",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle) · /tasks to see subagents · ← 4 agents",
+          "subagents": [
+            {
+              "name": "main"
+            },
+            {
+              "name": "ui-implementer",
+              "task": "Build #329 t1"
+            },
+            {
+              "name": "quality-reviewer",
+              "task": "Review #328"
+            },
+            {
+              "name": "scope-reviewer",
+              "task": "Check #328 contract"
+            },
+            {
+              "name": "test",
+              "task": "Run suite #328"
+            }
+          ],
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 65%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 65%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 45%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱\u001b[0m #329 3/5 \u001b[2m·\u001b[0m \u001b[2m1h50m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 65% · w 65% · t 45% of 28% · loop ▰▰▰▰▱ #329 3/5 · 1h50m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "acme-portal",
+                  "color": "#fd97d2"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "dev"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 65%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 65%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 45%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " loop "
+                },
+                {
+                  "text": "▰▰▰",
+                  "color": "green"
+                },
+                {
+                  "text": "▰",
+                  "color": "cyan"
+                },
+                {
+                  "text": "▱",
+                  "dim": true
+                },
+                {
+                  "text": " #329 3/5 "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "1h50m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "durationMs": 1800,
+          "now": "2026-10-09T11:40:00Z",
+          "reply": "#329 passed review. Committing, then picking up #330.",
+          "spinner": {
+            "verb": "Orchestrating",
+            "activity": "13m 05s · ↓ 51.7k tokens"
+          },
+          "prompt": "work through the open issues on the board",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle) · /tasks to see subagents · ← 3 agents",
+          "subagents": [
+            {
+              "name": "main"
+            },
+            {
+              "name": "api-implementer",
+              "task": "Build #330 t1"
+            },
+            {
+              "name": "quality-reviewer",
+              "task": "Review #329"
+            },
+            {
+              "name": "test",
+              "task": "Run suite #329"
+            }
+          ],
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 64%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 41%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰▰\u001b[0m\u001b[36m▰\u001b[0m #330 4/5 \u001b[2m·\u001b[0m \u001b[2m2h10m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 61% · w 64% · t 41% of 28% · loop ▰▰▰▰▰ #330 4/5 · 2h10m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "acme-portal",
+                  "color": "#fd97d2"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "dev"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 61%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 64%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 41%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " loop "
+                },
+                {
+                  "text": "▰▰▰▰",
+                  "color": "green"
+                },
+                {
+                  "text": "▰",
+                  "color": "cyan"
+                },
+                {
+                  "text": " #330 4/5 "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "2h10m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "durationMs": 2600,
+          "now": "2026-10-09T12:00:00Z",
+          "reply": "All five issues are done and committed.",
+          "prompt": "work through the open issues on the board",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "subagents": [
+            {
+              "name": "main"
+            }
+          ],
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 57%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 63%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 38%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰▰▰\u001b[0m \u001b[32m✓ done\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h30m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 57% · w 63% · t 38% of 28% · loop ▰▰▰▰▰ ✓ done · 2h30m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "acme-portal",
+                  "color": "#fd97d2"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "dev"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 57%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 63%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 38%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " loop "
+                },
+                {
+                  "text": "▰▰▰▰▰",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "✓ done",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "2h30m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "several-windows",
+      "title": "Several windows",
+      "caption": "Every window shares the same limits, and each one shows its own project in its own color.",
+      "layout": "windows",
+      "durationMs": 5200,
+      "steps": [
+        {
+          "durationMs": 2600,
+          "now": "2026-10-09T14:00:00Z",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 42%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 32%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h10m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 42% · w 61% · t 32% of 28% · 1h10m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "acme-portal",
+                  "color": "#fd97d2"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "dev"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 42%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 61%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 32%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "1h10m",
+                  "dim": true
+                }
+              ]
+            },
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 42%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 32%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mctx 74%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m25m\u001b[0m",
+              "plain": "Opus 5.5 · high effort · field-app (feat/offline) · s 42% · w 61% · t 32% of 28% · ctx 74% · 25m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "high effort",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "field-app",
+                  "color": "#b7b5fc"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "feat/offline"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 42%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 61%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 32%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "ctx 74%",
+                  "color": "yellow"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "25m",
+                  "dim": true
+                }
+              ]
+            },
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[33mfast mode\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 42%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 32%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m10m\u001b[0m",
+              "plain": "Opus 5.5 · fast mode · billing-api (fix/webhooks) · s 42% · w 61% · t 32% of 28% · 10m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "fast mode",
+                  "color": "yellow"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "billing-api",
+                  "color": "#96d273"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "fix/webhooks"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 42%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 61%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 32%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "10m",
+                  "dim": true
+                }
+              ]
+            },
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;242;175;72mpaceline\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 42%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 32%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱\u001b[0m #42 1/3 \u001b[2m·\u001b[0m \u001b[2m5m\u001b[0m",
+              "plain": "Opus 5.5 · paceline (dev) · s 42% · w 61% · t 32% of 28% · loop ▰▰▱ #42 1/3 · 5m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "paceline",
+                  "color": "#f2af48"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "dev"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 42%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 61%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 32%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " loop "
+                },
+                {
+                  "text": "▰",
+                  "color": "green"
+                },
+                {
+                  "text": "▰",
+                  "color": "cyan"
+                },
+                {
+                  "text": "▱",
+                  "dim": true
+                },
+                {
+                  "text": " #42 1/3 "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "5m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "durationMs": 2600,
+          "now": "2026-10-09T14:20:00Z",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 60%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 29%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h30m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 39% · w 60% · t 29% of 28% · 1h30m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "acme-portal",
+                  "color": "#fd97d2"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "dev"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 39%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 60%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 29%",
+                  "color": "yellow"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "1h30m",
+                  "dim": true
+                }
+              ]
+            },
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 60%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 29%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mctx 74%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m45m\u001b[0m",
+              "plain": "Opus 5.5 · high effort · field-app (feat/offline) · s 39% · w 60% · t 29% of 28% · ctx 74% · 45m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "high effort",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "field-app",
+                  "color": "#b7b5fc"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "feat/offline"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 39%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 60%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 29%",
+                  "color": "yellow"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "ctx 74%",
+                  "color": "yellow"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "45m",
+                  "dim": true
+                }
+              ]
+            },
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[33mfast mode\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 60%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 29%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m30m\u001b[0m",
+              "plain": "Opus 5.5 · fast mode · billing-api (fix/webhooks) · s 39% · w 60% · t 29% of 28% · 30m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "fast mode",
+                  "color": "yellow"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "billing-api",
+                  "color": "#96d273"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "fix/webhooks"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 39%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 60%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 29%",
+                  "color": "yellow"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "30m",
+                  "dim": true
+                }
+              ]
+            },
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;242;175;72mpaceline\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 60%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 29%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰\u001b[0m\u001b[36m▰\u001b[0m #43 2/3 \u001b[2m·\u001b[0m \u001b[2m25m\u001b[0m",
+              "plain": "Opus 5.5 · paceline (dev) · s 39% · w 60% · t 29% of 28% · loop ▰▰▰ #43 2/3 · 25m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "paceline",
+                  "color": "#f2af48"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "dev"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 39%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 60%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 29%",
+                  "color": "yellow"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 28%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " loop "
+                },
+                {
+                  "text": "▰▰",
+                  "color": "green"
+                },
+                {
+                  "text": "▰",
+                  "color": "cyan"
+                },
+                {
+                  "text": " #43 2/3 "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "25m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "last-day",
+      "title": "Last day",
+      "caption": "On the last day before the weekly reset, today's budget is everything left in the week.",
+      "layout": "terminal",
+      "durationMs": 6200,
+      "steps": [
+        {
+          "durationMs": 1800,
+          "now": "2026-10-11T10:00:00Z",
+          "reply": "Copy tweaks are done across all six screens.",
+          "spinner": {
+            "verb": "Polishing",
+            "activity": "17s · ↓ 0.9k tokens"
+          },
+          "prompt": "make the empty states match the new illustrations",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 97%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 67%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 99%\u001b[0m \u001b[2mof 68%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m5m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (main) · s 97% · w 67% · t 99% of 68% · 5m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "field-app",
+                  "color": "#b7b5fc"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "main"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 97%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 67%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 99%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 68%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "5m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "durationMs": 1800,
+          "now": "2026-10-11T11:30:00Z",
+          "reply": "Copy tweaks are done across all six screens.",
+          "spinner": {
+            "verb": "Polishing",
+            "activity": "1m 48s · ↓ 7.3k tokens"
+          },
+          "prompt": "make the empty states match the new illustrations",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 69%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 55%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 81%\u001b[0m \u001b[2mof 68%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h35m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (main) · s 69% · w 55% · t 81% of 68% · 1h35m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "field-app",
+                  "color": "#b7b5fc"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "main"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 69%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 55%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 81%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 68%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "1h35m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "durationMs": 2600,
+          "now": "2026-10-11T13:00:00Z",
+          "reply": "Copy tweaks are done across all six screens.",
+          "spinner": {
+            "verb": "Polishing",
+            "activity": "3m 02s · ↓ 12.6k tokens"
+          },
+          "prompt": "make the empty states match the new illustrations",
+          "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
+          "statusLines": [
+            {
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 43%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 42%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 62%\u001b[0m \u001b[2mof 68%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h5m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (main) · s 43% · w 42% · t 62% of 68% · 3h5m",
+              "runs": [
+                {
+                  "text": "Opus 5.5",
+                  "color": "cyan"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "field-app",
+                  "color": "#b7b5fc"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "(",
+                  "dim": true
+                },
+                {
+                  "text": "main"
+                },
+                {
+                  "text": ")",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "s 43%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 42%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "t 62%",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "of 68%",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "3h5m",
+                  "dim": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
