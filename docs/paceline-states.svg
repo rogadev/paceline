@@ -1,133 +1,310 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="980" height="292" viewBox="0 0 980 292" role="img" aria-labelledby="title desc">
-  <title id="title">paceline in a Claude Code window</title>
-  <desc id="desc">A Claude Code window cycling through seven status lines: a fresh day, a light week, a session running dry, over budget, a cold cache, the last day before the weekly reset, and an agent job with a progress bar. Session, week, and today count down what's left, from 100%.</desc>
-  <style>
-    text { font-family: ui-monospace, SFMono-Regular, "Cascadia Mono", Menlo, Consolas, "DejaVu Sans Mono", monospace; font-size: 13.5px; fill: #d6d9e0; white-space: pre; }
-    .cap { font-size: 13px; }
-    .b { font-weight: 700; }
-    .d { fill: #7a8090; }
-    .g { fill: #73c991; }
-    .y { fill: #e2c08d; }
-    .c { fill: #4fc1d6; }
-    .r { fill: #b92f2f; }
-    .o { fill: #d97757; }
-    .w { fill: #f2f3f5; }
-    .p1 { fill: #fd97d2; }
-    .p2 { fill: #b7b5fc; }
-    .p3 { fill: #96d273; }
-    .cells { font-size: 16px; }
-
-    .scene, .dot { opacity: 0; animation-duration: 31.5s; animation-iteration-count: infinite; animation-fill-mode: both; }
-    .scene { animation-name: scene; }
-    .dot { opacity: 1; fill: #3a3f4b; animation-name: dot; }
-    @keyframes scene {
-      0% { opacity: 0; }
-      1.2% { opacity: 1; }
-      13.1% { opacity: 1; }
-      14.28% { opacity: 0; }
-      100% { opacity: 0; }
-    }
-    @keyframes dot {
-      0% { fill: #3a3f4b; }
-      1.2% { fill: #d97757; }
-      13.1% { fill: #d97757; }
-      14.28% { fill: #3a3f4b; }
-      100% { fill: #3a3f4b; }
-    }
-    .n1 { animation-delay: 0s; }
-    .n2 { animation-delay: 4.5s; }
-    .n3 { animation-delay: 9s; }
-    .n4 { animation-delay: 13.5s; }
-    .n5 { animation-delay: 18s; }
-    .n6 { animation-delay: 22.5s; }
-    .n7 { animation-delay: 27s; }
-
-    @media (prefers-reduced-motion: reduce) {
-      .scene, .dot { animation: none; }
-      .scene { opacity: 0; }
-      .scene.n1 { opacity: 1; }
-      .dot.n1 { fill: #d97757; }
-    }
-  </style>
-
-  <!-- Window -->
-  <rect x="0.5" y="0.5" width="979" height="291" rx="10" fill="#16181d" stroke="#2a2e37"/>
-  <path d="M0.5 40.5 H979.5" stroke="#2a2e37"/>
-  <circle cx="22" cy="20.5" r="5.5" fill="#ff5f57"/>
-  <circle cx="40" cy="20.5" r="5.5" fill="#febc2e"/>
-  <circle cx="58" cy="20.5" r="5.5" fill="#28c840"/>
-  <rect x="24" y="142" width="932" height="38" rx="6" fill="none" stroke="#3a3f4b"/>
-
-  <!-- 1. Fresh day -->
-  <g class="scene n1">
-    <text class="cap" x="84" y="25"><tspan class="w b">Fresh day</tspan><tspan class="d">  Today's budget is set at midnight and starts at 100% left.</tspan></text>
-    <text x="24" y="74"><tspan class="w">● </tspan>Found it. The date picker formats in UTC. Switching it to the user timezone now.</text>
-    <text x="24" y="110"><tspan class="o">✻ Crafting… </tspan><tspan class="d">(28s · ↓ 1.2k tokens · thinking)</tspan></text>
-    <text x="38" y="166"><tspan class="d">&gt; </tspan>also check the invoice dates while you are in there</text>
-    <text x="24" y="210"><tspan class="c">Opus 5.5</tspan><tspan class="d"> · </tspan><tspan class="p1">acme-portal</tspan> <tspan class="d">(</tspan>dev<tspan class="d">)</tspan><tspan class="d"> · </tspan><tspan class="g">s 98%</tspan><tspan class="d"> · </tspan><tspan class="g">w 52%</tspan><tspan class="d"> · </tspan><tspan class="g">t 100%</tspan> <tspan class="d">of 17%</tspan><tspan class="d"> · </tspan><tspan class="d">2m</tspan></text>
-  </g>
-
-  <!-- 2. Light week -->
-  <g class="scene n2">
-    <text class="cap" x="84" y="25"><tspan class="w b">Light week</tspan><tspan class="d">  What you don't spend spreads over the days left, so budgets grow.</tspan></text>
-    <text x="24" y="74"><tspan class="w">● </tspan>Offline sync is in. Moving the queue logic into its own module next.</text>
-    <text x="24" y="110"><tspan class="o">✻ Refactoring… </tspan><tspan class="d">(1m 04s · ↓ 6.8k tokens)</tspan></text>
-    <text x="38" y="166"><tspan class="d">&gt; </tspan>go ahead and do the conflict handling too</text>
-    <text x="24" y="210"><tspan class="c">Sonnet 5.5</tspan><tspan class="d"> · </tspan><tspan class="p2">field-app</tspan> <tspan class="d">(</tspan>feat/offline<tspan class="d">)</tspan><tspan class="d"> · </tspan><tspan class="g">s 71%</tspan><tspan class="d"> · </tspan><tspan class="g">w 88%</tspan><tspan class="d"> · </tspan><tspan class="g">t 64%</tspan> <tspan class="d">of 29%</tspan><tspan class="d"> · </tspan><tspan class="d">1h12m</tspan></text>
-  </g>
-
-  <!-- 3. Session running dry -->
-  <g class="scene n3">
-    <text class="cap" x="84" y="25"><tspan class="w b">Session running dry</tspan><tspan class="d">  Below 30% left, the session shows when it resets.</tspan></text>
-    <text x="24" y="74"><tspan class="w">● </tspan>The flaky test is a race in the session refresh. Tracing where the token gets swapped.</text>
-    <text x="24" y="110"><tspan class="o">✻ Investigating… </tspan><tspan class="d">(3m 41s · ↓ 18.4k tokens · thinking)</tspan></text>
-    <text x="38" y="166"><tspan class="d">&gt; </tspan>add a regression test for the token refresh once it is fixed</text>
-    <text x="24" y="210"><tspan class="c">Opus 5.5</tspan><tspan class="d"> · </tspan><tspan class="p1">acme-portal</tspan> <tspan class="d">(</tspan>dev<tspan class="d">)</tspan><tspan class="d"> · </tspan><tspan class="r">s 6% (resets 3:40pm)</tspan><tspan class="d"> · </tspan><tspan class="g">w 44%</tspan><tspan class="d"> · </tspan><tspan class="y">t 22%</tspan> <tspan class="d">of 11%</tspan><tspan class="d"> · </tspan><tspan class="y">ctx 78%</tspan><tspan class="d"> · </tspan><tspan class="d">3h5m</tspan></text>
-  </g>
-
-  <!-- 4. Over budget -->
-  <g class="scene n4">
-    <text class="cap" x="84" y="25"><tspan class="w b">Over budget</tspan><tspan class="d">  Past today's budget, it counts up how far over you are, in red.</tspan></text>
-    <text x="24" y="74"><tspan class="w">● </tspan>Webhook retries now back off properly. Adding a test for the duplicate event case.</text>
-    <text x="24" y="110"><tspan class="o">✻ Debugging… </tspan><tspan class="d">(52s · ↓ 3.1k tokens)</tspan></text>
-    <text x="38" y="166"><tspan class="d">&gt; </tspan>log the event id when a duplicate is skipped</text>
-    <text x="24" y="210"><tspan class="c">Opus 5.5</tspan><tspan class="d"> · </tspan><tspan class="p3">billing-api</tspan> <tspan class="d">(</tspan>fix/webhooks<tspan class="d">)</tspan><tspan class="d"> · </tspan><tspan class="g">s 41%</tspan><tspan class="d"> · </tspan><tspan class="y">w 23%</tspan><tspan class="d"> · </tspan><tspan class="r">t over 18%</tspan> <tspan class="d">of 9%</tspan><tspan class="d"> · </tspan><tspan class="d">2h40m</tspan></text>
-  </g>
-
-  <!-- 5. Cache went cold -->
-  <g class="scene n5">
-    <text class="cap" x="84" y="25"><tspan class="w b">Cache went cold</tspan><tspan class="d">  The prompt cache expired, so the next message costs about twice as much.</tspan></text>
-    <text x="24" y="74"><tspan class="w">● </tspan>The docs build is green. Let me know what to tackle next.</text>
-    <text x="24" y="110"><tspan class="o">✻ Reading… </tspan><tspan class="d">(9s · ↓ 402 tokens)</tspan></text>
-    <text x="38" y="166"><tspan class="d">&gt; </tspan>add a search box to the docs sidebar</text>
-    <text x="24" y="210"><tspan class="c">Opus 5.5</tspan><tspan class="d"> · </tspan><tspan class="p2">docs-site</tspan> <tspan class="d">(</tspan>main<tspan class="d">)</tspan><tspan class="d"> · </tspan><tspan class="g">s 63%</tspan><tspan class="d"> · </tspan><tspan class="g">w 57%</tspan><tspan class="d"> · </tspan><tspan class="g">t 48%</tspan> <tspan class="d">of 14%</tspan><tspan class="d"> · </tspan><tspan class="r">cache cold: 82k @ ~2x</tspan><tspan class="d"> · </tspan><tspan class="d">47m</tspan></text>
-  </g>
-
-  <!-- 6. Last day -->
-  <g class="scene n6">
-    <text class="cap" x="84" y="25"><tspan class="w b">Last day</tspan><tspan class="d">  Before the weekly reset, everything left in the week is today's budget.</tspan></text>
-    <text x="24" y="74"><tspan class="w">● </tspan>Copy tweaks are done across all six screens.</text>
-    <text x="24" y="110"><tspan class="o">✻ Polishing… </tspan><tspan class="d">(17s · ↓ 880 tokens)</tspan></text>
-    <text x="38" y="166"><tspan class="d">&gt; </tspan>make the empty states match the new illustrations</text>
-    <text x="24" y="210"><tspan class="c">Haiku 5.5</tspan><tspan class="d"> · </tspan><tspan class="p2">field-app</tspan> <tspan class="d">(</tspan>main<tspan class="d">)</tspan><tspan class="d"> · </tspan><tspan class="g">s 90%</tspan><tspan class="d"> · </tspan><tspan class="r">w 12%</tspan><tspan class="d"> · </tspan><tspan class="g">t 60%</tspan> <tspan class="d">of 20%</tspan><tspan class="d"> · </tspan><tspan class="d">25m</tspan></text>
-  </g>
-
-  <!-- 7. Agent job -->
-  <g class="scene n7">
-    <text class="cap" x="84" y="25"><tspan class="w b">Agent job</tspan><tspan class="d">  An agent reports a long job's progress: done, active, and still to come.</tspan></text>
-    <text x="24" y="74"><tspan class="w">● </tspan>Issue #42 passed review. Committing, then picking up #43.</text>
-    <text x="24" y="110"><tspan class="o">✻ Orchestrating… </tspan><tspan class="d">(6m 12s · ↓ 24.9k tokens · 3 agents)</tspan></text>
-    <text x="38" y="166"><tspan class="d">&gt; </tspan>work through the open issues on the board</text>
-    <text x="24" y="210"><tspan class="c">Opus 5.5</tspan><tspan class="d"> · </tspan><tspan class="d">high effort</tspan><tspan class="d"> · </tspan><tspan class="p1">acme-portal</tspan> <tspan class="d">(</tspan>dev<tspan class="d">)</tspan><tspan class="d"> · </tspan><tspan class="g">s 54%</tspan><tspan class="d"> · </tspan><tspan class="g">w 61%</tspan><tspan class="d"> · </tspan><tspan class="g">t 70%</tspan> <tspan class="d">of 16%</tspan><tspan class="d"> · </tspan>orc <tspan class="cells"><tspan class="g">▰▰</tspan><tspan class="c">▰</tspan><tspan class="d">▱▱</tspan></tspan> #42 review 55%<tspan class="d"> · </tspan><tspan class="d">1h38m</tspan></text>
-  </g>
-
-  <!-- Footer and scene dots -->
-  <text class="d" x="24" y="236">⏵⏵ bypass permissions on (shift+tab to cycle)</text>
-  <circle class="dot n1" cx="436" cy="266" r="4"/>
-  <circle class="dot n2" cx="454" cy="266" r="4"/>
-  <circle class="dot n3" cx="472" cy="266" r="4"/>
-  <circle class="dot n4" cx="490" cy="266" r="4"/>
-  <circle class="dot n5" cx="508" cy="266" r="4"/>
-  <circle class="dot n6" cx="526" cy="266" r="4"/>
-  <circle class="dot n7" cx="544" cy="266" r="4"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="951" height="402" viewBox="0 0 951 402" role="img" aria-labelledby="title desc" xml:space="preserve">
+<title id="title">paceline in a Claude Code window</title>
+<desc id="desc">A Claude Code window with paceline's status line under the prompt, playing 8 scenes in a loop: Fresh day, Working through the day, Over budget, Session running low, Cache went cold, Agent job, Several windows, and Last day. Session, week, and today count down what's left of each, from 100%.</desc>
+<style>
+/* Cascadia Mono 2407.24, (c) Microsoft Corporation, SIL Open Font License 1.1, subset to the characters drawn here. */
+@font-face{font-family:"paceline-demo-mono";src:url(data:font/woff;base64,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) format("woff")}
+text{font-family:"paceline-demo-mono",monospace;font-size:14px;fill:#cccccc;font-kerning:none;font-variant-ligatures:none}
+.b{font-weight:bold}
+.c0{fill:#f2f2f2}
+.c1{fill:#d77757}
+.c2{fill:#767676}
+.c3{fill:#4eba65}
+.c4{fill:#cccccc}
+.c5{fill:#3a96dd}
+.c6{fill:#fd97d2}
+.c7{fill:#13a10e}
+.c8{fill:#ff6b80}
+.c9{fill:#b7b5fc}
+.c10{fill:#c19c00}
+.c11{fill:#b92f2f}
+.c12{fill:#96d273}
+.c13{fill:#f2af48}
+.a{animation-duration:49600ms;animation-iteration-count:infinite}
+.s,.d{animation-timing-function:linear}
+.p{animation-timing-function:step-end}
+.s,.p{opacity:0}
+.on{opacity:1}
+.d{fill:#767676}
+.d.on{fill:#d77757}
+@keyframes k0{0%{opacity:0}0.605%{opacity:1}9.476%{opacity:1}10.081%{opacity:0}100%{opacity:0}}
+@keyframes k1{0%{opacity:1}5.04%{opacity:0}100%{opacity:0}}
+@keyframes k2{0%{opacity:0}5.04%{opacity:1}10.081%{opacity:0}100%{opacity:0}}
+@keyframes k3{0%{opacity:0}10.081%{opacity:0}10.685%{opacity:1}25.202%{opacity:1}25.806%{opacity:0}100%{opacity:0}}
+@keyframes k4{0%{opacity:0}10.081%{opacity:1}13.71%{opacity:0}100%{opacity:0}}
+@keyframes k5{0%{opacity:0}13.71%{opacity:1}17.339%{opacity:0}100%{opacity:0}}
+@keyframes k6{0%{opacity:0}17.339%{opacity:1}20.968%{opacity:0}100%{opacity:0}}
+@keyframes k7{0%{opacity:0}20.968%{opacity:1}25.806%{opacity:0}100%{opacity:0}}
+@keyframes k8{0%{opacity:0}25.806%{opacity:0}26.411%{opacity:1}37.702%{opacity:1}38.306%{opacity:0}100%{opacity:0}}
+@keyframes k9{0%{opacity:0}25.806%{opacity:1}29.435%{opacity:0}100%{opacity:0}}
+@keyframes k10{0%{opacity:0}29.435%{opacity:1}33.065%{opacity:0}100%{opacity:0}}
+@keyframes k11{0%{opacity:0}33.065%{opacity:1}38.306%{opacity:0}100%{opacity:0}}
+@keyframes k12{0%{opacity:0}38.306%{opacity:0}38.911%{opacity:1}50.202%{opacity:1}50.806%{opacity:0}100%{opacity:0}}
+@keyframes k13{0%{opacity:0}38.306%{opacity:1}41.935%{opacity:0}100%{opacity:0}}
+@keyframes k14{0%{opacity:0}41.935%{opacity:1}45.565%{opacity:0}100%{opacity:0}}
+@keyframes k15{0%{opacity:0}45.565%{opacity:1}50.806%{opacity:0}100%{opacity:0}}
+@keyframes k16{0%{opacity:0}50.806%{opacity:0}51.411%{opacity:1}60.282%{opacity:1}60.887%{opacity:0}100%{opacity:0}}
+@keyframes k17{0%{opacity:0}50.806%{opacity:1}55.242%{opacity:0}100%{opacity:0}}
+@keyframes k18{0%{opacity:0}55.242%{opacity:1}60.887%{opacity:0}100%{opacity:0}}
+@keyframes k19{0%{opacity:0}60.887%{opacity:0}61.492%{opacity:1}76.411%{opacity:1}77.016%{opacity:0}100%{opacity:0}}
+@keyframes k20{0%{opacity:0}60.887%{opacity:1}64.516%{opacity:0}100%{opacity:0}}
+@keyframes k21{0%{opacity:0}64.516%{opacity:1}68.145%{opacity:0}100%{opacity:0}}
+@keyframes k22{0%{opacity:0}68.145%{opacity:1}71.774%{opacity:0}100%{opacity:0}}
+@keyframes k23{0%{opacity:0}71.774%{opacity:1}77.016%{opacity:0}100%{opacity:0}}
+@keyframes k24{0%{opacity:0}77.016%{opacity:0}77.621%{opacity:1}86.895%{opacity:1}87.5%{opacity:0}100%{opacity:0}}
+@keyframes k25{0%{opacity:0}77.016%{opacity:1}82.258%{opacity:0}100%{opacity:0}}
+@keyframes k26{0%{opacity:0}82.258%{opacity:1}87.5%{opacity:0}100%{opacity:0}}
+@keyframes k27{0%{opacity:0}87.5%{opacity:0}88.105%{opacity:1}99.395%{opacity:1}100%{opacity:0}}
+@keyframes k28{0%{opacity:0}87.5%{opacity:1}91.129%{opacity:0}100%{opacity:0}}
+@keyframes k29{0%{opacity:0}91.129%{opacity:1}94.758%{opacity:0}100%{opacity:0}}
+@keyframes k30{0%{opacity:0}94.758%{opacity:1}100%{opacity:0}}
+@keyframes k31{0%{fill:#767676}0.605%{fill:#d77757}9.476%{fill:#d77757}10.081%{fill:#767676}100%{fill:#767676}}
+@keyframes k32{0%{fill:#767676}10.081%{fill:#767676}10.685%{fill:#d77757}25.202%{fill:#d77757}25.806%{fill:#767676}100%{fill:#767676}}
+@keyframes k33{0%{fill:#767676}25.806%{fill:#767676}26.411%{fill:#d77757}37.702%{fill:#d77757}38.306%{fill:#767676}100%{fill:#767676}}
+@keyframes k34{0%{fill:#767676}38.306%{fill:#767676}38.911%{fill:#d77757}50.202%{fill:#d77757}50.806%{fill:#767676}100%{fill:#767676}}
+@keyframes k35{0%{fill:#767676}50.806%{fill:#767676}51.411%{fill:#d77757}60.282%{fill:#d77757}60.887%{fill:#767676}100%{fill:#767676}}
+@keyframes k36{0%{fill:#767676}60.887%{fill:#767676}61.492%{fill:#d77757}76.411%{fill:#d77757}77.016%{fill:#767676}100%{fill:#767676}}
+@keyframes k37{0%{fill:#767676}77.016%{fill:#767676}77.621%{fill:#d77757}86.895%{fill:#d77757}87.5%{fill:#767676}100%{fill:#767676}}
+@keyframes k38{0%{fill:#767676}87.5%{fill:#767676}88.105%{fill:#d77757}99.395%{fill:#d77757}100%{fill:#767676}}
+@media (prefers-reduced-motion:reduce){.a{animation:none}}
+</style>
+<rect x="0.5" y="0.5" width="950" height="401" rx="10" fill="#0c0c0c" stroke="#767676" stroke-opacity="0.4"/>
+<rect x="1" y="68" width="949" height="1" fill="#767676" fill-opacity="0.4"/>
+<g class="s a on" style="animation-name:k0">
+<text y="33"><tspan x="24" class="c0 b">Fresh day</tspan></text>
+<text y="53"><tspan x="24">Each morning, today's budget is set from what's left in the week, and it starts full.</tspan></text>
+<text y="93"><tspan x="24" class="c0">●</tspan><tspan x="40.41">Found it. The date picker formats in UTC. Switching it to the user's timezone now.</tspan></text>
+<rect class="c3" x="24" y="167.5" width="902.34" height="1"/>
+<text y="193"><tspan x="24">&gt; also check the invoice dates while you're in there</tspan></text>
+<rect class="c4" x="450.56" y="179.5" width="8.2" height="17"/>
+<rect class="c3" x="24" y="207.5" width="902.34" height="1"/>
+<text y="253"><tspan x="65.02" class="c8">bypass permissions on (shift+tab to cycle)</tspan></text>
+<path class="c8" d="M41.88 244.18L41.88 251.74L47.62 247.96Z"/>
+<path class="c8" d="M50.09 244.18L50.09 251.74L55.83 247.96Z"/>
+<g class="p a on" style="animation-name:k1">
+<text y="133"><tspan x="40.41" class="c1">Crafting…</tspan><tspan x="122.44" class="c2">(12s · ↓ 0.8k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c6">acme-portal</tspan><tspan x="229.08" class="c2">(</tspan><tspan x="237.28">dev</tspan><tspan x="261.89" class="c2">)</tspan><tspan x="278.3" class="c2">·</tspan><tspan x="294.7" class="c7">s 98%</tspan><tspan x="343.92" class="c2">·</tspan><tspan x="360.33" class="c7">w 80%</tspan><tspan x="409.55" class="c2">·</tspan><tspan x="425.95" class="c7">t 100%</tspan><tspan x="483.38" class="c2">of 28%</tspan><tspan x="540.8" class="c2">·</tspan><tspan x="557.2" class="c2">2m</tspan></text>
+</g>
+<g class="p a" style="animation-name:k2">
+<text y="133"><tspan x="40.41" class="c1">Crafting…</tspan><tspan x="122.44" class="c2">(41s · ↓ 2.6k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c6">acme-portal</tspan><tspan x="229.08" class="c2">(</tspan><tspan x="237.28">dev</tspan><tspan x="261.89" class="c2">)</tspan><tspan x="278.3" class="c2">·</tspan><tspan x="294.7" class="c7">s 96%</tspan><tspan x="343.92" class="c2">·</tspan><tspan x="360.33" class="c7">w 80%</tspan><tspan x="409.55" class="c2">·</tspan><tspan x="425.95" class="c7">t 99%</tspan><tspan x="475.17" class="c2">of 28%</tspan><tspan x="532.59" class="c2">·</tspan><tspan x="549" class="c2">6m</tspan></text>
+</g>
+</g>
+<g class="s a" style="animation-name:k3">
+<text y="33"><tspan x="24" class="c0 b">Working through the day</tspan></text>
+<text y="53"><tspan x="24">As you work, every number counts down, and today turns yellow, then red, as its budget runs low.</tspan></text>
+<text y="93"><tspan x="24" class="c0">●</tspan><tspan x="40.41">Offline sync is in. Moving the queue logic into its own module next.</tspan></text>
+<rect class="c3" x="24" y="167.5" width="902.34" height="1"/>
+<text y="193"><tspan x="24">&gt; go ahead and do the conflict handling too</tspan></text>
+<rect class="c4" x="376.73" y="179.5" width="8.2" height="17"/>
+<rect class="c3" x="24" y="207.5" width="902.34" height="1"/>
+<text y="253"><tspan x="65.02" class="c8">bypass permissions on (shift+tab to cycle)</tspan></text>
+<path class="c8" d="M41.88 244.18L41.88 251.74L47.62 247.96Z"/>
+<path class="c8" d="M50.09 244.18L50.09 251.74L55.83 247.96Z"/>
+<g class="p a on" style="animation-name:k4">
+<text y="133"><tspan x="40.41" class="c1">Refactoring…</tspan><tspan x="147.05" class="c2">(2m 10s · ↓ 6.8k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c9">field-app</tspan><tspan x="212.67" class="c2">(</tspan><tspan x="220.88">feat/offline</tspan><tspan x="319.31" class="c2">)</tspan><tspan x="335.72" class="c2">·</tspan><tspan x="352.12" class="c7">s 80%</tspan><tspan x="401.34" class="c2">·</tspan><tspan x="417.75" class="c7">w 74%</tspan><tspan x="466.97" class="c2">·</tspan><tspan x="483.38" class="c7">t 79%</tspan><tspan x="532.59" class="c2">of 28%</tspan><tspan x="590.02" class="c2">·</tspan><tspan x="606.42" class="c2">40m</tspan></text>
+</g>
+<g class="p a" style="animation-name:k5">
+<text y="133"><tspan x="40.41" class="c1">Refactoring…</tspan><tspan x="147.05" class="c2">(5m 02s · ↓ 14.1k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c9">field-app</tspan><tspan x="212.67" class="c2">(</tspan><tspan x="220.88">feat/offline</tspan><tspan x="319.31" class="c2">)</tspan><tspan x="335.72" class="c2">·</tspan><tspan x="352.12" class="c7">s 55%</tspan><tspan x="401.34" class="c2">·</tspan><tspan x="417.75" class="c7">w 66%</tspan><tspan x="466.97" class="c2">·</tspan><tspan x="483.38" class="c7">t 50%</tspan><tspan x="532.59" class="c2">of 28%</tspan><tspan x="590.02" class="c2">·</tspan><tspan x="606.42" class="c2">1h50m</tspan></text>
+</g>
+<g class="p a" style="animation-name:k6">
+<text y="133"><tspan x="40.41" class="c1">Refactoring…</tspan><tspan x="147.05" class="c2">(8m 47s · ↓ 22.9k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c9">field-app</tspan><tspan x="212.67" class="c2">(</tspan><tspan x="220.88">feat/offline</tspan><tspan x="319.31" class="c2">)</tspan><tspan x="335.72" class="c2">·</tspan><tspan x="352.12" class="c7">s 38%</tspan><tspan x="401.34" class="c2">·</tspan><tspan x="417.75" class="c7">w 59%</tspan><tspan x="466.97" class="c2">·</tspan><tspan x="483.38" class="c10">t 25%</tspan><tspan x="532.59" class="c2">of 28%</tspan><tspan x="590.02" class="c2">·</tspan><tspan x="606.42" class="c2">3h0m</tspan></text>
+</g>
+<g class="p a" style="animation-name:k7">
+<text y="133"><tspan x="40.41" class="c1">Refactoring…</tspan><tspan x="147.05" class="c2">(11m 30s · ↓ 31.4k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c9">field-app</tspan><tspan x="212.67" class="c2">(</tspan><tspan x="220.88">feat/offline</tspan><tspan x="319.31" class="c2">)</tspan><tspan x="335.72" class="c2">·</tspan><tspan x="352.12" class="c7">s 32%</tspan><tspan x="401.34" class="c2">·</tspan><tspan x="417.75" class="c7">w 55%</tspan><tspan x="466.97" class="c2">·</tspan><tspan x="483.38" class="c11">t 11%</tspan><tspan x="532.59" class="c2">of 28%</tspan><tspan x="590.02" class="c2">·</tspan><tspan x="606.42" class="c2">4h10m</tspan></text>
+</g>
+</g>
+<g class="s a" style="animation-name:k8">
+<text y="33"><tspan x="24" class="c0 b">Over budget</tspan></text>
+<text y="53"><tspan x="24">Past today's budget, it shows how far over you are, in red.</tspan></text>
+<text y="93"><tspan x="24" class="c0">●</tspan><tspan x="40.41">Webhook retries now back off properly. Adding a test for the duplicate event case.</tspan></text>
+<rect class="c3" x="24" y="167.5" width="902.34" height="1"/>
+<text y="193"><tspan x="24">&gt; log the event id when a duplicate is skipped</tspan></text>
+<rect class="c4" x="401.34" y="179.5" width="8.2" height="17"/>
+<rect class="c3" x="24" y="207.5" width="902.34" height="1"/>
+<text y="253"><tspan x="65.02" class="c8">bypass permissions on (shift+tab to cycle)</tspan></text>
+<path class="c8" d="M41.88 244.18L41.88 251.74L47.62 247.96Z"/>
+<path class="c8" d="M50.09 244.18L50.09 251.74L55.83 247.96Z"/>
+<g class="p a on" style="animation-name:k9">
+<text y="133"><tspan x="40.41" class="c1">Debugging…</tspan><tspan x="130.64" class="c2">(52s · ↓ 3.1k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c12">billing-api</tspan><tspan x="229.08" class="c2">(</tspan><tspan x="237.28">fix/webhooks</tspan><tspan x="335.72" class="c2">)</tspan><tspan x="352.12" class="c2">·</tspan><tspan x="368.53" class="c7">s 48%</tspan><tspan x="417.75" class="c2">·</tspan><tspan x="434.16" class="c7">w 51%</tspan><tspan x="483.38" class="c2">·</tspan><tspan x="499.78" class="c11">t over 4%</tspan><tspan x="581.81" class="c2">of 28%</tspan><tspan x="639.23" class="c2">·</tspan><tspan x="655.64" class="c2">2h10m</tspan></text>
+</g>
+<g class="p a" style="animation-name:k10">
+<text y="133"><tspan x="40.41" class="c1">Debugging…</tspan><tspan x="130.64" class="c2">(1m 37s · ↓ 5.9k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c12">billing-api</tspan><tspan x="229.08" class="c2">(</tspan><tspan x="237.28">fix/webhooks</tspan><tspan x="335.72" class="c2">)</tspan><tspan x="352.12" class="c2">·</tspan><tspan x="368.53" class="c7">s 43%</tspan><tspan x="417.75" class="c2">·</tspan><tspan x="434.16" class="c7">w 49%</tspan><tspan x="483.38" class="c2">·</tspan><tspan x="499.78" class="c11">t over 13%</tspan><tspan x="590.02" class="c2">of 28%</tspan><tspan x="647.44" class="c2">·</tspan><tspan x="663.84" class="c2">2h25m</tspan></text>
+</g>
+<g class="p a" style="animation-name:k11">
+<text y="133"><tspan x="40.41" class="c1">Debugging…</tspan><tspan x="130.64" class="c2">(2m 20s · ↓ 8.4k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c12">billing-api</tspan><tspan x="229.08" class="c2">(</tspan><tspan x="237.28">fix/webhooks</tspan><tspan x="335.72" class="c2">)</tspan><tspan x="352.12" class="c2">·</tspan><tspan x="368.53" class="c7">s 39%</tspan><tspan x="417.75" class="c2">·</tspan><tspan x="434.16" class="c7">w 47%</tspan><tspan x="483.38" class="c2">·</tspan><tspan x="499.78" class="c11">t over 18%</tspan><tspan x="590.02" class="c2">of 28%</tspan><tspan x="647.44" class="c2">·</tspan><tspan x="663.84" class="c2">2h40m</tspan></text>
+</g>
+</g>
+<g class="s a" style="animation-name:k12">
+<text y="33"><tspan x="24" class="c0 b">Session running low</tspan></text>
+<text y="53"><tspan x="24">When the five-hour session runs low, it shows when it resets, and a filling context window gets a warning.</tspan></text>
+<text y="93"><tspan x="24" class="c0">●</tspan><tspan x="40.41">The flaky test is a race in the session refresh. Tracing where the token gets swapped.</tspan></text>
+<rect class="c3" x="24" y="167.5" width="902.34" height="1"/>
+<text y="193"><tspan x="24">&gt; add a regression test for the token refresh once it's fixed</tspan></text>
+<rect class="c4" x="524.39" y="179.5" width="8.2" height="17"/>
+<rect class="c3" x="24" y="207.5" width="902.34" height="1"/>
+<text y="253"><tspan x="65.02" class="c8">bypass permissions on (shift+tab to cycle)</tspan></text>
+<path class="c8" d="M41.88 244.18L41.88 251.74L47.62 247.96Z"/>
+<path class="c8" d="M50.09 244.18L50.09 251.74L55.83 247.96Z"/>
+<g class="p a on" style="animation-name:k13">
+<text y="133"><tspan x="40.41" class="c1">Investigating…</tspan><tspan x="163.45" class="c2">(1m 12s · ↓ 9.2k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c2">high effort</tspan><tspan x="229.08" class="c2">·</tspan><tspan x="245.48" class="c6">acme-portal</tspan><tspan x="343.92" class="c2">(</tspan><tspan x="352.12">dev</tspan><tspan x="376.73" class="c2">)</tspan><tspan x="393.14" class="c2">·</tspan><tspan x="409.55" class="c7">s 34%</tspan><tspan x="458.77" class="c2">·</tspan><tspan x="475.17" class="c7">w 62%</tspan><tspan x="524.39" class="c2">·</tspan><tspan x="540.8" class="c7">t 34%</tspan><tspan x="590.02" class="c2">of 28%</tspan><tspan x="647.44" class="c2">·</tspan><tspan x="663.84" class="c2">2h45m</tspan></text>
+</g>
+<g class="p a" style="animation-name:k14">
+<text y="133"><tspan x="40.41" class="c1">Investigating…</tspan><tspan x="163.45" class="c2">(2m 58s · ↓ 18.4k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c2">high effort</tspan><tspan x="229.08" class="c2">·</tspan><tspan x="245.48" class="c6">acme-portal</tspan><tspan x="343.92" class="c2">(</tspan><tspan x="352.12">dev</tspan><tspan x="376.73" class="c2">)</tspan><tspan x="393.14" class="c2">·</tspan><tspan x="409.55" class="c10">s 26% (resets 3:40pm)</tspan><tspan x="590.02" class="c2">·</tspan><tspan x="606.42" class="c7">w 60%</tspan><tspan x="655.64" class="c2">·</tspan><tspan x="672.05" class="c10">t 27%</tspan><tspan x="721.27" class="c2">of 28%</tspan><tspan x="778.69" class="c2">·</tspan><tspan x="795.09" class="c10">ctx 72%</tspan><tspan x="860.72" class="c2">·</tspan><tspan x="877.12" class="c2">3h25m</tspan></text>
+</g>
+<g class="p a" style="animation-name:k15">
+<text y="133"><tspan x="40.41" class="c1">Investigating…</tspan><tspan x="163.45" class="c2">(4m 31s · ↓ 27.7k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c2">high effort</tspan><tspan x="229.08" class="c2">·</tspan><tspan x="245.48" class="c6">acme-portal</tspan><tspan x="343.92" class="c2">(</tspan><tspan x="352.12">dev</tspan><tspan x="376.73" class="c2">)</tspan><tspan x="393.14" class="c2">·</tspan><tspan x="409.55" class="c11">s 12% (resets 3:40pm)</tspan><tspan x="590.02" class="c2">·</tspan><tspan x="606.42" class="c7">w 58%</tspan><tspan x="655.64" class="c2">·</tspan><tspan x="672.05" class="c10">t 20%</tspan><tspan x="721.27" class="c2">of 28%</tspan><tspan x="778.69" class="c2">·</tspan><tspan x="795.09" class="c11">ctx 86%</tspan><tspan x="860.72" class="c2">·</tspan><tspan x="877.12" class="c2">4h5m</tspan></text>
+</g>
+</g>
+<g class="s a" style="animation-name:k16">
+<text y="33"><tspan x="24" class="c0 b">Cache went cold</tspan></text>
+<text y="53"><tspan x="24">After a long pause the prompt cache expires, so it warns that the next message costs about twice as much.</tspan></text>
+<text y="93"><tspan x="24" class="c0">●</tspan><tspan x="40.41">The docs build is green. Let me know what to tackle next.</tspan></text>
+<rect class="c3" x="24" y="127.5" width="902.34" height="1"/>
+<rect class="c3" x="24" y="167.5" width="902.34" height="1"/>
+<text y="213"><tspan x="65.02" class="c8">bypass permissions on (shift+tab to cycle)</tspan></text>
+<path class="c8" d="M41.88 204.18L41.88 211.74L47.62 207.96Z"/>
+<path class="c8" d="M50.09 204.18L50.09 211.74L55.83 207.96Z"/>
+<g class="p a on" style="animation-name:k17">
+<text y="153"><tspan x="24">&gt;</tspan></text>
+<rect class="c4" x="40.41" y="139.5" width="8.2" height="17"/>
+<text y="193"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c9">docs-site</tspan><tspan x="212.67" class="c2">(</tspan><tspan x="220.88">main</tspan><tspan x="253.69" class="c2">)</tspan><tspan x="270.09" class="c2">·</tspan><tspan x="286.5" class="c7">s 63%</tspan><tspan x="335.72" class="c2">·</tspan><tspan x="352.12" class="c7">w 70%</tspan><tspan x="401.34" class="c2">·</tspan><tspan x="417.75" class="c7">t 63%</tspan><tspan x="466.97" class="c2">of 28%</tspan><tspan x="524.39" class="c2">·</tspan><tspan x="540.8" class="c2">47m</tspan></text>
+</g>
+<g class="p a" style="animation-name:k18">
+<text y="153"><tspan x="24">&gt; add a search box to the docs sidebar</tspan></text>
+<rect class="c4" x="335.72" y="139.5" width="8.2" height="17"/>
+<text y="193"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c9">docs-site</tspan><tspan x="212.67" class="c2">(</tspan><tspan x="220.88">main</tspan><tspan x="253.69" class="c2">)</tspan><tspan x="270.09" class="c2">·</tspan><tspan x="286.5" class="c7">s 63%</tspan><tspan x="335.72" class="c2">·</tspan><tspan x="352.12" class="c7">w 70%</tspan><tspan x="401.34" class="c2">·</tspan><tspan x="417.75" class="c7">t 63%</tspan><tspan x="466.97" class="c2">of 28%</tspan><tspan x="524.39" class="c2">·</tspan><tspan x="540.8" class="c11">cache cold: 82k @ ~2x</tspan><tspan x="721.27" class="c2">·</tspan><tspan x="737.67" class="c2">59m</tspan></text>
+</g>
+</g>
+<g class="s a" style="animation-name:k19">
+<text y="33"><tspan x="24" class="c0 b">Agent job</tspan></text>
+<text y="53"><tspan x="24">An agent working through a batch reports its progress, one cell per step, until the job is done.</tspan></text>
+<rect class="c3" x="24" y="167.5" width="902.34" height="1"/>
+<text y="193"><tspan x="24">&gt; work through the open issues on the board</tspan></text>
+<rect class="c4" x="376.73" y="179.5" width="8.2" height="17"/>
+<rect class="c3" x="24" y="207.5" width="902.34" height="1"/>
+<text y="273"><tspan x="40.41" class="c0">●</tspan><tspan x="56.81">main</tspan></text>
+<g class="p a on" style="animation-name:k20">
+<text y="93"><tspan x="24" class="c0">●</tspan><tspan x="40.41">#327 passed review. Committing, then picking up #328.</tspan></text>
+<text y="133"><tspan x="40.41" class="c1">Orchestrating…</tspan><tspan x="163.45" class="c2">(6m 12s · ↓ 24.9k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c6">acme-portal</tspan><tspan x="229.08" class="c2">(</tspan><tspan x="237.28">dev</tspan><tspan x="261.89" class="c2">)</tspan><tspan x="278.3" class="c2">·</tspan><tspan x="294.7" class="c7">s 70%</tspan><tspan x="343.92" class="c2">·</tspan><tspan x="360.33" class="c7">w 66%</tspan><tspan x="409.55" class="c2">·</tspan><tspan x="425.95" class="c7">t 48%</tspan><tspan x="475.17" class="c2">of 28%</tspan><tspan x="532.59" class="c2">·</tspan><tspan x="549">loop</tspan><tspan x="590.02" class="c7">▰▰</tspan><tspan x="606.42" class="c5">▰</tspan><tspan x="614.62" class="c2">▱▱</tspan><tspan x="639.23">#328 2/5</tspan><tspan x="713.06" class="c2">·</tspan><tspan x="729.47" class="c2">1h30m</tspan></text>
+<text y="253"><tspan x="65.02" class="c8">bypass permissions on (shift+tab to cycle) · /tasks to see subagents · ← 4 agents</tspan></text>
+<path class="c8" d="M41.88 244.18L41.88 251.74L47.62 247.96Z"/>
+<path class="c8" d="M50.09 244.18L50.09 251.74L55.83 247.96Z"/>
+<text y="293"><tspan x="40.41" class="c2">( )</tspan><tspan x="73.22">ui-implementer</tspan><tspan x="204.47" class="c2">Fix round 1 #328 t2</tspan></text>
+<text y="313"><tspan x="40.41" class="c2">( )</tspan><tspan x="73.22">api-implementer</tspan><tspan x="212.67" class="c2">Build #328 t1</tspan></text>
+<text y="333"><tspan x="40.41" class="c2">( )</tspan><tspan x="73.22">quality-reviewer</tspan><tspan x="220.88" class="c2">Review #327</tspan></text>
+<text y="353"><tspan x="40.41" class="c2">( )</tspan><tspan x="73.22">test</tspan><tspan x="122.44" class="c2">Run suite #327</tspan></text>
+</g>
+<g class="p a" style="animation-name:k21">
+<text y="93"><tspan x="24" class="c0">●</tspan><tspan x="40.41">#328 passed review. Committing, then picking up #329.</tspan></text>
+<text y="133"><tspan x="40.41" class="c1">Orchestrating…</tspan><tspan x="163.45" class="c2">(9m 40s · ↓ 38.2k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c6">acme-portal</tspan><tspan x="229.08" class="c2">(</tspan><tspan x="237.28">dev</tspan><tspan x="261.89" class="c2">)</tspan><tspan x="278.3" class="c2">·</tspan><tspan x="294.7" class="c7">s 65%</tspan><tspan x="343.92" class="c2">·</tspan><tspan x="360.33" class="c7">w 65%</tspan><tspan x="409.55" class="c2">·</tspan><tspan x="425.95" class="c7">t 45%</tspan><tspan x="475.17" class="c2">of 28%</tspan><tspan x="532.59" class="c2">·</tspan><tspan x="549">loop</tspan><tspan x="590.02" class="c7">▰▰▰</tspan><tspan x="614.62" class="c5">▰</tspan><tspan x="622.83" class="c2">▱</tspan><tspan x="639.23">#329 3/5</tspan><tspan x="713.06" class="c2">·</tspan><tspan x="729.47" class="c2">1h50m</tspan></text>
+<text y="253"><tspan x="65.02" class="c8">bypass permissions on (shift+tab to cycle) · /tasks to see subagents · ← 4 agents</tspan></text>
+<path class="c8" d="M41.88 244.18L41.88 251.74L47.62 247.96Z"/>
+<path class="c8" d="M50.09 244.18L50.09 251.74L55.83 247.96Z"/>
+<text y="293"><tspan x="40.41" class="c2">( )</tspan><tspan x="73.22">ui-implementer</tspan><tspan x="204.47" class="c2">Build #329 t1</tspan></text>
+<text y="313"><tspan x="40.41" class="c2">( )</tspan><tspan x="73.22">quality-reviewer</tspan><tspan x="220.88" class="c2">Review #328</tspan></text>
+<text y="333"><tspan x="40.41" class="c2">( )</tspan><tspan x="73.22">scope-reviewer</tspan><tspan x="204.47" class="c2">Check #328 contract</tspan></text>
+<text y="353"><tspan x="40.41" class="c2">( )</tspan><tspan x="73.22">test</tspan><tspan x="122.44" class="c2">Run suite #328</tspan></text>
+</g>
+<g class="p a" style="animation-name:k22">
+<text y="93"><tspan x="24" class="c0">●</tspan><tspan x="40.41">#329 passed review. Committing, then picking up #330.</tspan></text>
+<text y="133"><tspan x="40.41" class="c1">Orchestrating…</tspan><tspan x="163.45" class="c2">(13m 05s · ↓ 51.7k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c6">acme-portal</tspan><tspan x="229.08" class="c2">(</tspan><tspan x="237.28">dev</tspan><tspan x="261.89" class="c2">)</tspan><tspan x="278.3" class="c2">·</tspan><tspan x="294.7" class="c7">s 61%</tspan><tspan x="343.92" class="c2">·</tspan><tspan x="360.33" class="c7">w 64%</tspan><tspan x="409.55" class="c2">·</tspan><tspan x="425.95" class="c7">t 41%</tspan><tspan x="475.17" class="c2">of 28%</tspan><tspan x="532.59" class="c2">·</tspan><tspan x="549">loop</tspan><tspan x="590.02" class="c7">▰▰▰▰</tspan><tspan x="622.83" class="c5">▰</tspan><tspan x="639.23">#330 4/5</tspan><tspan x="713.06" class="c2">·</tspan><tspan x="729.47" class="c2">2h10m</tspan></text>
+<text y="253"><tspan x="65.02" class="c8">bypass permissions on (shift+tab to cycle) · /tasks to see subagents · ← 3 agents</tspan></text>
+<path class="c8" d="M41.88 244.18L41.88 251.74L47.62 247.96Z"/>
+<path class="c8" d="M50.09 244.18L50.09 251.74L55.83 247.96Z"/>
+<text y="293"><tspan x="40.41" class="c2">( )</tspan><tspan x="73.22">api-implementer</tspan><tspan x="212.67" class="c2">Build #330 t1</tspan></text>
+<text y="313"><tspan x="40.41" class="c2">( )</tspan><tspan x="73.22">quality-reviewer</tspan><tspan x="220.88" class="c2">Review #329</tspan></text>
+<text y="333"><tspan x="40.41" class="c2">( )</tspan><tspan x="73.22">test</tspan><tspan x="122.44" class="c2">Run suite #329</tspan></text>
+</g>
+<g class="p a" style="animation-name:k23">
+<text y="93"><tspan x="24" class="c0">●</tspan><tspan x="40.41">All five issues are done and committed.</tspan></text>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c6">acme-portal</tspan><tspan x="229.08" class="c2">(</tspan><tspan x="237.28">dev</tspan><tspan x="261.89" class="c2">)</tspan><tspan x="278.3" class="c2">·</tspan><tspan x="294.7" class="c7">s 57%</tspan><tspan x="343.92" class="c2">·</tspan><tspan x="360.33" class="c7">w 63%</tspan><tspan x="409.55" class="c2">·</tspan><tspan x="425.95" class="c7">t 38%</tspan><tspan x="475.17" class="c2">of 28%</tspan><tspan x="532.59" class="c2">·</tspan><tspan x="549">loop</tspan><tspan x="590.02" class="c7">▰▰▰▰▰</tspan><tspan x="639.23" class="c7">✓ done</tspan><tspan x="696.66" class="c2">·</tspan><tspan x="713.06" class="c2">2h30m</tspan></text>
+<text y="253"><tspan x="65.02" class="c8">bypass permissions on (shift+tab to cycle)</tspan></text>
+<path class="c8" d="M41.88 244.18L41.88 251.74L47.62 247.96Z"/>
+<path class="c8" d="M50.09 244.18L50.09 251.74L55.83 247.96Z"/>
+</g>
+</g>
+<g class="s a" style="animation-name:k24">
+<text y="33"><tspan x="24" class="c0 b">Several windows</tspan></text>
+<text y="53"><tspan x="24">Every window shares the same limits, and each one shows its own project in its own color.</tspan></text>
+<rect class="c3" x="24" y="87.5" width="902.34" height="1"/>
+<rect class="c3" x="24" y="147.5" width="902.34" height="1"/>
+<rect class="c3" x="24" y="207.5" width="902.34" height="1"/>
+<rect class="c3" x="24" y="267.5" width="902.34" height="1"/>
+<g class="p a on" style="animation-name:k25">
+<text y="113"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c6">acme-portal</tspan><tspan x="229.08" class="c2">(</tspan><tspan x="237.28">dev</tspan><tspan x="261.89" class="c2">)</tspan><tspan x="278.3" class="c2">·</tspan><tspan x="294.7" class="c7">s 42%</tspan><tspan x="343.92" class="c2">·</tspan><tspan x="360.33" class="c7">w 61%</tspan><tspan x="409.55" class="c2">·</tspan><tspan x="425.95" class="c7">t 32%</tspan><tspan x="475.17" class="c2">of 28%</tspan><tspan x="532.59" class="c2">·</tspan><tspan x="549" class="c2">1h10m</tspan></text>
+<text y="173"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c2">high effort</tspan><tspan x="229.08" class="c2">·</tspan><tspan x="245.48" class="c9">field-app</tspan><tspan x="327.52" class="c2">(</tspan><tspan x="335.72">feat/offline</tspan><tspan x="434.16" class="c2">)</tspan><tspan x="450.56" class="c2">·</tspan><tspan x="466.97" class="c7">s 42%</tspan><tspan x="516.19" class="c2">·</tspan><tspan x="532.59" class="c7">w 61%</tspan><tspan x="581.81" class="c2">·</tspan><tspan x="598.22" class="c7">t 32%</tspan><tspan x="647.44" class="c2">of 28%</tspan><tspan x="704.86" class="c2">·</tspan><tspan x="721.27" class="c10">ctx 74%</tspan><tspan x="786.89" class="c2">·</tspan><tspan x="803.3" class="c2">25m</tspan></text>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c10">fast mode</tspan><tspan x="212.67" class="c2">·</tspan><tspan x="229.08" class="c12">billing-api</tspan><tspan x="327.52" class="c2">(</tspan><tspan x="335.72">fix/webhooks</tspan><tspan x="434.16" class="c2">)</tspan><tspan x="450.56" class="c2">·</tspan><tspan x="466.97" class="c7">s 42%</tspan><tspan x="516.19" class="c2">·</tspan><tspan x="532.59" class="c7">w 61%</tspan><tspan x="581.81" class="c2">·</tspan><tspan x="598.22" class="c7">t 32%</tspan><tspan x="647.44" class="c2">of 28%</tspan><tspan x="704.86" class="c2">·</tspan><tspan x="721.27" class="c2">10m</tspan></text>
+<text y="293"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c13">paceline</tspan><tspan x="204.47" class="c2">(</tspan><tspan x="212.67">dev</tspan><tspan x="237.28" class="c2">)</tspan><tspan x="253.69" class="c2">·</tspan><tspan x="270.09" class="c7">s 42%</tspan><tspan x="319.31" class="c2">·</tspan><tspan x="335.72" class="c7">w 61%</tspan><tspan x="384.94" class="c2">·</tspan><tspan x="401.34" class="c7">t 32%</tspan><tspan x="450.56" class="c2">of 28%</tspan><tspan x="507.98" class="c2">·</tspan><tspan x="524.39">loop</tspan><tspan x="565.41" class="c7">▰</tspan><tspan x="573.61" class="c5">▰</tspan><tspan x="581.81" class="c2">▱</tspan><tspan x="598.22">#42 1/3</tspan><tspan x="663.84" class="c2">·</tspan><tspan x="680.25" class="c2">5m</tspan></text>
+</g>
+<g class="p a" style="animation-name:k26">
+<text y="113"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c6">acme-portal</tspan><tspan x="229.08" class="c2">(</tspan><tspan x="237.28">dev</tspan><tspan x="261.89" class="c2">)</tspan><tspan x="278.3" class="c2">·</tspan><tspan x="294.7" class="c7">s 39%</tspan><tspan x="343.92" class="c2">·</tspan><tspan x="360.33" class="c7">w 60%</tspan><tspan x="409.55" class="c2">·</tspan><tspan x="425.95" class="c10">t 29%</tspan><tspan x="475.17" class="c2">of 28%</tspan><tspan x="532.59" class="c2">·</tspan><tspan x="549" class="c2">1h30m</tspan></text>
+<text y="173"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c2">high effort</tspan><tspan x="229.08" class="c2">·</tspan><tspan x="245.48" class="c9">field-app</tspan><tspan x="327.52" class="c2">(</tspan><tspan x="335.72">feat/offline</tspan><tspan x="434.16" class="c2">)</tspan><tspan x="450.56" class="c2">·</tspan><tspan x="466.97" class="c7">s 39%</tspan><tspan x="516.19" class="c2">·</tspan><tspan x="532.59" class="c7">w 60%</tspan><tspan x="581.81" class="c2">·</tspan><tspan x="598.22" class="c10">t 29%</tspan><tspan x="647.44" class="c2">of 28%</tspan><tspan x="704.86" class="c2">·</tspan><tspan x="721.27" class="c10">ctx 74%</tspan><tspan x="786.89" class="c2">·</tspan><tspan x="803.3" class="c2">45m</tspan></text>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c10">fast mode</tspan><tspan x="212.67" class="c2">·</tspan><tspan x="229.08" class="c12">billing-api</tspan><tspan x="327.52" class="c2">(</tspan><tspan x="335.72">fix/webhooks</tspan><tspan x="434.16" class="c2">)</tspan><tspan x="450.56" class="c2">·</tspan><tspan x="466.97" class="c7">s 39%</tspan><tspan x="516.19" class="c2">·</tspan><tspan x="532.59" class="c7">w 60%</tspan><tspan x="581.81" class="c2">·</tspan><tspan x="598.22" class="c10">t 29%</tspan><tspan x="647.44" class="c2">of 28%</tspan><tspan x="704.86" class="c2">·</tspan><tspan x="721.27" class="c2">30m</tspan></text>
+<text y="293"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c13">paceline</tspan><tspan x="204.47" class="c2">(</tspan><tspan x="212.67">dev</tspan><tspan x="237.28" class="c2">)</tspan><tspan x="253.69" class="c2">·</tspan><tspan x="270.09" class="c7">s 39%</tspan><tspan x="319.31" class="c2">·</tspan><tspan x="335.72" class="c7">w 60%</tspan><tspan x="384.94" class="c2">·</tspan><tspan x="401.34" class="c10">t 29%</tspan><tspan x="450.56" class="c2">of 28%</tspan><tspan x="507.98" class="c2">·</tspan><tspan x="524.39">loop</tspan><tspan x="565.41" class="c7">▰▰</tspan><tspan x="581.81" class="c5">▰</tspan><tspan x="598.22">#43 2/3</tspan><tspan x="663.84" class="c2">·</tspan><tspan x="680.25" class="c2">25m</tspan></text>
+</g>
+</g>
+<g class="s a" style="animation-name:k27">
+<text y="33"><tspan x="24" class="c0 b">Last day</tspan></text>
+<text y="53"><tspan x="24">On the last day before the weekly reset, today's budget is everything left in the week.</tspan></text>
+<text y="93"><tspan x="24" class="c0">●</tspan><tspan x="40.41">Copy tweaks are done across all six screens.</tspan></text>
+<rect class="c3" x="24" y="167.5" width="902.34" height="1"/>
+<text y="193"><tspan x="24">&gt; make the empty states match the new illustrations</tspan></text>
+<rect class="c4" x="442.36" y="179.5" width="8.2" height="17"/>
+<rect class="c3" x="24" y="207.5" width="902.34" height="1"/>
+<text y="253"><tspan x="65.02" class="c8">bypass permissions on (shift+tab to cycle)</tspan></text>
+<path class="c8" d="M41.88 244.18L41.88 251.74L47.62 247.96Z"/>
+<path class="c8" d="M50.09 244.18L50.09 251.74L55.83 247.96Z"/>
+<g class="p a on" style="animation-name:k28">
+<text y="133"><tspan x="40.41" class="c1">Polishing…</tspan><tspan x="130.64" class="c2">(17s · ↓ 0.9k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c9">field-app</tspan><tspan x="212.67" class="c2">(</tspan><tspan x="220.88">main</tspan><tspan x="253.69" class="c2">)</tspan><tspan x="270.09" class="c2">·</tspan><tspan x="286.5" class="c7">s 97%</tspan><tspan x="335.72" class="c2">·</tspan><tspan x="352.12" class="c7">w 67%</tspan><tspan x="401.34" class="c2">·</tspan><tspan x="417.75" class="c7">t 99%</tspan><tspan x="466.97" class="c2">of 68%</tspan><tspan x="524.39" class="c2">·</tspan><tspan x="540.8" class="c2">5m</tspan></text>
+</g>
+<g class="p a" style="animation-name:k29">
+<text y="133"><tspan x="40.41" class="c1">Polishing…</tspan><tspan x="130.64" class="c2">(1m 48s · ↓ 7.3k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c9">field-app</tspan><tspan x="212.67" class="c2">(</tspan><tspan x="220.88">main</tspan><tspan x="253.69" class="c2">)</tspan><tspan x="270.09" class="c2">·</tspan><tspan x="286.5" class="c7">s 69%</tspan><tspan x="335.72" class="c2">·</tspan><tspan x="352.12" class="c7">w 55%</tspan><tspan x="401.34" class="c2">·</tspan><tspan x="417.75" class="c7">t 81%</tspan><tspan x="466.97" class="c2">of 68%</tspan><tspan x="524.39" class="c2">·</tspan><tspan x="540.8" class="c2">1h35m</tspan></text>
+</g>
+<g class="p a" style="animation-name:k30">
+<text y="133"><tspan x="40.41" class="c1">Polishing…</tspan><tspan x="130.64" class="c2">(3m 02s · ↓ 12.6k tokens)</tspan></text>
+<path class="c1" d="M28.1 127.96L29.33 124.27A1.23 1.23 0 1 0 26.87 124.27ZM28.1 127.96L31.91 127.18A1.23 1.23 0 1 0 30.68 125.05ZM28.1 127.96L30.68 130.87A1.23 1.23 0 1 0 31.91 128.74ZM28.1 127.96L26.87 131.65A1.23 1.23 0 1 0 29.33 131.65ZM28.1 127.96L24.29 128.74A1.23 1.23 0 1 0 25.52 130.87ZM28.1 127.96L25.52 125.05A1.23 1.23 0 1 0 24.29 127.18Z"/>
+<text y="233"><tspan x="40.41" class="c5">Opus 5.5</tspan><tspan x="114.23" class="c2">·</tspan><tspan x="130.64" class="c9">field-app</tspan><tspan x="212.67" class="c2">(</tspan><tspan x="220.88">main</tspan><tspan x="253.69" class="c2">)</tspan><tspan x="270.09" class="c2">·</tspan><tspan x="286.5" class="c7">s 43%</tspan><tspan x="335.72" class="c2">·</tspan><tspan x="352.12" class="c7">w 42%</tspan><tspan x="401.34" class="c2">·</tspan><tspan x="417.75" class="c7">t 62%</tspan><tspan x="466.97" class="c2">of 68%</tspan><tspan x="524.39" class="c2">·</tspan><tspan x="540.8" class="c2">3h5m</tspan></text>
+</g>
+</g>
+<circle class="d a on" style="animation-name:k31" cx="412.5" cy="380" r="4"/>
+<circle class="d a" style="animation-name:k32" cx="430.5" cy="380" r="4"/>
+<circle class="d a" style="animation-name:k33" cx="448.5" cy="380" r="4"/>
+<circle class="d a" style="animation-name:k34" cx="466.5" cy="380" r="4"/>
+<circle class="d a" style="animation-name:k35" cx="484.5" cy="380" r="4"/>
+<circle class="d a" style="animation-name:k36" cx="502.5" cy="380" r="4"/>
+<circle class="d a" style="animation-name:k37" cx="520.5" cy="380" r="4"/>
+<circle class="d a" style="animation-name:k38" cx="538.5" cy="380" r="4"/>
 </svg>
