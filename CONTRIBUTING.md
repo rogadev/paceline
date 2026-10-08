@@ -55,6 +55,7 @@ The code layout follows Go convention:
 - `internal/policy` holds repository-wide rules tested like behavior: no dependencies, no dangerous imports, and ASCII-only Go source.
 - `internal/render/testdata/parity.json` holds outputs recorded from the 1.0 JavaScript version, updated deliberately when the output changes on purpose (the today segment, for example). The render tests must reproduce them byte for byte.
 - `tools/nextbump` is the release preview, a development tool that isn't part of the binary.
+- `tools/demo` generates the README's animated status line graphic, `docs/paceline-states.svg`, and its data, `docs/demo/scenes.json`, from the real renderer. If you change what the status line prints, run `go run ./tools/demo` and commit the result; a test fails while either file is stale. See [docs/demo/README.md](docs/demo/README.md).
 
 To try a local build as your own status line:
 

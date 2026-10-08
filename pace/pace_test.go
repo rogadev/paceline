@@ -79,11 +79,18 @@ func TestResnapshot(t *testing.T) {
 	}
 }
 
-func TestLastDayAndPastReset(t *testing.T) {
+func TestLastDayCountsDownFromEverythingLeft(t *testing.T) {
 	resets := epoch(local(2026, 9, 24, 21))
-	if r := Compute(92, resets, now, nil); r.Kind != LastDay || r.ResetsAt != resets {
-		t.Errorf("got %+v, want LastDay", r)
+	r := Compute(92, resets, now, nil)
+	if r.Kind != Budget || r.Budget != 8 || r.PctLeft != 100 {
+		t.Errorf("got %+v, want an 8-point budget with 100%% left", r)
 	}
+	if r := Compute(96, resets, now, &Snapshot{Date: "20260924", ResetsAt: resets, UsedAtStart: 92}); r.PctLeft != 50 || r.Over {
+		t.Errorf("got %+v, want 50%% left", r)
+	}
+}
+
+func TestPastReset(t *testing.T) {
 	if r := Compute(50, epoch(local(2026, 9, 23, 0)), now, nil); r.Kind != None {
 		t.Errorf("got %+v, want None", r)
 	}

@@ -49,9 +49,8 @@ type Kind int
 
 // Result kinds.
 const (
-	None    Kind = iota // reset already passed: show nothing
-	LastDay             // the final partial day before the reset
-	Budget              // a normal day with a budget
+	None   Kind = iota // reset already passed: show nothing
+	Budget             // a normal day with a budget
 )
 
 // Direction compares today's budget to an even pace of 100% / 7 per day.
@@ -85,10 +84,8 @@ func Compute(usedPct, resetsAt float64, now time.Time, snap *Snapshot) Result {
 	if daysLeft <= 0 {
 		return Result{Kind: None}
 	}
-	// Final partial day: everything left in the week is today's.
-	if daysLeft <= 1 {
-		return Result{Kind: LastDay, ResetsAt: resetsAt}
-	}
+	// On the final partial day, everything left in the week is today's.
+	daysLeft = max(daysLeft, 1)
 
 	date := timefmt.DateKey(now)
 	stale := !snap.Valid() ||

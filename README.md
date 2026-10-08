@@ -2,6 +2,8 @@
 
 A Claude Code status line that paces your usage limits and shows, at a glance, where every session stands.
 
+![paceline in a Claude Code window, cycling through a fresh day, working through the day, over budget, a session running low, a cold cache, an agent job, several windows, and the last day](docs/paceline-states.svg)
+
 ```
 Opus 5.5 · techcentral (dev) · s 84% · w 96% · t 54% of 28% · 16m
 ```
@@ -78,7 +80,7 @@ gh attestation verify paceline_1.1.0_linux_amd64.tar.gz --repo rogadev/paceline
 | Progress | `loop ▰▰▰▰▱ #44 3/5` | Only while an agent reports a long job's progress. See [Progress bar](#progress-bar). On a narrow pane, hide it with `"segments": {"progress": false}`. |
 | Duration | `16m` | Session wall-clock time. Always last, at the right edge. |
 
-**Today's budget** is the weekly percentage left at the start of the day, divided by the days from midnight to the reset. It stays fixed all day, and the today segment counts down how much of it is left. Whatever you don't spend spreads over the remaining days, so a light week gives you bigger budgets later on. The color is your pace advice: green while you have room, yellow once less than 30% of the budget is left, and red below 15%. Past the budget, the segment turns red and shows how far over you are, as a share of the budget: `t over 18% of 28%` means you've spent 118% of today's 28%. On the final day before the reset, the segment shows `⏳ last day, resets 9pm` instead.
+**Today's budget** is the weekly percentage left at the start of the day, divided by the days from midnight to the reset. It stays fixed all day, and the today segment counts down how much of it is left. Whatever you don't spend spreads over the remaining days, so a light week gives you bigger budgets later on. The color is your pace advice: green while you have room, yellow once less than 30% of the budget is left, and red below 15%. Past the budget, the segment turns red and shows how far over you are, as a share of the budget: `t over 18% of 28%` means you've spent 118% of today's 28%. On the final day before the reset, the budget is everything left in the week, and the segment counts down from there like any other day.
 
 **Project colors** come from a hash of the project folder name, mapped to one of 12 evenly spaced hues in the OKLCH color space. Every color is equally bright and easy to read on a dark terminal. Each project keeps its color everywhere, including in subfolders.
 
@@ -123,7 +125,7 @@ The tools tell the agent when to use them, so a long job reports progress withou
 The same server gives Claude two read-only tools for checking your usage, so it can plan around it, for example by checking before a long task or a batch of subagents and choosing a smaller batch when today's budget is nearly spent. You can also ask Claude "how's my budget today?". Both tools need the [usage feed](#usage-feed) on, and the descriptions tell Claude when to call them.
 
 - **`get_usage`**: your five-hour session and weekly limits, each as a percentage used and left, and when each resets, both as a date and time and as clock text such as `Thu 9pm`. A limit the feed has no reading for is reported as missing, not as 0%.
-- **`get_today_budget`**: today's budget as the status line's today segment shows it: the budget and what you've spent today, both in percentage points of the week; how much of the budget you've used and have left; whether you're over; and whether today's budget is larger or smaller than an even share of the week. On the last day before the reset, it says that everything left in the week is today's.
+- **`get_today_budget`**: today's budget as the status line's today segment shows it: the budget and what you've spent today, both in percentage points of the week; how much of the budget you've used and have left; whether you're over; and whether today's budget is larger or smaller than an even share of the week. On the last day before the reset, the budget is everything left in the week.
 
 Each answer is a short summary followed by the full set of fields as a JSON object, including how old the reading is in seconds. A reading over 10 minutes old still gets an answer, but the answer starts with its age, for example "This reading is 3h0m old". If paceline has never written the feed file, the tools say so and tell you to run `paceline feed on` rather than failing. After `paceline feed off`, the file stays, so the tools answer from the last reading and lead with its age.
 

@@ -230,11 +230,8 @@ func renderToday(usedPct, resetsAt float64, ctx Context, st style, headroom func
 		snap = ctx.ReadSnapshot()
 	}
 	r := pace.Compute(usedPct, resetsAt, ctx.Now, snap)
-	switch r.Kind {
-	case pace.None:
+	if r.Kind == pace.None {
 		return ""
-	case pace.LastDay:
-		return st.cyan(hourglass + " last day, resets " + timefmt.Clock(r.ResetsAt, ctx.Now))
 	}
 	if r.SnapshotChanged && ctx.WriteSnapshot != nil {
 		ctx.WriteSnapshot(r.Snapshot)

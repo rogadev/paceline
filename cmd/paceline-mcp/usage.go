@@ -29,9 +29,8 @@ var noArgs = json.RawMessage(`{"type": "object", "properties": {}}`)
 
 // Kinds of get_today_budget answer.
 const (
-	kindBudget  = "budget"
-	kindLastDay = "last_day"
-	kindNone    = "none"
+	kindBudget = "budget"
+	kindNone   = "none"
 )
 
 var paceNames = map[pace.Direction]string{pace.Up: "up", pace.Down: "down", pace.Even: "even"}
@@ -92,14 +91,6 @@ type budgetAnswer struct {
 	LeftPct         int    `json:"leftPct"`   // percent of today's budget left
 	Over            bool   `json:"over"`
 	Pace            string `json:"pace"`
-	WeekResetsAt    string `json:"weekResetsAt"`
-	WeekResetsClock string `json:"weekResetsClock"`
-	freshness
-}
-
-type lastDayAnswer struct {
-	Kind            string `json:"kind"`
-	WeekLeftPct     int    `json:"weekLeftPct"`
 	WeekResetsAt    string `json:"weekResetsAt"`
 	WeekResetsClock string `json:"weekResetsClock"`
 	freshness
@@ -212,13 +203,8 @@ func todayFor(r feed.Reading, f freshness, now time.Time, snap *pace.Snapshot) (
 			noBudgetAnswer{Kind: kindNone, freshness: f}
 	}
 
-	// With the reset still ahead, Compute returns LastDay or Budget, never None.
+	// With the reset still ahead, Compute returns a budget, never None.
 	res := pace.Compute(week.UsedPct, anchorResetsAt(week.ResetsAt, snap), now, snap)
-	if res.Kind == pace.LastDay {
-		left := max(0, 100-render.Round(week.UsedPct))
-		return fmt.Sprintf("Last day before the weekly reset at %s: all %d%% left in the week is today's.", clock, left),
-			lastDayAnswer{Kind: kindLastDay, WeekLeftPct: left, WeekResetsAt: rfc3339(week.ResetsAt, now), WeekResetsClock: clock, freshness: f}
-	}
 
 	a := budgetAnswer{
 		Kind:            kindBudget,
