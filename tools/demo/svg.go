@@ -34,6 +34,11 @@ const (
 	fadeMs       = 300
 )
 
+// syntheticBoldAllowance widens bold text when checking that it fits: the
+// font has no Bold face, so browsers synthesize one, and Firefox draws it
+// about 0.7% wider than the Regular advances.
+const syntheticBoldAllowance = 1.05
+
 // fontFamily is the name the SVG gives the embedded font. It is not the
 // font's own name, so an installed Cascadia Mono can never stand in for it.
 const fontFamily = "paceline-demo-mono"
@@ -122,6 +127,8 @@ func isHexColor(s string) bool {
 // is the foreground, and a color is a palette key or a truecolor "#rrggbb".
 func (c colorSet) run(r Run) (string, error) {
 	switch {
+	case r.Dim && r.Color != "":
+		return "", fmt.Errorf("run %q is both dim and colored (%q); a run takes one or the other", r.Text, r.Color)
 	case r.Dim:
 		return c["dim"], nil
 	case r.Color == "":
@@ -340,10 +347,14 @@ func (g grid) fit(face *fontFace, l *textLine) error {
 		if s.shape != 0 {
 			edge += g.cellAdvance
 		}
+		width := 0
 		for _, r := range s.text {
-			edge += face.advances[r]
+			width += face.advances[r]
 		}
-		right = max(right, edge)
+		if s.bold {
+			width = int(math.Ceil(float64(width) * syntheticBoldAllowance))
+		}
+		right = max(right, edge+width)
 	}
 	if right > limit {
 		cols := (right + g.cellAdvance - 1) / g.cellAdvance
@@ -577,7 +588,7 @@ func (w *svgWriter) writeStyle(b *strings.Builder, fontData []byte) {
 	for _, a := range w.anims {
 		b.WriteString(a + "\n")
 	}
-	b.WriteString("@media (prefers-reduced-motion:reduce){.a{animation:none}}\n")
+	b.WriteString("@media (prefers-reduced-motion:reduce){.a{animation:none!important}}\n")
 	b.WriteString("</style>\n")
 }
 

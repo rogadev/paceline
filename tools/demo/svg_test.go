@@ -92,7 +92,7 @@ func TestSVGStructure(t *testing.T) {
 		`<g class="p a`:                steps,
 		`<circle class="d a`:           len(doc.Scenes),
 		`<circle class="d a on"`:       1,
-		"@media (prefers-reduced-motion:reduce){.a{animation:none}}":                              1,
+		"@media (prefers-reduced-motion:reduce){.a{animation:none!important}}":                    1,
 		".a{animation-duration:" + strconv.Itoa(total) + "ms;animation-iteration-count:infinite}": 1,
 		"@font-face": 1,
 		base64.StdEncoding.EncodeToString(fontFile): 1,
@@ -241,6 +241,52 @@ func TestPieces(t *testing.T) {
 			if got[i] != tc.want[i] {
 				t.Errorf("pieces(%d, %q) = %v, want %v", tc.col, tc.text, got, tc.want)
 			}
+		}
+	}
+}
+
+func TestReducedMotionOverridesInlineAnimationName(t *testing.T) {
+	svg := drawDoc(t, buildDoc(t))
+	if !strings.Contains(svg, `style="animation-name:k0"`) {
+		t.Fatal("elements no longer carry an inline animation-name; update this test")
+	}
+	m := regexp.MustCompile(`@media \(prefers-reduced-motion:reduce\)\{\.a\{([^}]*)\}\}`).FindStringSubmatch(svg)
+	if m == nil {
+		t.Fatal("no reduced-motion rule for .a")
+	}
+	// An inline style beats a plain stylesheet rule, so only !important wins.
+	if !strings.Contains(m[1], "animation:none!important") && !strings.Contains(m[1], "animation-name:none!important") {
+		t.Errorf("reduced-motion rule %q does not override the inline animation-name", m[1])
+	}
+}
+
+func TestRunBothDimAndColoredFails(t *testing.T) {
+	c := colorSet{"dim": "#111111", "foreground": "#222222", "red": "#333333"}
+	_, err := c.run(Run{Text: "oops", Dim: true, Color: "red"})
+	if err == nil || !strings.Contains(err.Error(), `"oops"`) {
+		t.Errorf("err = %v, want one naming the run", err)
+	}
+	if fill, err := c.run(Run{Text: "ok", Dim: true}); err != nil || fill != "#111111" {
+		t.Errorf("dim run = %q, %v", fill, err)
+	}
+}
+
+func TestBoldTextBudgetsForSyntheticBold(t *testing.T) {
+	// Bold text exactly filling the terminal overflows once synthetic bold widens it.
+	for _, tc := range []struct {
+		bold bool
+		cols int
+		fits bool
+	}{
+		{true, Columns, false},
+		{true, 104, true},
+		{true, 105, false},
+	} {
+		doc := buildDoc(t)
+		doc.Scenes[0].Title = strings.Repeat("x", tc.cols)
+		_, err := renderSVG(doc)
+		if (err == nil) != tc.fits {
+			t.Errorf("title (bold) of %d columns: err = %v, want fits=%v", tc.cols, err, tc.fits)
 		}
 	}
 }

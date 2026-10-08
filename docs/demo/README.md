@@ -109,7 +109,7 @@ python -m venv fontvenv
 fontvenv/bin/pip install fonttools          # fontvenv/Scripts/pip on Windows
 fontvenv/bin/python -I -m fontTools.subset CascadiaMono-Regular.ttf \
   --unicodes="$U" --layout-features= --drop-tables+=GSUB,GPOS,GDEF,DSIG \
-  --no-hinting --desubroutinize --name-IDs=0,1,2,3,4,5,6,14 \
+  --no-hinting --desubroutinize --name-IDs=0,1,2,3,4,5,6,13,14 \
   --flavor=woff --output-file=CascadiaMono-Regular-subset.woff
 ```
 
