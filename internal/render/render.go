@@ -230,8 +230,7 @@ func renderToday(usedPct, resetsAt float64, ctx Context, st style, headroom func
 		snap = ctx.ReadSnapshot()
 	}
 	r := pace.Compute(usedPct, resetsAt, ctx.Now, snap)
-	switch r.Kind {
-	case pace.None:
+	if r.Kind == pace.None {
 		return ""
 	}
 	if r.SnapshotChanged && ctx.WriteSnapshot != nil {
