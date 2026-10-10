@@ -136,8 +136,10 @@ func TestTodayBudgetMatchesTheStatusLine(t *testing.T) {
 		{name: "half-point tie", anchorStart: 42.5, used: 49, resets: whole, pace: "up"},
 		{name: "no anchor yet", anchorStart: -1, used: 46.5, resets: fractional, pace: "up"},
 	}
-	// The status line shows what's left of today's budget, or how far over it
-	// you are: "t 54% of 28%" or "t over 18% of 28%".
+	// Counting up, the status line shows how much of today's budget is used,
+	// past 100% once over: "t 46% of 28%" or "t 118% of 28%". Counting down,
+	// it shows what's left, or how far over you are: "t 54% of 28%" or
+	// "t over 18% of 28%".
 	statusToday := regexp.MustCompile(`t (over )?(\d+)% of (\d+)%`)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -160,36 +162,50 @@ func TestTodayBudgetMatchesTheStatusLine(t *testing.T) {
 			// The tool runs first, so a missing anchor is still missing for it.
 			_, got := callOK(t, ts, "get_today_budget")
 
-			line := render.Render(p, render.Context{
-				Now:           now,
-				Config:        config.Default(),
-				NoColor:       true,
-				ReadSnapshot:  func() *pace.Snapshot { return pace.ReadSnapshot(anchor) },
-				WriteSnapshot: func(s pace.Snapshot) { _ = pace.WriteSnapshot(anchor, s) },
-			})
-			m := statusToday.FindStringSubmatch(line)
-			if m == nil {
-				t.Fatalf("the status line has no today segment: %q", line)
+			line := func(down bool) string {
+				cfg := config.Default()
+				cfg.CountDown.Today = down
+				return render.Render(p, render.Context{
+					Now:           now,
+					Config:        cfg,
+					NoColor:       true,
+					ReadSnapshot:  func() *pace.Snapshot { return pace.ReadSnapshot(anchor) },
+					WriteSnapshot: func(s pace.Snapshot) { _ = pace.WriteSnapshot(anchor, s) },
+				})
 			}
 			if got["kind"] != "budget" {
 				t.Fatalf("kind = %v, want budget; answer %v", got["kind"], got)
 			}
-			if fmt.Sprint(got["budgetPct"]) != m[3] {
-				t.Errorf("tool says a %v%% budget, status line says %s", got["budgetPct"], m[0])
-			}
-			// Under budget, the line's number is the tool's leftPct: what's left of
-			// the budget, rounded on its own, and 0 when there is none. Over
-			// budget, it is how far usedPct is past 100.
-			isOver := m[1] != ""
-			n, _ := strconv.Atoi(m[2])
-			if got["over"] != isOver {
-				t.Errorf("tool says over = %v, status line says %s", got["over"], m[0])
-			}
-			if !isOver && fmt.Sprint(got["leftPct"]) != m[2] {
-				t.Errorf("tool says %v%% left (%v%% used), status line says %s", got["leftPct"], got["usedPct"], m[0])
-			}
-			if isOver && fmt.Sprint(got["usedPct"]) != strconv.Itoa(100+n) {
-				t.Errorf("tool says %v%% used, status line says %s", got["usedPct"], m[0])
+			for _, down := range []bool{false, true} {
+				m := statusToday.FindStringSubmatch(line(down))
+				if m == nil {
+					t.Fatalf("the status line (down %v) has no today segment: %q", down, line(down))
+				}
+				if fmt.Sprint(got["budgetPct"]) != m[3] {
+					t.Errorf("tool says a %v%% budget, status line says %s", got["budgetPct"], m[0])
+				}
+				n, _ := strconv.Atoi(m[2])
+				used, _ := got["usedPct"].(float64)
+				switch {
+				case !down:
+					// The number is the tool's usedPct, and at least 101 once over.
+					want := int(used)
+					if got["over"] == true {
+						want = max(want, 101)
+					}
+					if m[1] != "" || n != want {
+						t.Errorf("tool says %v%% used (over %v), status line says %s", got["usedPct"], got["over"], m[0])
+					}
+				case got["over"] != (m[1] != ""):
+					t.Errorf("tool says over = %v, status line says %s", got["over"], m[0])
+				// Under budget, the number is the tool's leftPct: what's left of the
+				// budget, rounded on its own, and 0 when there is none. Over budget,
+				// it is how far usedPct is past 100.
+				case m[1] == "" && fmt.Sprint(got["leftPct"]) != m[2]:
+					t.Errorf("tool says %v%% left (%v%% used), status line says %s", got["leftPct"], got["usedPct"], m[0])
+				case m[1] != "" && int(used) != 100+n:
+					t.Errorf("tool says %v%% used, status line says %s", got["usedPct"], m[0])
+				}
 			}
 			if got["pace"] != tt.pace {
 				t.Errorf("pace = %v, want %s", got["pace"], tt.pace)

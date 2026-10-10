@@ -568,7 +568,7 @@ func description(doc *Document) string {
 		list = strings.Join(titles[:n-1], ", ") + ", and " + titles[n-1]
 	}
 	return fmt.Sprintf("A Claude Code window with paceline's status line under the prompt, playing %d scenes in a loop: %s. "+
-		"Session, week, and today count down what's left of each, from 100%%.", len(titles), list)
+		"Session, week, and today count up what's used of each, from 0%%.", len(titles), list)
 }
 
 func (w *svgWriter) writeStyle(b *strings.Builder, fontData []byte) {

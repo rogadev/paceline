@@ -370,7 +370,7 @@ func freshDay() sceneDef {
 	return terminalScene(
 		sceneDef{
 			id: "fresh-day", title: "Fresh day", layout: LayoutTerminal, snapshot: friday,
-			caption: "Each morning, today's budget is set from what's left in the week, and it starts full.",
+			caption: "Each morning, today's budget is set from what's left in the week, and it starts at 0% used.",
 		},
 		window{project: "acme-portal", branch: "dev", sessionResets: utc(9, 13, 0)},
 		[]usageRow{
@@ -387,7 +387,7 @@ func workingDay() sceneDef {
 	return terminalScene(
 		sceneDef{
 			id: "working-day", title: "Working through the day", layout: LayoutTerminal, snapshot: friday,
-			caption: "As you work, every number counts down, and today turns yellow, then red, as its budget runs low.",
+			caption: "As you work, every number counts up, and today turns yellow, then red, as its budget runs low.",
 		},
 		window{project: "field-app", branch: "feat/offline", sessionResets: utc(9, 17, 0)},
 		[]usageRow{
@@ -409,7 +409,7 @@ func overBudget() sceneDef {
 	return terminalScene(
 		sceneDef{
 			id: "over-budget", title: "Over budget", layout: LayoutTerminal, snapshot: friday,
-			caption: "Past today's budget, it shows how far over you are, in red.",
+			caption: "Past today's budget, it keeps counting past 100%, in red.",
 		},
 		window{project: "billing-api", branch: "fix/webhooks", sessionResets: utc(9, 20, 0)},
 		[]usageRow{

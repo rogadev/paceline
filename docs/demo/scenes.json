@@ -30,7 +30,7 @@
     {
       "id": "fresh-day",
       "title": "Fresh day",
-      "caption": "Each morning, today's budget is set from what's left in the week, and it starts full.",
+      "caption": "Each morning, today's budget is set from what's left in the week, and it starts at 0% used.",
       "layout": "terminal",
       "durationMs": 5000,
       "steps": [
@@ -46,8 +46,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 98%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 80%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 100%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 98% · w 80% · t 100% of 28% · 2m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 2%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 20%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 0%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 2% · w 20% · t 0% of 28% · 2m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -92,7 +92,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 98%",
+                  "text": "s 2%",
                   "color": "green"
                 },
                 {
@@ -106,7 +106,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 80%",
+                  "text": "w 20%",
                   "color": "green"
                 },
                 {
@@ -120,7 +120,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 100%",
+                  "text": "t 0%",
                   "color": "green"
                 },
                 {
@@ -160,8 +160,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 96%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 80%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 99%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m6m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 96% · w 80% · t 99% of 28% · 6m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 4%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 20%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 1%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m6m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 4% · w 20% · t 1% of 28% · 6m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -206,7 +206,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 96%",
+                  "text": "s 4%",
                   "color": "green"
                 },
                 {
@@ -220,7 +220,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 80%",
+                  "text": "w 20%",
                   "color": "green"
                 },
                 {
@@ -234,7 +234,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 99%",
+                  "text": "t 1%",
                   "color": "green"
                 },
                 {
@@ -267,7 +267,7 @@
     {
       "id": "working-day",
       "title": "Working through the day",
-      "caption": "As you work, every number counts down, and today turns yellow, then red, as its budget runs low.",
+      "caption": "As you work, every number counts up, and today turns yellow, then red, as its budget runs low.",
       "layout": "terminal",
       "durationMs": 7800,
       "steps": [
@@ -283,8 +283,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 80%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 74%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 79%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m40m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (feat/offline) · s 80% · w 74% · t 79% of 28% · 40m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 20%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 26%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 21%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m40m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (feat/offline) · s 20% · w 26% · t 21% of 28% · 40m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -329,7 +329,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 80%",
+                  "text": "s 20%",
                   "color": "green"
                 },
                 {
@@ -343,7 +343,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 74%",
+                  "text": "w 26%",
                   "color": "green"
                 },
                 {
@@ -357,7 +357,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 79%",
+                  "text": "t 21%",
                   "color": "green"
                 },
                 {
@@ -397,8 +397,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 55%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 66%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 50%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h50m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (feat/offline) · s 55% · w 66% · t 50% of 28% · 1h50m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 45%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 34%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 50%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h50m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (feat/offline) · s 45% · w 34% · t 50% of 28% · 1h50m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -443,7 +443,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 55%",
+                  "text": "s 45%",
                   "color": "green"
                 },
                 {
@@ -457,7 +457,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 66%",
+                  "text": "w 34%",
                   "color": "green"
                 },
                 {
@@ -511,8 +511,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 38%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 59%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 25%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h0m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (feat/offline) · s 38% · w 59% · t 25% of 28% · 3h0m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 62%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 41%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 75%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h0m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (feat/offline) · s 62% · w 41% · t 75% of 28% · 3h0m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -557,7 +557,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 38%",
+                  "text": "s 62%",
                   "color": "green"
                 },
                 {
@@ -571,7 +571,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 59%",
+                  "text": "w 41%",
                   "color": "green"
                 },
                 {
@@ -585,7 +585,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 25%",
+                  "text": "t 75%",
                   "color": "yellow"
                 },
                 {
@@ -625,8 +625,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 32%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 55%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt 11%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m4h10m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (feat/offline) · s 32% · w 55% · t 11% of 28% · 4h10m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 68%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 45%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt 89%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m4h10m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (feat/offline) · s 68% · w 45% · t 89% of 28% · 4h10m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -671,7 +671,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 32%",
+                  "text": "s 68%",
                   "color": "green"
                 },
                 {
@@ -685,7 +685,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 55%",
+                  "text": "w 45%",
                   "color": "green"
                 },
                 {
@@ -699,7 +699,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 11%",
+                  "text": "t 89%",
                   "color": "#b92f2f"
                 },
                 {
@@ -732,7 +732,7 @@
     {
       "id": "over-budget",
       "title": "Over budget",
-      "caption": "Past today's budget, it shows how far over you are, in red.",
+      "caption": "Past today's budget, it keeps counting past 100%, in red.",
       "layout": "terminal",
       "durationMs": 6200,
       "steps": [
@@ -748,8 +748,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 48%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 51%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt over 4%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h10m\u001b[0m",
-              "plain": "Opus 5.5 · billing-api (fix/webhooks) · s 48% · w 51% · t over 4% of 28% · 2h10m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 52%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 49%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt 104%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h10m\u001b[0m",
+              "plain": "Opus 5.5 · billing-api (fix/webhooks) · s 52% · w 49% · t 104% of 28% · 2h10m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -794,7 +794,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 48%",
+                  "text": "s 52%",
                   "color": "green"
                 },
                 {
@@ -808,7 +808,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 51%",
+                  "text": "w 49%",
                   "color": "green"
                 },
                 {
@@ -822,7 +822,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t over 4%",
+                  "text": "t 104%",
                   "color": "#b92f2f"
                 },
                 {
@@ -862,8 +862,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 43%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 49%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt over 13%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h25m\u001b[0m",
-              "plain": "Opus 5.5 · billing-api (fix/webhooks) · s 43% · w 49% · t over 13% of 28% · 2h25m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 57%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 51%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt 113%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h25m\u001b[0m",
+              "plain": "Opus 5.5 · billing-api (fix/webhooks) · s 57% · w 51% · t 113% of 28% · 2h25m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -908,7 +908,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 43%",
+                  "text": "s 57%",
                   "color": "green"
                 },
                 {
@@ -922,7 +922,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 49%",
+                  "text": "w 51%",
                   "color": "green"
                 },
                 {
@@ -936,7 +936,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t over 13%",
+                  "text": "t 113%",
                   "color": "#b92f2f"
                 },
                 {
@@ -976,8 +976,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 47%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt over 18%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h40m\u001b[0m",
-              "plain": "Opus 5.5 · billing-api (fix/webhooks) · s 39% · w 47% · t over 18% of 28% · 2h40m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 53%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt 118%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h40m\u001b[0m",
+              "plain": "Opus 5.5 · billing-api (fix/webhooks) · s 61% · w 53% · t 118% of 28% · 2h40m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1022,7 +1022,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 39%",
+                  "text": "s 61%",
                   "color": "green"
                 },
                 {
@@ -1036,7 +1036,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 47%",
+                  "text": "w 53%",
                   "color": "green"
                 },
                 {
@@ -1050,7 +1050,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t over 18%",
+                  "text": "t 118%",
                   "color": "#b92f2f"
                 },
                 {
@@ -1099,8 +1099,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 34%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 62%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 34%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h45m\u001b[0m",
-              "plain": "Opus 5.5 · high effort · acme-portal (dev) · s 34% · w 62% · t 34% of 28% · 2h45m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 66%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 38%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 66%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h45m\u001b[0m",
+              "plain": "Opus 5.5 · high effort · acme-portal (dev) · s 66% · w 38% · t 66% of 28% · 2h45m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1159,7 +1159,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 34%",
+                  "text": "s 66%",
                   "color": "green"
                 },
                 {
@@ -1173,7 +1173,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 62%",
+                  "text": "w 38%",
                   "color": "green"
                 },
                 {
@@ -1187,7 +1187,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 34%",
+                  "text": "t 66%",
                   "color": "green"
                 },
                 {
@@ -1227,8 +1227,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[33ms 26% (resets 3:40pm)\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 60%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 27%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mctx 72%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h25m\u001b[0m",
-              "plain": "Opus 5.5 · high effort · acme-portal (dev) · s 26% (resets 3:40pm) · w 60% · t 27% of 28% · ctx 72% · 3h25m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[33ms 74% (resets 3:40pm)\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 40%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 73%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mctx 72%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h25m\u001b[0m",
+              "plain": "Opus 5.5 · high effort · acme-portal (dev) · s 74% (resets 3:40pm) · w 40% · t 73% of 28% · ctx 72% · 3h25m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1287,7 +1287,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 26% (resets 3:40pm)",
+                  "text": "s 74% (resets 3:40pm)",
                   "color": "yellow"
                 },
                 {
@@ -1301,7 +1301,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 60%",
+                  "text": "w 40%",
                   "color": "green"
                 },
                 {
@@ -1315,7 +1315,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 27%",
+                  "text": "t 73%",
                   "color": "yellow"
                 },
                 {
@@ -1369,8 +1369,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47ms 12% (resets 3:40pm)\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 58%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 20%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mctx 86%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m4h5m\u001b[0m",
-              "plain": "Opus 5.5 · high effort · acme-portal (dev) · s 12% (resets 3:40pm) · w 58% · t 20% of 28% · ctx 86% · 4h5m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47ms 88% (resets 3:40pm)\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 42%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 80%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mctx 86%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m4h5m\u001b[0m",
+              "plain": "Opus 5.5 · high effort · acme-portal (dev) · s 88% (resets 3:40pm) · w 42% · t 80% of 28% · ctx 86% · 4h5m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1429,7 +1429,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 12% (resets 3:40pm)",
+                  "text": "s 88% (resets 3:40pm)",
                   "color": "#b92f2f"
                 },
                 {
@@ -1443,7 +1443,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 58%",
+                  "text": "w 42%",
                   "color": "green"
                 },
                 {
@@ -1457,7 +1457,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 20%",
+                  "text": "t 80%",
                   "color": "yellow"
                 },
                 {
@@ -1516,8 +1516,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mdocs-site\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 63%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 70%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 63%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m47m\u001b[0m",
-              "plain": "Opus 5.5 · docs-site (main) · s 63% · w 70% · t 63% of 28% · 47m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mdocs-site\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 37%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 30%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 38%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m47m\u001b[0m",
+              "plain": "Opus 5.5 · docs-site (main) · s 37% · w 30% · t 38% of 28% · 47m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1562,7 +1562,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 63%",
+                  "text": "s 37%",
                   "color": "green"
                 },
                 {
@@ -1576,7 +1576,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 70%",
+                  "text": "w 30%",
                   "color": "green"
                 },
                 {
@@ -1590,7 +1590,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 63%",
+                  "text": "t 38%",
                   "color": "green"
                 },
                 {
@@ -1626,8 +1626,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mdocs-site\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 63%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 70%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 63%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mcache cold: 82k @ ~2x\u001b[0m \u001b[2m·\u001b[0m \u001b[2m59m\u001b[0m",
-              "plain": "Opus 5.5 · docs-site (main) · s 63% · w 70% · t 63% of 28% · cache cold: 82k @ ~2x · 59m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mdocs-site\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 37%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 30%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 38%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mcache cold: 82k @ ~2x\u001b[0m \u001b[2m·\u001b[0m \u001b[2m59m\u001b[0m",
+              "plain": "Opus 5.5 · docs-site (main) · s 37% · w 30% · t 38% of 28% · cache cold: 82k @ ~2x · 59m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1672,7 +1672,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 63%",
+                  "text": "s 37%",
                   "color": "green"
                 },
                 {
@@ -1686,7 +1686,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 70%",
+                  "text": "w 30%",
                   "color": "green"
                 },
                 {
@@ -1700,7 +1700,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 63%",
+                  "text": "t 38%",
                   "color": "green"
                 },
                 {
@@ -1784,8 +1784,8 @@
           ],
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 70%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 66%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 48%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱▱\u001b[0m #328 2/5 \u001b[2m·\u001b[0m \u001b[2m1h30m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 70% · w 66% · t 48% of 28% · loop ▰▰▰▱▱ #328 2/5 · 1h30m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 30%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 34%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 52%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱▱\u001b[0m #328 2/5 \u001b[2m·\u001b[0m \u001b[2m1h30m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 30% · w 34% · t 52% of 28% · loop ▰▰▰▱▱ #328 2/5 · 1h30m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1830,7 +1830,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 70%",
+                  "text": "s 30%",
                   "color": "green"
                 },
                 {
@@ -1844,7 +1844,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 66%",
+                  "text": "w 34%",
                   "color": "green"
                 },
                 {
@@ -1858,7 +1858,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 48%",
+                  "text": "t 52%",
                   "color": "green"
                 },
                 {
@@ -1941,8 +1941,8 @@
           ],
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 65%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 65%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 45%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱\u001b[0m #329 3/5 \u001b[2m·\u001b[0m \u001b[2m1h50m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 65% · w 65% · t 45% of 28% · loop ▰▰▰▰▱ #329 3/5 · 1h50m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 35%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 35%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 55%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱\u001b[0m #329 3/5 \u001b[2m·\u001b[0m \u001b[2m1h50m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 35% · w 35% · t 55% of 28% · loop ▰▰▰▰▱ #329 3/5 · 1h50m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1987,7 +1987,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 65%",
+                  "text": "s 35%",
                   "color": "green"
                 },
                 {
@@ -2001,7 +2001,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 65%",
+                  "text": "w 35%",
                   "color": "green"
                 },
                 {
@@ -2015,7 +2015,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 45%",
+                  "text": "t 55%",
                   "color": "green"
                 },
                 {
@@ -2094,8 +2094,8 @@
           ],
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 64%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 41%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰▰\u001b[0m\u001b[36m▰\u001b[0m #330 4/5 \u001b[2m·\u001b[0m \u001b[2m2h10m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 61% · w 64% · t 41% of 28% · loop ▰▰▰▰▰ #330 4/5 · 2h10m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 36%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 59%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰▰\u001b[0m\u001b[36m▰\u001b[0m #330 4/5 \u001b[2m·\u001b[0m \u001b[2m2h10m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 39% · w 36% · t 59% of 28% · loop ▰▰▰▰▰ #330 4/5 · 2h10m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2140,7 +2140,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 61%",
+                  "text": "s 39%",
                   "color": "green"
                 },
                 {
@@ -2154,7 +2154,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 64%",
+                  "text": "w 36%",
                   "color": "green"
                 },
                 {
@@ -2168,7 +2168,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 41%",
+                  "text": "t 59%",
                   "color": "green"
                 },
                 {
@@ -2227,8 +2227,8 @@
           ],
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 57%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 63%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 38%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰▰▰\u001b[0m \u001b[32m✓ done\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h30m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 57% · w 63% · t 38% of 28% · loop ▰▰▰▰▰ ✓ done · 2h30m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 43%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 37%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 63%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰▰▰\u001b[0m \u001b[32m✓ done\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h30m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 43% · w 37% · t 63% of 28% · loop ▰▰▰▰▰ ✓ done · 2h30m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2273,7 +2273,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 57%",
+                  "text": "s 43%",
                   "color": "green"
                 },
                 {
@@ -2287,7 +2287,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 63%",
+                  "text": "w 37%",
                   "color": "green"
                 },
                 {
@@ -2301,7 +2301,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 38%",
+                  "text": "t 63%",
                   "color": "green"
                 },
                 {
@@ -2364,8 +2364,8 @@
           "now": "2026-10-09T14:00:00Z",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 42%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 32%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h10m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 42% · w 61% · t 32% of 28% · 1h10m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 58%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 68%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h10m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 58% · w 39% · t 68% of 28% · 1h10m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2410,7 +2410,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 42%",
+                  "text": "s 58%",
                   "color": "green"
                 },
                 {
@@ -2424,7 +2424,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 61%",
+                  "text": "w 39%",
                   "color": "green"
                 },
                 {
@@ -2438,7 +2438,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 32%",
+                  "text": "t 68%",
                   "color": "green"
                 },
                 {
@@ -2465,8 +2465,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 42%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 32%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mctx 74%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m25m\u001b[0m",
-              "plain": "Opus 5.5 · high effort · field-app (feat/offline) · s 42% · w 61% · t 32% of 28% · ctx 74% · 25m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 58%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 68%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mctx 74%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m25m\u001b[0m",
+              "plain": "Opus 5.5 · high effort · field-app (feat/offline) · s 58% · w 39% · t 68% of 28% · ctx 74% · 25m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2525,7 +2525,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 42%",
+                  "text": "s 58%",
                   "color": "green"
                 },
                 {
@@ -2539,7 +2539,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 61%",
+                  "text": "w 39%",
                   "color": "green"
                 },
                 {
@@ -2553,7 +2553,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 32%",
+                  "text": "t 68%",
                   "color": "green"
                 },
                 {
@@ -2594,8 +2594,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[33mfast mode\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 42%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 32%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m10m\u001b[0m",
-              "plain": "Opus 5.5 · fast mode · billing-api (fix/webhooks) · s 42% · w 61% · t 32% of 28% · 10m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[33mfast mode\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 58%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 68%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m10m\u001b[0m",
+              "plain": "Opus 5.5 · fast mode · billing-api (fix/webhooks) · s 58% · w 39% · t 68% of 28% · 10m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2654,7 +2654,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 42%",
+                  "text": "s 58%",
                   "color": "green"
                 },
                 {
@@ -2668,7 +2668,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 61%",
+                  "text": "w 39%",
                   "color": "green"
                 },
                 {
@@ -2682,7 +2682,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 32%",
+                  "text": "t 68%",
                   "color": "green"
                 },
                 {
@@ -2709,8 +2709,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;242;175;72mpaceline\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 42%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 32%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱\u001b[0m #42 1/3 \u001b[2m·\u001b[0m \u001b[2m5m\u001b[0m",
-              "plain": "Opus 5.5 · paceline (dev) · s 42% · w 61% · t 32% of 28% · loop ▰▰▱ #42 1/3 · 5m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;242;175;72mpaceline\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 58%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 68%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱\u001b[0m #42 1/3 \u001b[2m·\u001b[0m \u001b[2m5m\u001b[0m",
+              "plain": "Opus 5.5 · paceline (dev) · s 58% · w 39% · t 68% of 28% · loop ▰▰▱ #42 1/3 · 5m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2755,7 +2755,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 42%",
+                  "text": "s 58%",
                   "color": "green"
                 },
                 {
@@ -2769,7 +2769,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 61%",
+                  "text": "w 39%",
                   "color": "green"
                 },
                 {
@@ -2783,7 +2783,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 32%",
+                  "text": "t 68%",
                   "color": "green"
                 },
                 {
@@ -2838,8 +2838,8 @@
           "now": "2026-10-09T14:20:00Z",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 60%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 29%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h30m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 39% · w 60% · t 29% of 28% · 1h30m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 40%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 71%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h30m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · s 61% · w 40% · t 71% of 28% · 1h30m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2884,7 +2884,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 39%",
+                  "text": "s 61%",
                   "color": "green"
                 },
                 {
@@ -2898,7 +2898,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 60%",
+                  "text": "w 40%",
                   "color": "green"
                 },
                 {
@@ -2912,7 +2912,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 29%",
+                  "text": "t 71%",
                   "color": "yellow"
                 },
                 {
@@ -2939,8 +2939,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 60%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 29%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mctx 74%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m45m\u001b[0m",
-              "plain": "Opus 5.5 · high effort · field-app (feat/offline) · s 39% · w 60% · t 29% of 28% · ctx 74% · 45m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 40%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 71%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mctx 74%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m45m\u001b[0m",
+              "plain": "Opus 5.5 · high effort · field-app (feat/offline) · s 61% · w 40% · t 71% of 28% · ctx 74% · 45m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2999,7 +2999,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 39%",
+                  "text": "s 61%",
                   "color": "green"
                 },
                 {
@@ -3013,7 +3013,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 60%",
+                  "text": "w 40%",
                   "color": "green"
                 },
                 {
@@ -3027,7 +3027,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 29%",
+                  "text": "t 71%",
                   "color": "yellow"
                 },
                 {
@@ -3068,8 +3068,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[33mfast mode\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 60%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 29%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m30m\u001b[0m",
-              "plain": "Opus 5.5 · fast mode · billing-api (fix/webhooks) · s 39% · w 60% · t 29% of 28% · 30m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[33mfast mode\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 40%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 71%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m30m\u001b[0m",
+              "plain": "Opus 5.5 · fast mode · billing-api (fix/webhooks) · s 61% · w 40% · t 71% of 28% · 30m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -3128,7 +3128,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 39%",
+                  "text": "s 61%",
                   "color": "green"
                 },
                 {
@@ -3142,7 +3142,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 60%",
+                  "text": "w 40%",
                   "color": "green"
                 },
                 {
@@ -3156,7 +3156,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 29%",
+                  "text": "t 71%",
                   "color": "yellow"
                 },
                 {
@@ -3183,8 +3183,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;242;175;72mpaceline\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 60%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 29%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰\u001b[0m\u001b[36m▰\u001b[0m #43 2/3 \u001b[2m·\u001b[0m \u001b[2m25m\u001b[0m",
-              "plain": "Opus 5.5 · paceline (dev) · s 39% · w 60% · t 29% of 28% · loop ▰▰▰ #43 2/3 · 25m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;242;175;72mpaceline\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 40%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 71%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰\u001b[0m\u001b[36m▰\u001b[0m #43 2/3 \u001b[2m·\u001b[0m \u001b[2m25m\u001b[0m",
+              "plain": "Opus 5.5 · paceline (dev) · s 61% · w 40% · t 71% of 28% · loop ▰▰▰ #43 2/3 · 25m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -3229,7 +3229,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 39%",
+                  "text": "s 61%",
                   "color": "green"
                 },
                 {
@@ -3243,7 +3243,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 60%",
+                  "text": "w 40%",
                   "color": "green"
                 },
                 {
@@ -3257,7 +3257,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 29%",
+                  "text": "t 71%",
                   "color": "yellow"
                 },
                 {
@@ -3324,8 +3324,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 97%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 67%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 99%\u001b[0m \u001b[2mof 68%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m5m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (main) · s 97% · w 67% · t 99% of 68% · 5m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 3%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 33%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 1%\u001b[0m \u001b[2mof 68%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m5m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (main) · s 3% · w 33% · t 1% of 68% · 5m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -3370,7 +3370,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 97%",
+                  "text": "s 3%",
                   "color": "green"
                 },
                 {
@@ -3384,7 +3384,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 67%",
+                  "text": "w 33%",
                   "color": "green"
                 },
                 {
@@ -3398,7 +3398,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 99%",
+                  "text": "t 1%",
                   "color": "green"
                 },
                 {
@@ -3438,8 +3438,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 69%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 55%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 81%\u001b[0m \u001b[2mof 68%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h35m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (main) · s 69% · w 55% · t 81% of 68% · 1h35m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 31%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 45%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 19%\u001b[0m \u001b[2mof 68%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h35m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (main) · s 31% · w 45% · t 19% of 68% · 1h35m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -3484,7 +3484,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 69%",
+                  "text": "s 31%",
                   "color": "green"
                 },
                 {
@@ -3498,7 +3498,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 55%",
+                  "text": "w 45%",
                   "color": "green"
                 },
                 {
@@ -3512,7 +3512,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 81%",
+                  "text": "t 19%",
                   "color": "green"
                 },
                 {
@@ -3552,8 +3552,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 43%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 42%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 62%\u001b[0m \u001b[2mof 68%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h5m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (main) · s 43% · w 42% · t 62% of 68% · 3h5m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 57%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 58%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 38%\u001b[0m \u001b[2mof 68%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h5m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (main) · s 57% · w 58% · t 38% of 68% · 3h5m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -3598,7 +3598,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 43%",
+                  "text": "s 57%",
                   "color": "green"
                 },
                 {
@@ -3612,7 +3612,7 @@
                   "text": " "
                 },
                 {
-                  "text": "w 42%",
+                  "text": "w 58%",
                   "color": "green"
                 },
                 {
@@ -3626,7 +3626,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 62%",
+                  "text": "t 38%",
                   "color": "green"
                 },
                 {

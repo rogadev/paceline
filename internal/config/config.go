@@ -15,6 +15,12 @@ type Segments struct {
 	Model, Effort, FastMode, Project, Branch, Session, Week, Today, Context, Cache, Duration, Progress bool
 }
 
+// CountDown picks, per usage segment, whether its number counts down what's
+// left instead of counting up what's used. The zero value counts up.
+type CountDown struct {
+	Session, Week, Today bool
+}
+
 // Thresholds are the percentages where colors and warnings change.
 type Thresholds struct {
 	HeadroomGreen, HeadroomYellow, ContextWarn, ContextCritical float64
@@ -24,6 +30,7 @@ type Thresholds struct {
 type Config struct {
 	Segments   Segments
 	Thresholds Thresholds
+	CountDown  CountDown
 	// QuietEfforts are effort levels considered everyday; others get a label.
 	QuietEfforts []string
 	// ProjectSlots pins project folder names to color slots 0-11.
@@ -67,6 +74,7 @@ func Dir() string {
 type fileShape struct {
 	Segments     map[string]json.RawMessage `json:"segments"`
 	Thresholds   map[string]json.RawMessage `json:"thresholds"`
+	Count        map[string]json.RawMessage `json:"countDirection"`
 	QuietEfforts json.RawMessage            `json:"quietEfforts"`
 	ProjectSlots map[string]json.RawMessage `json:"projectSlots"`
 	Verbose      json.RawMessage            `json:"verbose"`
@@ -104,6 +112,16 @@ func Merge(data []byte) Config {
 		var v float64
 		if target, ok := thresholds[key]; ok && json.Unmarshal(raw, &v) == nil && v >= 0 && v <= 100 {
 			*target = v
+		}
+	}
+
+	countDown := map[string]*bool{
+		"session": &c.CountDown.Session, "week": &c.CountDown.Week, "today": &c.CountDown.Today,
+	}
+	for key, raw := range f.Count {
+		var v string
+		if target, ok := countDown[key]; ok && json.Unmarshal(raw, &v) == nil && (v == "up" || v == "down") {
+			*target = v == "down"
 		}
 	}
 

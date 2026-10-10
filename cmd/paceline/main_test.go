@@ -39,7 +39,7 @@ func TestWritesDaySnapshot(t *testing.T) {
 	resets := time.Now().Add(4 * 24 * time.Hour).Unix()
 	in := `{"rate_limits":{"seven_day":{"used_percentage":10,"resets_at":` + jsonNum(resets) + `}}}`
 	_, out, _, dir := runCLI(t, in)
-	if !strings.Contains(out, "t 100% of ") {
+	if !strings.Contains(out, "t 0% of ") {
 		t.Errorf("stdout %q", out)
 	}
 	if _, err := os.Stat(filepath.Join(dir, "paceline-day.json")); err != nil {
@@ -152,7 +152,7 @@ func TestFailedFeedWriteKeepsStatusLine(t *testing.T) {
 		t.Fatal(err)
 	}
 	code, out := renderStdin(usagePayload())
-	if code != 0 || out == fallback || !strings.Contains(out, "s 79%") || !strings.Contains(out, "w 54%") {
+	if code != 0 || out == fallback || !strings.Contains(out, "s 21%") || !strings.Contains(out, "w 46%") {
 		t.Errorf("code %d, stdout %q", code, out)
 	}
 	if info, err := os.Stat(path); err != nil || !info.IsDir() {
@@ -506,7 +506,8 @@ func TestChooseStyle(t *testing.T) {
 }
 
 // The style examples in the install prompt and --help are what the status line
-// prints for the same usage, so they show what's left, not what's used.
+// prints for the same usage with the default config, so they count up what's
+// used.
 func TestStyleExamplesMatchTheStatusLine(t *testing.T) {
 	now := time.Date(2026, 9, 24, 10, 0, 0, 0, time.UTC)
 	resets := float64(now.Add(38 * time.Hour).Unix()) // two days from midnight

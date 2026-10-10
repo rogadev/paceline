@@ -98,6 +98,29 @@ func TestMergeVerbose(t *testing.T) {
 	}
 }
 
+func TestMergeCountDirection(t *testing.T) {
+	if Default().CountDown != (CountDown{}) {
+		t.Error("a usage segment counts down by default")
+	}
+	tests := []struct {
+		in   string
+		want CountDown
+	}{
+		{in: `{}`, want: CountDown{}},
+		{in: `{"countDirection": {"session": "down"}}`, want: CountDown{Session: true}},
+		{in: `{"countDirection": {"week": "down", "today": "down"}}`, want: CountDown{Week: true, Today: true}},
+		{in: `{"countDirection": {"session": "down", "week": "up", "today": "down"}}`, want: CountDown{Session: true, Today: true}},
+		// Anything but "up" or "down", and any unknown key, is ignored.
+		{in: `{"countDirection": {"session": "DOWN", "week": true, "today": 1, "context": "down"}}`, want: CountDown{}},
+		{in: `{"countDirection": "down"}`, want: CountDown{}},
+	}
+	for _, tt := range tests {
+		if got := Merge([]byte(tt.in)).CountDown; got != tt.want {
+			t.Errorf("Merge(%s).CountDown = %+v, want %+v", tt.in, got, tt.want)
+		}
+	}
+}
+
 func TestMergeFeed(t *testing.T) {
 	if Default().Feed {
 		t.Error("feed is on by default")
