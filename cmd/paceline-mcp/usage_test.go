@@ -128,6 +128,9 @@ func TestTodayBudgetMatchesTheStatusLine(t *testing.T) {
 	}{
 		{name: "under budget, fractional reset", anchorStart: 40, used: 46.5, resets: fractional, pace: "up"},
 		{name: "over budget", anchorStart: 40, used: 70, resets: fractional, pace: "up"},
+		// A 20.87% budget with 20.93 spent is 100.3% used: over, though it
+		// rounds to 100, so both the tool and the line say 101.
+		{name: "just over budget", anchorStart: 40, used: 60.93, resets: fractional, pace: "up"},
 		{name: "below an even pace", anchorStart: 80, used: 82, resets: whole, pace: "down"},
 		{name: "about an even pace", anchorStart: 60, used: 61.5, resets: whole, pace: "even"},
 		{name: "week used up", anchorStart: 100, used: 100, resets: whole, pace: "down"},
@@ -188,12 +191,8 @@ func TestTodayBudgetMatchesTheStatusLine(t *testing.T) {
 				used, _ := got["usedPct"].(float64)
 				switch {
 				case !down:
-					// The number is the tool's usedPct, and at least 101 once over.
-					want := int(used)
-					if got["over"] == true {
-						want = max(want, 101)
-					}
-					if m[1] != "" || n != want {
+					// The number is the tool's usedPct, past 100 once over.
+					if m[1] != "" || n != int(used) || (got["over"] == true) != (n > 100) {
 						t.Errorf("tool says %v%% used (over %v), status line says %s", got["usedPct"], got["over"], m[0])
 					}
 				case got["over"] != (m[1] != ""):

@@ -223,6 +223,11 @@ func todayFor(r feed.Reading, f freshness, now time.Time, snap *pace.Snapshot) (
 	if res.Budget > 0 && !res.Over {
 		a.LeftPct = render.Round(res.PctLeft)
 	}
+	// Over budget, UsedPct is at least 101, as the status line shows it: a
+	// reading just past the budget rounds to 100, which would contradict over.
+	if res.Over {
+		a.UsedPct = max(a.UsedPct, 101)
+	}
 	return budgetSummary(a, res), a
 }
 
