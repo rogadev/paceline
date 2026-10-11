@@ -24,14 +24,14 @@ The writer lays text on a fixed column grid using the font's advance width, and 
 
 | id | Title | What it shows |
 |---|---|---|
-| `fresh-day` | Fresh day | Today's budget is set at the start of the day and starts full: `t 100% of 28%`. |
-| `working-day` | Working through the day | Session, week, and today count down; today turns yellow below 30% left and red below 15%. |
-| `over-budget` | Over budget | Past the budget, today shows how far over you are, in red: `t over 18% of 28%`. |
-| `session-low` | Session running low | Below 30% left the session shows its reset time; `ctx` appears at 70% and turns red at 85%. |
+| `fresh-day` | Fresh day | Today's budget is set at the start of the day and starts at 0% used: `t 0% of 28%`. |
+| `working-day` | Working through the day | Session, week, and today count up; today turns yellow above 70% used and red above 85%. |
+| `over-budget` | Over budget | Past the budget, today keeps counting past 100%, in red: `t 118% of 28%`. |
+| `session-low` | Session running low | Above 70% used the session shows its reset time; `ctx` appears at 70% and turns red at 85%. |
 | `cache-cold` | Cache went cold | `cache cold: 82k @ ~2x` appears once the prompt cache expires. |
 | `agent-job` | Agent job | A `loop` progress bar advances step by step to `✓ done`, with the subagent list below. |
 | `several-windows` | Several windows | Four windows share the same limits, each project in its own color. |
-| `last-day` | Last day | On the final day, the budget is everything left in the week: `t 99% of 68%`. |
+| `last-day` | Last day | On the final day, the budget is everything left in the week: `t 1% of 68%`. |
 
 ## scenes.json schema
 

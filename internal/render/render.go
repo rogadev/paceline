@@ -126,21 +126,23 @@ func Render(p *payload.Payload, ctx Context) string {
 	}
 
 	// Usage limits: session, week, then today's share of the week. Each counts
-	// down what's left, so a number falling toward 0 is the signal to slow down.
-	// A reading past 100% shows 0 left, never a negative number.
+	// up what's used from 0%, or down what's left from 100% when its
+	// countDirection is "down". Color always follows what's left, so either
+	// way the segment turns red near the limit.
 	if rl := p.RateLimits; rl != nil {
+		down := ctx.Config.CountDown
 		if fh := rl.FiveHour; on.Session && fh != nil && fh.UsedPercentage.Set {
-			left := max(0, 100-Round(fh.UsedPercentage.V))
+			left, shown := usage(fh.UsedPercentage.V, down.Session, ctx)
 			when := ""
 			if float64(left) < th.HeadroomGreen && fh.ResetsAt.Set {
 				when = " (resets " + timefmt.Clock(fh.ResetsAt.V, ctx.Now) + ")"
 			}
-			parts = append(parts, headroom(left, fmt.Sprintf("%s %d%%%s%s", label(ctx, "s", "session"), left, label(ctx, "", " left"), when)))
+			parts = append(parts, headroom(left, label(ctx, "s", "session")+" "+shown+when))
 		}
 		if sd := rl.SevenDay; sd != nil && sd.UsedPercentage.Set {
 			if on.Week {
-				left := max(0, 100-Round(sd.UsedPercentage.V))
-				parts = append(parts, headroom(left, fmt.Sprintf("%s %d%%%s", label(ctx, "w", "week"), left, label(ctx, "", " left"))))
+				left, shown := usage(sd.UsedPercentage.V, down.Week, ctx)
+				parts = append(parts, headroom(left, label(ctx, "w", "week")+" "+shown))
 			}
 			if on.Today && sd.ResetsAt.Set {
 				if today := renderToday(sd.UsedPercentage.V, sd.ResetsAt.V, ctx, st, headroom); today != "" {
@@ -195,6 +197,18 @@ func label(ctx Context, short, long string) string {
 	return short
 }
 
+// usage returns what's left of a session or week limit, for its color, and
+// the number to show: what's used, or what's left when counting down. A
+// reading past 100% shows 100% used or 0% left, never more or negative.
+func usage(usedPct float64, down bool, ctx Context) (left int, shown string) {
+	used := Round(usedPct)
+	left = max(0, 100-used)
+	if down {
+		return left, fmt.Sprintf("%d%%%s", left, label(ctx, "", " left"))
+	}
+	return left, fmt.Sprintf("%d%%%s", min(max(used, 0), 100), label(ctx, "", " used"))
+}
+
 // workDir is the session's current directory.
 func workDir(p *payload.Payload) string {
 	if p.Workspace != nil && p.Workspace.CurrentDir.V != "" {
@@ -237,14 +251,21 @@ func renderToday(usedPct, resetsAt float64, ctx Context, st style, headroom func
 		ctx.WriteSnapshot(r.Snapshot)
 	}
 
-	// Today counts down what's left of its budget, like session and week. Past
-	// the budget a countdown would go negative, so it reads as how far over
-	// you are instead ("t over 18% of 28%"), in red. Over is at least 1: a
-	// reading just past the budget rounds to 100% used, and "over 0%" would
-	// contradict the red. The budget is dim: it is fixed for the day, so it is
-	// context, not a warning.
+	// Today counts up what's used of its budget and keeps counting past 100%
+	// ("t 118% of 28%"), in red once over. Over shows at least 101%: a
+	// reading just past the budget rounds to 100%, which would contradict the
+	// red. Counting down shows what's left instead, and past the budget, how
+	// far over you are ("t over 18% of 28%"), since a countdown would go
+	// negative. The budget is dim: it is fixed for the day, so it is context,
+	// not a warning.
 	budget := " " + st.dim(fmt.Sprintf("of %d%%%s", Round(r.Budget), label(ctx, "", " budget")))
 	name := label(ctx, "t", "today")
+	if !ctx.Config.CountDown.Today {
+		if r.Over {
+			return st.red(fmt.Sprintf("%s %d%%%s", name, max(Round(r.PctUsed), 101), label(ctx, "", " used"))) + budget
+		}
+		return headroom(Round(r.PctLeft), fmt.Sprintf("%s %d%%%s", name, Round(r.PctUsed), label(ctx, "", " used"))) + budget
+	}
 	if r.Over {
 		over := max(Round(r.PctUsed)-100, 1)
 		return st.red(fmt.Sprintf("%s over %d%%", name, over)) + budget

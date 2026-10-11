@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"regexp"
 	"slices"
 	"strings"
@@ -132,10 +133,15 @@ func TestWorkingDayTodayGoesGreenYellowRed(t *testing.T) {
 	}
 }
 
-func TestOverBudgetShowsHowFarOverInRed(t *testing.T) {
+func TestOverBudgetCountsPastTheBudgetInRed(t *testing.T) {
 	for i, step := range sceneByID(t, buildDoc(t), "over-budget").Steps {
 		sl := line(t, step)
-		if r := runStarting(t, sl, "t over "); r.Color != mutedRed {
+		r := runStarting(t, sl, "t ")
+		var used int
+		if _, err := fmt.Sscanf(r.Text, "t %d%%", &used); err != nil || used <= 100 {
+			t.Errorf("step %d: %q is not past 100%%", i+1, r.Text)
+		}
+		if r.Color != mutedRed {
 			t.Errorf("step %d: %q is %q, want red", i+1, r.Text, r.Color)
 		}
 		if r := runStarting(t, sl, "of 28%"); !r.Dim {
