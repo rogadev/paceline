@@ -128,22 +128,22 @@ func TestTodayBudgetMatchesTheStatusLine(t *testing.T) {
 	}{
 		{name: "under budget, fractional reset", anchorStart: 40, used: 46.5, resets: fractional, pace: "up"},
 		{name: "over budget", anchorStart: 40, used: 70, resets: fractional, pace: "up"},
-		// A 20.87% budget with 20.93 spent is 100.3% used: over, though it
-		// rounds to 100, so both the tool and the line say 101.
+		// A 20.87-point budget with 20.93 spent is over, though both round
+		// to 21, so the line shows one point past the budget: 22/21.
 		{name: "just over budget", anchorStart: 40, used: 60.93, resets: fractional, pace: "up"},
 		{name: "below an even pace", anchorStart: 80, used: 82, resets: whole, pace: "down"},
 		{name: "about an even pace", anchorStart: 60, used: 61.5, resets: whole, pace: "even"},
 		{name: "week used up", anchorStart: 100, used: 100, resets: whole, pace: "down"},
-		// A 20% budget with 6.5 spent is exactly 32.5% used and 67.5% left, a
-		// tie both ways: the line shows 68 left, where 100 - 33 used is 67.
+		// A 20-point budget with 6.5 spent is a half-point tie: both the tool
+		// and the line round the spend up to 7.
 		{name: "half-point tie", anchorStart: 42.5, used: 49, resets: whole, pace: "up"},
 		{name: "no anchor yet", anchorStart: -1, used: 46.5, resets: fractional, pace: "up"},
 	}
-	// Counting up, the status line shows how much of today's budget is used,
-	// past 100% once over: "t 46% of 28%" or "t 118% of 28%". Counting down,
-	// it shows what's left, or how far over you are: "t 54% of 28%" or
-	// "t over 18% of 28%".
-	statusToday := regexp.MustCompile(`t (over )?(\d+)% of (\d+)%`)
+	// The status line shows weekly points after today's bar. Counting up,
+	// it is points spent of the budget, "7/12", at least one past the budget
+	// once over: "15/12". Counting down, it is points left, "5/12 left", or
+	// how far over: "3 over/12".
+	statusToday := regexp.MustCompile(`Today: \S+ (\d+)( over)?/(\d+)( left)?`)
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			ts, dir := usageTools(t)
@@ -179,31 +179,34 @@ func TestTodayBudgetMatchesTheStatusLine(t *testing.T) {
 			if got["kind"] != "budget" {
 				t.Fatalf("kind = %v, want budget; answer %v", got["kind"], got)
 			}
+			budget, _ := got["budgetPct"].(float64)
+			spent, _ := got["spentPct"].(float64)
+			over := got["over"] == true
+			// Over budget, the line never shows a spend equal to the budget.
+			shownSpent := int(spent)
+			if over {
+				shownSpent = max(shownSpent, int(budget)+1)
+			}
 			for _, down := range []bool{false, true} {
 				m := statusToday.FindStringSubmatch(line(down))
 				if m == nil {
 					t.Fatalf("the status line (down %v) has no today segment: %q", down, line(down))
 				}
 				if fmt.Sprint(got["budgetPct"]) != m[3] {
-					t.Errorf("tool says a %v%% budget, status line says %s", got["budgetPct"], m[0])
+					t.Errorf("tool says a %v-point budget, status line says %s", got["budgetPct"], m[0])
 				}
-				n, _ := strconv.Atoi(m[2])
-				used, _ := got["usedPct"].(float64)
+				n, _ := strconv.Atoi(m[1])
 				switch {
 				case !down:
-					// The number is the tool's usedPct, past 100 once over.
-					if m[1] != "" || n != int(used) || (got["over"] == true) != (n > 100) {
-						t.Errorf("tool says %v%% used (over %v), status line says %s", got["usedPct"], got["over"], m[0])
+					if m[2] != "" || m[4] != "" || n != shownSpent || over != (n > int(budget)) {
+						t.Errorf("tool says %v spent (over %v), status line says %s", got["spentPct"], got["over"], m[0])
 					}
-				case got["over"] != (m[1] != ""):
+				case over != (m[2] != ""):
 					t.Errorf("tool says over = %v, status line says %s", got["over"], m[0])
-				// Under budget, the number is the tool's leftPct: what's left of the
-				// budget, rounded on its own, and 0 when there is none. Over budget,
-				// it is how far usedPct is past 100.
-				case m[1] == "" && fmt.Sprint(got["leftPct"]) != m[2]:
-					t.Errorf("tool says %v%% left (%v%% used), status line says %s", got["leftPct"], got["usedPct"], m[0])
-				case m[1] != "" && int(used) != 100+n:
-					t.Errorf("tool says %v%% used, status line says %s", got["usedPct"], m[0])
+				case over && n != shownSpent-int(budget):
+					t.Errorf("tool says %v spent of %v, status line says %s", got["spentPct"], got["budgetPct"], m[0])
+				case !over && (m[4] == "" || n != int(budget-spent)):
+					t.Errorf("tool says %v spent of %v, status line says %s", got["spentPct"], got["budgetPct"], m[0])
 				}
 			}
 			if got["pace"] != tt.pace {

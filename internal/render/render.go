@@ -28,11 +28,34 @@ const (
 	ellipsis  = "\u2026"
 	// maxCells keeps a long run from pushing the rest of the line off-screen.
 	maxCells = 20
+
+	// Today's bar: budget left (or overage), budget spent, the part of the
+	// daily base below a smaller budget, the base marker, and the bar's ends.
+	barFull    = "\u2588"
+	barDrained = "\u2591"
+	barBelow   = "\u2592"
+	barMarker  = "\u2502"
+	barLeft    = "\u2595"
+	barRight   = "\u258f"
+	rightArrow = "\u2192"
+	// maxBarCells is twice the daily base, so a big carryover late in the
+	// week doesn't push the rest of the line off-screen.
+	maxBarCells = 28
 )
+
+// dailyBase is the even daily budget in whole weekly points, where today's
+// bar puts its marker.
+var dailyBase = Round(pace.EvenPace)
 
 // mutedRed is Windows Terminal's default red (#C50F1F) with 15% less OKLCH
 // chroma, so a warning that stays on screen is easier on the eyes.
 var mutedRed = color.RGB{185, 47, 47}
+
+// faintRed is a darker, grayer mutedRed. It marks the part of the daily base
+// that earlier overspending took from today's budget: where the day started,
+// not a warning. On a near-black background it has about 2.7:1 contrast,
+// enough to see, against mutedRed's 3.3:1 at full chroma.
+var faintRed = color.RGB{136, 66, 66}
 
 var (
 	modelSuffix  = regexp.MustCompile(`\s*\(.*\)$`)
@@ -67,6 +90,7 @@ func (s style) green(t string) string  { return s.wrap("32", t) }
 func (s style) yellow(t string) string { return s.wrap("33", t) }
 func (s style) cyan(t string) string   { return s.wrap("36", t) }
 func (s style) dim(t string) string    { return s.wrap("2", t) }
+func (s style) bold(t string) string   { return s.wrap("1", t) }
 func (s style) rgb(c color.RGB, t string) string {
 	return s.wrap(fmt.Sprintf("38;2;%d;%d;%d", c[0], c[1], c[2]), t)
 }
@@ -125,29 +149,32 @@ func Render(p *payload.Payload, ctx Context) string {
 		}
 	}
 
-	// Usage limits: session, week, then today's share of the week. Each counts
-	// up what's used from 0%, or down what's left from 100% when its
-	// countDirection is "down". Color always follows what's left, so either
-	// way the segment turns red near the limit.
+	// Usage limits: session, today's share of the week, then the week. Each
+	// counts up what's used, or down what's left when its countDirection is
+	// "down". Color always follows what's left, so either way the segment
+	// turns red near the limit.
 	if rl := p.RateLimits; rl != nil {
-		down := ctx.Config.CountDown
 		if fh := rl.FiveHour; on.Session && fh != nil && fh.UsedPercentage.Set {
-			left, shown := usage(fh.UsedPercentage.V, down.Session, ctx)
+			left, shown := usage(fh.UsedPercentage.V, ctx.Config.CountDown.Session, ctx)
 			when := ""
 			if float64(left) < th.HeadroomGreen && fh.ResetsAt.Set {
 				when = " (resets " + timefmt.Clock(fh.ResetsAt.V, ctx.Now) + ")"
 			}
 			parts = append(parts, headroom(left, label(ctx, "s", "session")+" "+shown+when))
 		}
+		// Today comes before the week, and the days left follow it, so the
+		// line reads from today's allowance out to the week around it. Both
+		// are in weekly percentage points, so "7/12" and "w 58/100" add up.
 		if sd := rl.SevenDay; sd != nil && sd.UsedPercentage.Set {
-			if on.Week {
-				left, shown := usage(sd.UsedPercentage.V, down.Week, ctx)
-				parts = append(parts, headroom(left, label(ctx, "w", "week")+" "+shown))
+			today := pace.Result{Kind: pace.None}
+			if (on.Today || on.Week) && sd.ResetsAt.Set {
+				today = computeToday(sd.UsedPercentage.V, sd.ResetsAt.V, ctx)
 			}
-			if on.Today && sd.ResetsAt.Set {
-				if today := renderToday(sd.UsedPercentage.V, sd.ResetsAt.V, ctx, st, headroom); today != "" {
-					parts = append(parts, today)
-				}
+			if on.Today && today.Kind == pace.Budget {
+				parts = append(parts, renderToday(today, ctx, st, headroom))
+			}
+			if on.Week {
+				parts = append(parts, renderWeek(sd.UsedPercentage.V, today, ctx, st, headroom)...)
 			}
 		}
 	}
@@ -197,7 +224,7 @@ func label(ctx Context, short, long string) string {
 	return short
 }
 
-// usage returns what's left of a session or week limit, for its color, and
+// usage returns what's left of the session limit, for its color, and
 // the number to show: what's used, or what's left when counting down. A
 // reading past 100% shows 100% used or 0% left, never more or negative.
 func usage(usedPct float64, down bool, ctx Context) (left int, shown string) {
@@ -238,40 +265,151 @@ func project(p *payload.Payload, ctx Context, st style) string {
 	return segment
 }
 
-func renderToday(usedPct, resetsAt float64, ctx Context, st style, headroom func(int, string) string) string {
+// computeToday works out today's budget and saves the day snapshot when it
+// changed. Render calls it whenever the today or the week segment is on, so
+// the snapshot is written for a week-only line too: the week needs the day
+// count, and computing it anchors the day.
+func computeToday(usedPct, resetsAt float64, ctx Context) pace.Result {
 	var snap *pace.Snapshot
 	if ctx.ReadSnapshot != nil {
 		snap = ctx.ReadSnapshot()
 	}
 	r := pace.Compute(usedPct, resetsAt, ctx.Now, snap)
-	if r.Kind == pace.None {
-		return ""
-	}
 	if r.SnapshotChanged && ctx.WriteSnapshot != nil {
 		ctx.WriteSnapshot(r.Snapshot)
 	}
+	return r
+}
 
-	// Today counts up what's used of its budget and keeps counting past 100%
-	// ("t 118% of 28%"), in red once over. Over shows at least 101%: a
-	// reading just past the budget rounds to 100%, which would contradict the
-	// red. Counting down shows what's left instead, and past the budget, how
-	// far over you are ("t over 18% of 28%"), since a countdown would go
-	// negative. The budget is dim: it is fixed for the day, so it is context,
-	// not a warning.
-	budget := " " + st.dim(fmt.Sprintf("of %d%%%s", Round(r.Budget), label(ctx, "", " budget")))
-	name := label(ctx, "t", "today")
-	if !ctx.Config.CountDown.Today {
-		if r.Over {
-			return st.red(fmt.Sprintf("%s %d%%%s", name, max(Round(r.PctUsed), 101), label(ctx, "", " used"))) + budget
-		}
-		return headroom(Round(r.PctLeft), fmt.Sprintf("%s %d%%%s", name, Round(r.PctUsed), label(ctx, "", " used"))) + budget
+// renderToday draws today as "Today: <bar> 7/12": the bar, then the weekly
+// points spent of today's budget. Counting down, the numbers show what's left
+// ("5/12 left") or, past the budget, how far over ("3 over/12"). A budget
+// above the even daily base adds what's left of that surplus ("+4 saved").
+// Over budget, tomorrow's budget follows ("-> 11 tmrw"), unless the week has
+// nothing left for it or it is the last day, when the reset brings a fresh
+// week. On the last day, the time the week runs out at today's pace follows
+// instead, when that comes before the reset.
+func renderToday(r pace.Result, ctx Context, st style, headroom func(int, string) string) string {
+	spent, budget := Round(r.Spent), Round(r.Budget)
+	if r.Over {
+		// A reading just past the budget can round to it; never show 12/12
+		// in red.
+		spent = max(spent, budget+1)
+	}
+	left := budget - spent
+	var numbers string
+	switch {
+	case !ctx.Config.CountDown.Today:
+		numbers = fmt.Sprintf("%d/%d", spent, budget)
+	case r.Over:
+		numbers = fmt.Sprintf("%d over/%d", -left, budget)
+	default:
+		numbers = fmt.Sprintf("%d/%d left", left, budget)
 	}
 	if r.Over {
-		over := max(Round(r.PctUsed)-100, 1)
-		return st.red(fmt.Sprintf("%s over %d%%", name, over)) + budget
+		numbers = st.red(numbers)
+	} else {
+		numbers = headroom(Round(r.PctLeft), numbers)
 	}
-	left := Round(r.PctLeft)
-	return headroom(left, fmt.Sprintf("%s %d%%%s", name, left, label(ctx, "", " left"))) + budget
+	parts := []string{"Today:", todayBar(budget, spent, st), numbers}
+	switch tomorrow := Round(r.Tomorrow); {
+	case left > dailyBase:
+		parts = append(parts, st.green(fmt.Sprintf("+%d saved", left-dailyBase)))
+	case r.Over && tomorrow > 0:
+		parts = append(parts, st.red(fmt.Sprintf("%s %d tmrw", rightArrow, tomorrow)))
+	}
+	// pace sets RunsOutAt only on the last day.
+	if r.RunsOutAt > 0 {
+		parts = append(parts, st.red("out ~"+timefmt.Clock(r.RunsOutAt, ctx.Now)))
+	}
+	return strings.Join(parts, " ")
+}
+
+// todayBar draws today's budget at one cell per weekly point, against a
+// marker at the even daily base. Full cells on the left are the budget left,
+// drained cells the rest of the base, and a faint red stretch the part of the
+// base below a smaller budget. A budget above the base starts with full cells
+// past the marker, and spending removes those first, so the bar shortens.
+// Over budget, the same full cells turn red and count the overage instead.
+// Drained cells and the faint stretch have characters of their own, so they
+// read without color, but the over state does not: without color it reads
+// from the numbers ("15/12", or "3 over/12" counting down). A bar longer than
+// maxBarCells scales down to fit, marker included.
+func todayBar(budget, spent int, st style) string {
+	over := spent > budget
+	full := budget - spent
+	if over {
+		full = spent - budget
+	}
+	length := max(dailyBase, full)
+	scale := min(1, float64(maxBarCells)/float64(length))
+	cells, marker := Round(float64(length)*scale), Round(float64(dailyBase)*scale)
+
+	// kind classifies a cell by the weekly point at its middle.
+	kind := func(i int) string {
+		switch point := (float64(i) + 0.5) / scale; {
+		case point < float64(full):
+			return barFull
+		case point < float64(min(budget, dailyBase)):
+			return barDrained
+		}
+		return barBelow
+	}
+	paint := func(k string, n int) string {
+		text := strings.Repeat(k, n)
+		switch {
+		case k == barFull && over:
+			return st.red(text)
+		case k == barFull:
+			return st.cyan(text)
+		case k == barBelow:
+			return st.rgb(faintRed, text)
+		}
+		return st.dim(text)
+	}
+
+	var b strings.Builder
+	b.WriteString(st.dim(barLeft))
+	// Neighbors of the same kind share one color code; the marker splits a
+	// run.
+	for i := 0; i < cells; {
+		j := i + 1
+		for j < cells && j != marker && kind(j) == kind(i) {
+			j++
+		}
+		b.WriteString(paint(kind(i), j-i))
+		if j == marker {
+			b.WriteString(barMarker)
+		}
+		i = j
+	}
+	b.WriteString(st.dim(barRight))
+	return b.String()
+}
+
+// renderWeek draws the week as "w 58/100", then the days left until the
+// reset. From three days out the week figure turns bold: late in the week a
+// single day absorbs all the slack or debt, so today's budget can swing, and
+// the week is the steadier reference.
+func renderWeek(usedPct float64, today pace.Result, ctx Context, st style, headroom func(int, string) string) []string {
+	used := min(max(Round(usedPct), 0), 100)
+	left := 100 - used
+	name := label(ctx, "w", "week")
+	text := fmt.Sprintf("%s %d/100", name, used)
+	if ctx.Config.CountDown.Week {
+		text = fmt.Sprintf("%s %d/100 left", name, left)
+	}
+	if today.Kind != pace.Budget {
+		return []string{headroom(left, text)}
+	}
+	if Round(today.DaysLeft) <= 3 {
+		text = st.bold(text)
+	}
+	when := fmt.Sprintf("%dd left", Round(today.DaysLeft))
+	if today.LastDay {
+		when = "last day"
+	}
+	return []string{headroom(left, text), st.dim(when)}
 }
 
 func separator(st style) string { return " " + st.dim(middleDot) + " " }

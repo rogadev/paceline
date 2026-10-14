@@ -39,7 +39,7 @@ func TestWritesDaySnapshot(t *testing.T) {
 	resets := time.Now().Add(4 * 24 * time.Hour).Unix()
 	in := `{"rate_limits":{"seven_day":{"used_percentage":10,"resets_at":` + jsonNum(resets) + `}}}`
 	_, out, _, dir := runCLI(t, in)
-	if !strings.Contains(out, "t 0% of ") {
+	if !strings.Contains(out, "Today: ") || !strings.Contains(out, " 0/") {
 		t.Errorf("stdout %q", out)
 	}
 	if _, err := os.Stat(filepath.Join(dir, "paceline-day.json")); err != nil {
@@ -152,7 +152,7 @@ func TestFailedFeedWriteKeepsStatusLine(t *testing.T) {
 		t.Fatal(err)
 	}
 	code, out := renderStdin(usagePayload())
-	if code != 0 || out == fallback || !strings.Contains(out, "s 21%") || !strings.Contains(out, "w 46%") {
+	if code != 0 || out == fallback || !strings.Contains(out, "Today: ") || !strings.Contains(out, "w 46/100") {
 		t.Errorf("code %d, stdout %q", code, out)
 	}
 	if info, err := os.Stat(path); err != nil || !info.IsDir() {
@@ -507,7 +507,7 @@ func TestChooseStyle(t *testing.T) {
 
 // The style examples in the install prompt and --help are what the status line
 // prints for the same usage with the default config, so they count up what's
-// used.
+// used. --help shows the week alone, which needs no day snapshot.
 func TestStyleExamplesMatchTheStatusLine(t *testing.T) {
 	now := time.Date(2026, 9, 24, 10, 0, 0, 0, time.UTC)
 	resets := float64(now.Add(38 * time.Hour).Unix()) // two days from midnight
@@ -525,7 +525,7 @@ func TestStyleExamplesMatchTheStatusLine(t *testing.T) {
 		return render.Render(p, render.Context{Now: now, Config: cfg, NoColor: true,
 			ReadSnapshot: func() *pace.Snapshot { return snap }})
 	}
-	session := `{"rate_limits":{"five_hour":{"used_percentage":18}}}`
+	week := `{"rate_limits":{"seven_day":{"used_percentage":86}}}`
 	full := `{"rate_limits":{"five_hour":{"used_percentage":18},` +
 		`"seven_day":{"used_percentage":86,"resets_at":` + jsonNum(int64(resets)) + `}}}`
 
@@ -536,7 +536,7 @@ func TestStyleExamplesMatchTheStatusLine(t *testing.T) {
 			t.Errorf("prompt does not show the status line %q:\n%s", want, prompt.String())
 		}
 	}
-	want := `label style: "` + line(t, session, false) + `" or "` + line(t, session, true) + `"`
+	want := `label style: "` + line(t, week, false) + `" or "` + line(t, week, true) + `"`
 	if !strings.Contains(help(), want) {
 		t.Errorf("--help does not show %s:\n%s", want, help())
 	}

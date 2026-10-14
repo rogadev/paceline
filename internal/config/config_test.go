@@ -86,6 +86,19 @@ func TestDir(t *testing.T) {
 	}
 }
 
+// The session segment is off by default, and segments.session turns it on.
+func TestSessionSegmentIsOptIn(t *testing.T) {
+	if Default().Segments.Session {
+		t.Error("the session segment is on by default")
+	}
+	if !Merge([]byte(`{"segments": {"session": true}}`)).Segments.Session {
+		t.Error("segments.session: true was ignored")
+	}
+	if Merge([]byte(`{"segments": {"session": "yes"}}`)).Segments.Session {
+		t.Error("a non-boolean segments.session was taken")
+	}
+}
+
 func TestMergeVerbose(t *testing.T) {
 	if Default().Verbose {
 		t.Error("verbose is on by default")

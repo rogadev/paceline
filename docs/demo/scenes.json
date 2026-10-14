@@ -30,7 +30,7 @@
     {
       "id": "fresh-day",
       "title": "Fresh day",
-      "caption": "Each morning, today's budget is set from what's left in the week, and it starts at 0% used.",
+      "caption": "Each morning, today's budget is set from what's left in the week, and its bar starts full.",
       "layout": "terminal",
       "durationMs": 5000,
       "steps": [
@@ -46,8 +46,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 2%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 20%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 0%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 2% · w 20% · t 0% of 28% · 2m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m██████████████\u001b[0m│\u001b[36m██████████████\u001b[0m\u001b[2m▏\u001b[0m \u001b[32m0/28\u001b[0m \u001b[32m+14 saved\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 20/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · Today: ▕██████████████│██████████████▏ 0/28 +14 saved · w 20/100 · 3d left · 2m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -71,28 +71,43 @@
                   "text": " "
                 },
                 {
-                  "text": "(",
-                  "dim": true
-                },
-                {
-                  "text": "dev"
-                },
-                {
-                  "text": ")",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
                   "text": "·",
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "██████████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "██████████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 2%",
+                  "text": "0/28",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "+14 saved",
                   "color": "green"
                 },
                 {
@@ -106,8 +121,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 20%",
-                  "color": "green"
+                  "text": "w 20/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -120,14 +136,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 0%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -160,8 +169,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 4%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 20%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 1%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m6m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 4% · w 20% · t 1% of 28% · 6m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m██████████████\u001b[0m│\u001b[36m██████████████\u001b[0m\u001b[2m▏\u001b[0m \u001b[32m0/28\u001b[0m \u001b[32m+14 saved\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 20/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m6m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · Today: ▕██████████████│██████████████▏ 0/28 +14 saved · w 20/100 · 3d left · 6m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -185,28 +194,43 @@
                   "text": " "
                 },
                 {
-                  "text": "(",
-                  "dim": true
-                },
-                {
-                  "text": "dev"
-                },
-                {
-                  "text": ")",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
                   "text": "·",
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "██████████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "██████████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 4%",
+                  "text": "0/28",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "+14 saved",
                   "color": "green"
                 },
                 {
@@ -220,8 +244,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 20%",
-                  "color": "green"
+                  "text": "w 20/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -234,14 +259,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 1%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -267,7 +285,7 @@
     {
       "id": "working-day",
       "title": "Working through the day",
-      "caption": "As you work, every number counts up, and today turns yellow, then red, as its budget runs low.",
+      "caption": "As you work, today's bar drains, and its numbers turn yellow, then red, as the budget runs low.",
       "layout": "terminal",
       "durationMs": 7800,
       "steps": [
@@ -283,8 +301,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 20%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 26%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 21%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m40m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (feat/offline) · s 20% · w 26% · t 21% of 28% · 40m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m██████████████\u001b[0m│\u001b[36m████████\u001b[0m\u001b[2m▏\u001b[0m \u001b[32m6/28\u001b[0m \u001b[32m+8 saved\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 26/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m40m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (feat/sync) · Today: ▕██████████████│████████▏ 6/28 +8 saved · w 26/100 · 3d left · 40m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -312,7 +330,7 @@
                   "dim": true
                 },
                 {
-                  "text": "feat/offline"
+                  "text": "feat/sync"
                 },
                 {
                   "text": ")",
@@ -326,10 +344,39 @@
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "██████████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 20%",
+                  "text": "6/28",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "+8 saved",
                   "color": "green"
                 },
                 {
@@ -343,8 +390,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 26%",
-                  "color": "green"
+                  "text": "w 26/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -357,14 +405,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 21%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -397,8 +438,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 45%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 34%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 50%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h50m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (feat/offline) · s 45% · w 34% · t 50% of 28% · 1h50m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m██████████████\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m14/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 34/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h50m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (feat/sync) · Today: ▕██████████████│▏ 14/28 · w 34/100 · 3d left · 1h50m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -426,7 +467,7 @@
                   "dim": true
                 },
                 {
-                  "text": "feat/offline"
+                  "text": "feat/sync"
                 },
                 {
                   "text": ")",
@@ -440,10 +481,28 @@
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "██████████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 45%",
+                  "text": "14/28",
                   "color": "green"
                 },
                 {
@@ -457,8 +516,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 34%",
-                  "color": "green"
+                  "text": "w 34/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -471,14 +531,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 50%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -511,8 +564,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 62%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 41%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 75%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h0m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (feat/offline) · s 62% · w 41% · t 75% of 28% · 3h0m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m███████\u001b[0m\u001b[2m░░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[33m21/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 41/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h0m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (feat/sync) · Today: ▕███████░░░░░░░│▏ 21/28 · w 41/100 · 3d left · 3h0m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -540,7 +593,7 @@
                   "dim": true
                 },
                 {
-                  "text": "feat/offline"
+                  "text": "feat/sync"
                 },
                 {
                   "text": ")",
@@ -554,45 +607,61 @@
                   "dim": true
                 },
                 {
-                  "text": " "
+                  "text": " Today: "
                 },
                 {
-                  "text": "s 62%",
-                  "color": "green"
+                  "text": "▕",
+                  "dim": true
                 },
                 {
-                  "text": " "
+                  "text": "███████",
+                  "color": "cyan"
                 },
                 {
-                  "text": "·",
+                  "text": "░░░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
                   "dim": true
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "w 41%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "·",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "t 75%",
+                  "text": "21/28",
                   "color": "yellow"
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "of 28%",
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 41/100",
+                  "color": "green",
+                  "bold": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -625,8 +694,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 68%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 45%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt 89%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m4h10m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (feat/offline) · s 68% · w 45% · t 89% of 28% · 4h10m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m███\u001b[0m\u001b[2m░░░░░░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[38;2;185;47;47m25/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 45/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m4h10m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (feat/sync) · Today: ▕███░░░░░░░░░░░│▏ 25/28 · w 45/100 · 3d left · 4h10m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -654,7 +723,7 @@
                   "dim": true
                 },
                 {
-                  "text": "feat/offline"
+                  "text": "feat/sync"
                 },
                 {
                   "text": ")",
@@ -668,45 +737,61 @@
                   "dim": true
                 },
                 {
-                  "text": " "
+                  "text": " Today: "
                 },
                 {
-                  "text": "s 68%",
-                  "color": "green"
+                  "text": "▕",
+                  "dim": true
                 },
                 {
-                  "text": " "
+                  "text": "███",
+                  "color": "cyan"
                 },
                 {
-                  "text": "·",
+                  "text": "░░░░░░░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
                   "dim": true
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "w 45%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "·",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "t 89%",
+                  "text": "25/28",
                   "color": "#b92f2f"
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "of 28%",
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 45/100",
+                  "color": "green",
+                  "bold": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -732,7 +817,7 @@
     {
       "id": "over-budget",
       "title": "Over budget",
-      "caption": "Past today's budget, it keeps counting past 100%, in red.",
+      "caption": "Past today's budget, red cells count the overage, and tomorrow's smaller budget follows.",
       "layout": "terminal",
       "durationMs": 6200,
       "steps": [
@@ -748,8 +833,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 52%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 49%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt 104%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h10m\u001b[0m",
-              "plain": "Opus 5.5 · billing-api (fix/webhooks) · s 52% · w 49% · t 104% of 28% · 2h10m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/hooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[38;2;185;47;47m█\u001b[0m\u001b[2m░░░░░░░░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[38;2;185;47;47m29/28\u001b[0m \u001b[38;2;185;47;47m→ 27 tmrw\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 49/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h10m\u001b[0m",
+              "plain": "Opus 5.5 · billing-api (fix/hooks) · Today: ▕█░░░░░░░░░░░░░│▏ 29/28 → 27 tmrw · w 49/100 · 3d left · 2h10m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -777,7 +862,7 @@
                   "dim": true
                 },
                 {
-                  "text": "fix/webhooks"
+                  "text": "fix/hooks"
                 },
                 {
                   "text": ")",
@@ -791,45 +876,68 @@
                   "dim": true
                 },
                 {
-                  "text": " "
+                  "text": " Today: "
                 },
                 {
-                  "text": "s 52%",
-                  "color": "green"
+                  "text": "▕",
+                  "dim": true
                 },
                 {
-                  "text": " "
+                  "text": "█",
+                  "color": "#b92f2f"
                 },
                 {
-                  "text": "·",
+                  "text": "░░░░░░░░░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
                   "dim": true
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "w 49%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "·",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "t 104%",
+                  "text": "29/28",
                   "color": "#b92f2f"
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "of 28%",
+                  "text": "→ 27 tmrw",
+                  "color": "#b92f2f"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 49/100",
+                  "color": "green",
+                  "bold": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -862,8 +970,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 57%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 51%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt 113%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h25m\u001b[0m",
-              "plain": "Opus 5.5 · billing-api (fix/webhooks) · s 57% · w 51% · t 113% of 28% · 2h25m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/hooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[38;2;185;47;47m████\u001b[0m\u001b[2m░░░░░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[38;2;185;47;47m32/28\u001b[0m \u001b[38;2;185;47;47m→ 26 tmrw\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 51/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h25m\u001b[0m",
+              "plain": "Opus 5.5 · billing-api (fix/hooks) · Today: ▕████░░░░░░░░░░│▏ 32/28 → 26 tmrw · w 51/100 · 3d left · 2h25m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -891,7 +999,7 @@
                   "dim": true
                 },
                 {
-                  "text": "fix/webhooks"
+                  "text": "fix/hooks"
                 },
                 {
                   "text": ")",
@@ -905,45 +1013,68 @@
                   "dim": true
                 },
                 {
-                  "text": " "
+                  "text": " Today: "
                 },
                 {
-                  "text": "s 57%",
-                  "color": "green"
+                  "text": "▕",
+                  "dim": true
                 },
                 {
-                  "text": " "
+                  "text": "████",
+                  "color": "#b92f2f"
                 },
                 {
-                  "text": "·",
+                  "text": "░░░░░░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
                   "dim": true
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "w 51%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "·",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "t 113%",
+                  "text": "32/28",
                   "color": "#b92f2f"
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "of 28%",
+                  "text": "→ 26 tmrw",
+                  "color": "#b92f2f"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 51/100",
+                  "color": "green",
+                  "bold": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -976,8 +1107,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 53%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mt 118%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h40m\u001b[0m",
-              "plain": "Opus 5.5 · billing-api (fix/webhooks) · s 61% · w 53% · t 118% of 28% · 2h40m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/hooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[38;2;185;47;47m█████\u001b[0m\u001b[2m░░░░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[38;2;185;47;47m33/28\u001b[0m \u001b[38;2;185;47;47m→ 25 tmrw\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 53/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h40m\u001b[0m",
+              "plain": "Opus 5.5 · billing-api (fix/hooks) · Today: ▕█████░░░░░░░░░│▏ 33/28 → 25 tmrw · w 53/100 · 3d left · 2h40m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1005,7 +1136,7 @@
                   "dim": true
                 },
                 {
-                  "text": "fix/webhooks"
+                  "text": "fix/hooks"
                 },
                 {
                   "text": ")",
@@ -1019,45 +1150,68 @@
                   "dim": true
                 },
                 {
-                  "text": " "
+                  "text": " Today: "
                 },
                 {
-                  "text": "s 61%",
-                  "color": "green"
+                  "text": "▕",
+                  "dim": true
                 },
                 {
-                  "text": " "
+                  "text": "█████",
+                  "color": "#b92f2f"
                 },
                 {
-                  "text": "·",
+                  "text": "░░░░░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
                   "dim": true
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "w 53%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "·",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "t 118%",
+                  "text": "33/28",
                   "color": "#b92f2f"
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "of 28%",
+                  "text": "→ 25 tmrw",
+                  "color": "#b92f2f"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 53/100",
+                  "color": "green",
+                  "bold": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -1083,7 +1237,7 @@
     {
       "id": "session-low",
       "title": "Session running low",
-      "caption": "When the five-hour session runs low, it shows when it resets, and a filling context window gets a warning.",
+      "caption": "With the session segment on, a low session shows when it resets, and a filling context gets a warning.",
       "layout": "terminal",
       "durationMs": 6200,
       "steps": [
@@ -1099,8 +1253,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 66%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 38%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 66%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h45m\u001b[0m",
-              "plain": "Opus 5.5 · high effort · acme-portal (dev) · s 66% · w 38% · t 66% of 28% · 2h45m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 66%\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m\u001b[2m░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m19/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 38/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · s 66% · Today: ▕█████████░░░░░│▏ 19/28 · w 38/100 · 3d left",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1117,36 +1271,8 @@
                   "text": " "
                 },
                 {
-                  "text": "high effort",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "·",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
                   "text": "acme-portal",
                   "color": "#fd97d2"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "(",
-                  "dim": true
-                },
-                {
-                  "text": "dev"
-                },
-                {
-                  "text": ")",
-                  "dim": true
                 },
                 {
                   "text": " "
@@ -1170,10 +1296,32 @@
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "█████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "w 38%",
+                  "text": "19/28",
                   "color": "green"
                 },
                 {
@@ -1187,15 +1335,9 @@
                   "text": " "
                 },
                 {
-                  "text": "t 66%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
-                  "dim": true
+                  "text": "w 38/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -1208,7 +1350,7 @@
                   "text": " "
                 },
                 {
-                  "text": "2h45m",
+                  "text": "3d left",
                   "dim": true
                 }
               ]
@@ -1227,26 +1369,12 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[33ms 74% (resets 3:40pm)\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 40%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 73%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mctx 72%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h25m\u001b[0m",
-              "plain": "Opus 5.5 · high effort · acme-portal (dev) · s 74% (resets 3:40pm) · w 40% · t 73% of 28% · ctx 72% · 3h25m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m \u001b[33ms 74% (resets 3pm)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m███████\u001b[0m\u001b[2m░░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[33m21/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 40/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[33mctx 72%\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · s 74% (resets 3pm) · Today: ▕███████░░░░░░░│▏ 21/28 · w 40/100 · 3d left · ctx 72%",
               "runs": [
                 {
                   "text": "Opus 5.5",
                   "color": "cyan"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "·",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "high effort",
-                  "dim": true
                 },
                 {
                   "text": " "
@@ -1266,15 +1394,15 @@
                   "text": " "
                 },
                 {
-                  "text": "(",
+                  "text": "·",
                   "dim": true
                 },
                 {
-                  "text": "dev"
+                  "text": " "
                 },
                 {
-                  "text": ")",
-                  "dim": true
+                  "text": "s 74% (resets 3pm)",
+                  "color": "yellow"
                 },
                 {
                   "text": " "
@@ -1284,10 +1412,32 @@
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "███████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "░░░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 74% (resets 3:40pm)",
+                  "text": "21/28",
                   "color": "yellow"
                 },
                 {
@@ -1301,8 +1451,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 40%",
-                  "color": "green"
+                  "text": "w 40/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -1315,14 +1466,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 73%",
-                  "color": "yellow"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -1338,20 +1482,6 @@
                 {
                   "text": "ctx 72%",
                   "color": "yellow"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "·",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "3h25m",
-                  "dim": true
                 }
               ]
             }
@@ -1369,26 +1499,12 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47ms 88% (resets 3:40pm)\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 42%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 80%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mctx 86%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m4h5m\u001b[0m",
-              "plain": "Opus 5.5 · high effort · acme-portal (dev) · s 88% (resets 3:40pm) · w 42% · t 80% of 28% · ctx 86% · 4h5m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47ms 88% (resets 3pm)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████\u001b[0m\u001b[2m░░░░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[33m23/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 42/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mctx 86%\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · s 88% (resets 3pm) · Today: ▕█████░░░░░░░░░│▏ 23/28 · w 42/100 · 3d left · ctx 86%",
               "runs": [
                 {
                   "text": "Opus 5.5",
                   "color": "cyan"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "·",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "high effort",
-                  "dim": true
                 },
                 {
                   "text": " "
@@ -1408,20 +1524,6 @@
                   "text": " "
                 },
                 {
-                  "text": "(",
-                  "dim": true
-                },
-                {
-                  "text": "dev"
-                },
-                {
-                  "text": ")",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
                   "text": "·",
                   "dim": true
                 },
@@ -1429,7 +1531,7 @@
                   "text": " "
                 },
                 {
-                  "text": "s 88% (resets 3:40pm)",
+                  "text": "s 88% (resets 3pm)",
                   "color": "#b92f2f"
                 },
                 {
@@ -1440,11 +1542,33 @@
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "█████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "░░░░░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "w 42%",
-                  "color": "green"
+                  "text": "23/28",
+                  "color": "yellow"
                 },
                 {
                   "text": " "
@@ -1457,14 +1581,22 @@
                   "text": " "
                 },
                 {
-                  "text": "t 80%",
-                  "color": "yellow"
+                  "text": "w 42/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "of 28%",
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -1480,20 +1612,6 @@
                 {
                   "text": "ctx 86%",
                   "color": "#b92f2f"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "·",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "4h5m",
-                  "dim": true
                 }
               ]
             }
@@ -1516,8 +1634,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mdocs-site\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 37%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 30%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 38%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m47m\u001b[0m",
-              "plain": "Opus 5.5 · docs-site (main) · s 37% · w 30% · t 38% of 28% · 47m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210mdocs\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████████\u001b[0m\u001b[2m░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m15/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 34/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m47m\u001b[0m",
+              "plain": "Opus 5.5 · docs (main) · Today: ▕█████████████░│▏ 15/28 · w 34/100 · 3d left · 47m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1534,8 +1652,8 @@
                   "text": " "
                 },
                 {
-                  "text": "docs-site",
-                  "color": "#b7b5fc"
+                  "text": "docs",
+                  "color": "#fd97d2"
                 },
                 {
                   "text": " "
@@ -1559,10 +1677,32 @@
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "█████████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 37%",
+                  "text": "15/28",
                   "color": "green"
                 },
                 {
@@ -1576,8 +1716,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 30%",
-                  "color": "green"
+                  "text": "w 34/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -1590,14 +1731,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 38%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -1626,8 +1760,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mdocs-site\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 37%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 30%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 38%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mcache cold: 82k @ ~2x\u001b[0m \u001b[2m·\u001b[0m \u001b[2m59m\u001b[0m",
-              "plain": "Opus 5.5 · docs-site (main) · s 37% · w 30% · t 38% of 28% · cache cold: 82k @ ~2x · 59m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210mdocs\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████████\u001b[0m\u001b[2m░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m15/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 34/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mcache cold: 82k @ ~2x\u001b[0m \u001b[2m·\u001b[0m \u001b[2m59m\u001b[0m",
+              "plain": "Opus 5.5 · docs (main) · Today: ▕█████████████░│▏ 15/28 · w 34/100 · 3d left · cache cold: 82k @ ~2x · 59m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1644,8 +1778,8 @@
                   "text": " "
                 },
                 {
-                  "text": "docs-site",
-                  "color": "#b7b5fc"
+                  "text": "docs",
+                  "color": "#fd97d2"
                 },
                 {
                   "text": " "
@@ -1669,10 +1803,32 @@
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "█████████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 37%",
+                  "text": "15/28",
                   "color": "green"
                 },
                 {
@@ -1686,8 +1842,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 30%",
-                  "color": "green"
+                  "text": "w 34/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -1700,14 +1857,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 38%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -1784,8 +1934,8 @@
           ],
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 30%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 34%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 52%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱▱\u001b[0m #328 2/5 \u001b[2m·\u001b[0m \u001b[2m1h30m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 30% · w 34% · t 52% of 28% · loop ▰▰▰▱▱ #328 2/5 · 1h30m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████████\u001b[0m\u001b[2m░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m15/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 34/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱▱\u001b[0m #328 2/5 \u001b[2m·\u001b[0m \u001b[2m1h30m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · Today: ▕█████████████░│▏ 15/28 · w 34/100 · 3d left · loop ▰▰▰▱▱ #328 2/5 · 1h30m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1809,28 +1959,36 @@
                   "text": " "
                 },
                 {
-                  "text": "(",
-                  "dim": true
-                },
-                {
-                  "text": "dev"
-                },
-                {
-                  "text": ")",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
                   "text": "·",
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "█████████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 30%",
+                  "text": "15/28",
                   "color": "green"
                 },
                 {
@@ -1844,8 +2002,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 34%",
-                  "color": "green"
+                  "text": "w 34/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -1858,14 +2017,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 52%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -1941,8 +2093,8 @@
           ],
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 35%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 35%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 55%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱\u001b[0m #329 3/5 \u001b[2m·\u001b[0m \u001b[2m1h50m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 35% · w 35% · t 55% of 28% · loop ▰▰▰▰▱ #329 3/5 · 1h50m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m████████████\u001b[0m\u001b[2m░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m16/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 35/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱\u001b[0m #329 3/5 \u001b[2m·\u001b[0m \u001b[2m1h50m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · Today: ▕████████████░░│▏ 16/28 · w 35/100 · 3d left · loop ▰▰▰▰▱ #329 3/5 · 1h50m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1966,28 +2118,36 @@
                   "text": " "
                 },
                 {
-                  "text": "(",
-                  "dim": true
-                },
-                {
-                  "text": "dev"
-                },
-                {
-                  "text": ")",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
                   "text": "·",
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "████████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 35%",
+                  "text": "16/28",
                   "color": "green"
                 },
                 {
@@ -2001,8 +2161,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 35%",
-                  "color": "green"
+                  "text": "w 35/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -2015,14 +2176,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 55%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -2094,8 +2248,8 @@
           ],
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 36%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 59%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰▰\u001b[0m\u001b[36m▰\u001b[0m #330 4/5 \u001b[2m·\u001b[0m \u001b[2m2h10m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 39% · w 36% · t 59% of 28% · loop ▰▰▰▰▰ #330 4/5 · 2h10m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m███████████\u001b[0m\u001b[2m░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m17/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 36/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰▰\u001b[0m\u001b[36m▰\u001b[0m #330 4/5 \u001b[2m·\u001b[0m \u001b[2m2h10m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · Today: ▕███████████░░░│▏ 17/28 · w 36/100 · 3d left · loop ▰▰▰▰▰ #330 4/5 · 2h10m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2119,28 +2273,36 @@
                   "text": " "
                 },
                 {
-                  "text": "(",
-                  "dim": true
-                },
-                {
-                  "text": "dev"
-                },
-                {
-                  "text": ")",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
                   "text": "·",
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "███████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 39%",
+                  "text": "17/28",
                   "color": "green"
                 },
                 {
@@ -2154,8 +2316,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 36%",
-                  "color": "green"
+                  "text": "w 36/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -2168,14 +2331,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 59%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -2227,8 +2383,8 @@
           ],
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 43%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 37%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 63%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰▰▰\u001b[0m \u001b[32m✓ done\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h30m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 43% · w 37% · t 63% of 28% · loop ▰▰▰▰▰ ✓ done · 2h30m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m██████████\u001b[0m\u001b[2m░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m18/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 37/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰▰▰\u001b[0m \u001b[32m✓ done\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h30m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · Today: ▕██████████░░░░│▏ 18/28 · w 37/100 · 3d left · loop ▰▰▰▰▰ ✓ done · 2h30m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2252,28 +2408,36 @@
                   "text": " "
                 },
                 {
-                  "text": "(",
-                  "dim": true
-                },
-                {
-                  "text": "dev"
-                },
-                {
-                  "text": ")",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
                   "text": "·",
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "██████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 43%",
+                  "text": "18/28",
                   "color": "green"
                 },
                 {
@@ -2287,8 +2451,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 37%",
-                  "color": "green"
+                  "text": "w 37/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -2301,14 +2466,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 63%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -2364,8 +2522,8 @@
           "now": "2026-10-09T14:00:00Z",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 58%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 68%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h10m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 58% · w 39% · t 68% of 28% · 1h10m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m\u001b[2m░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m19/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 39/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h10m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · Today: ▕█████████░░░░░│▏ 19/28 · w 39/100 · 3d left · 1h10m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2407,10 +2565,32 @@
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "█████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 58%",
+                  "text": "19/28",
                   "color": "green"
                 },
                 {
@@ -2424,8 +2604,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 39%",
-                  "color": "green"
+                  "text": "w 39/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -2438,14 +2619,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 68%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -2465,8 +2639,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 58%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 68%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mctx 74%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m25m\u001b[0m",
-              "plain": "Opus 5.5 · high effort · field-app (feat/offline) · s 58% · w 39% · t 68% of 28% · ctx 74% · 25m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m\u001b[2m░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m19/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 39/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m25m\u001b[0m",
+              "plain": "Opus 5.5 · high effort · field-app (feat/sync) · Today: ▕█████████░░░░░│▏ 19/28 · w 39/100 · 3d left · 25m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2508,7 +2682,7 @@
                   "dim": true
                 },
                 {
-                  "text": "feat/offline"
+                  "text": "feat/sync"
                 },
                 {
                   "text": ")",
@@ -2522,10 +2696,32 @@
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "█████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 58%",
+                  "text": "19/28",
                   "color": "green"
                 },
                 {
@@ -2539,8 +2735,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 39%",
-                  "color": "green"
+                  "text": "w 39/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -2553,29 +2750,8 @@
                   "text": " "
                 },
                 {
-                  "text": "t 68%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
+                  "text": "3d left",
                   "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "·",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "ctx 74%",
-                  "color": "yellow"
                 },
                 {
                   "text": " "
@@ -2594,8 +2770,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[33mfast mode\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 58%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 68%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m10m\u001b[0m",
-              "plain": "Opus 5.5 · fast mode · billing-api (fix/webhooks) · s 58% · w 39% · t 68% of 28% · 10m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[33mfast mode\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/hooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m\u001b[2m░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m19/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 39/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m10m\u001b[0m",
+              "plain": "Opus 5.5 · fast mode · billing-api (fix/hooks) · Today: ▕█████████░░░░░│▏ 19/28 · w 39/100 · 3d left · 10m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2637,7 +2813,7 @@
                   "dim": true
                 },
                 {
-                  "text": "fix/webhooks"
+                  "text": "fix/hooks"
                 },
                 {
                   "text": ")",
@@ -2651,10 +2827,32 @@
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "█████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 58%",
+                  "text": "19/28",
                   "color": "green"
                 },
                 {
@@ -2668,8 +2866,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 39%",
-                  "color": "green"
+                  "text": "w 39/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -2682,14 +2881,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 68%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -2709,8 +2901,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;242;175;72mpaceline\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 58%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 39%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 68%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱\u001b[0m #42 1/3 \u001b[2m·\u001b[0m \u001b[2m5m\u001b[0m",
-              "plain": "Opus 5.5 · paceline (dev) · s 58% · w 39% · t 68% of 28% · loop ▰▰▱ #42 1/3 · 5m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;242;175;72mpaceline\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m\u001b[2m░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m19/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 39/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱\u001b[0m #42 1/3 \u001b[2m·\u001b[0m \u001b[2m5m\u001b[0m",
+              "plain": "Opus 5.5 · paceline (dev) · Today: ▕█████████░░░░░│▏ 19/28 · w 39/100 · 3d left · loop ▰▰▱ #42 1/3 · 5m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2752,10 +2944,32 @@
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "█████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 58%",
+                  "text": "19/28",
                   "color": "green"
                 },
                 {
@@ -2769,8 +2983,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 39%",
-                  "color": "green"
+                  "text": "w 39/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -2783,14 +2998,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 68%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 28%",
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -2838,8 +3046,8 @@
           "now": "2026-10-09T14:20:00Z",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 40%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 71%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h30m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · s 61% · w 40% · t 71% of 28% · 1h30m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m████████\u001b[0m\u001b[2m░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[33m20/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 40/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h30m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · Today: ▕████████░░░░░░│▏ 20/28 · w 40/100 · 3d left · 1h30m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2881,45 +3089,61 @@
                   "dim": true
                 },
                 {
-                  "text": " "
+                  "text": " Today: "
                 },
                 {
-                  "text": "s 61%",
-                  "color": "green"
+                  "text": "▕",
+                  "dim": true
                 },
                 {
-                  "text": " "
+                  "text": "████████",
+                  "color": "cyan"
                 },
                 {
-                  "text": "·",
+                  "text": "░░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
                   "dim": true
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "w 40%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "·",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "t 71%",
+                  "text": "20/28",
                   "color": "yellow"
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "of 28%",
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 40/100",
+                  "color": "green",
+                  "bold": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -2939,8 +3163,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/offline\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 40%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 71%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mctx 74%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m45m\u001b[0m",
-              "plain": "Opus 5.5 · high effort · field-app (feat/offline) · s 61% · w 40% · t 71% of 28% · ctx 74% · 45m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m████████\u001b[0m\u001b[2m░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[33m20/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 40/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m45m\u001b[0m",
+              "plain": "Opus 5.5 · high effort · field-app (feat/sync) · Today: ▕████████░░░░░░│▏ 20/28 · w 40/100 · 3d left · 45m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2982,7 +3206,7 @@
                   "dim": true
                 },
                 {
-                  "text": "feat/offline"
+                  "text": "feat/sync"
                 },
                 {
                   "text": ")",
@@ -2996,46 +3220,48 @@
                   "dim": true
                 },
                 {
-                  "text": " "
+                  "text": " Today: "
                 },
                 {
-                  "text": "s 61%",
-                  "color": "green"
+                  "text": "▕",
+                  "dim": true
                 },
                 {
-                  "text": " "
+                  "text": "████████",
+                  "color": "cyan"
                 },
                 {
-                  "text": "·",
+                  "text": "░░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
                   "dim": true
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "w 40%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "·",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "t 71%",
+                  "text": "20/28",
                   "color": "yellow"
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "of 28%",
+                  "text": "·",
                   "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 40/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -3048,8 +3274,8 @@
                   "text": " "
                 },
                 {
-                  "text": "ctx 74%",
-                  "color": "yellow"
+                  "text": "3d left",
+                  "dim": true
                 },
                 {
                   "text": " "
@@ -3068,8 +3294,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[33mfast mode\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/webhooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 40%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 71%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m30m\u001b[0m",
-              "plain": "Opus 5.5 · fast mode · billing-api (fix/webhooks) · s 61% · w 40% · t 71% of 28% · 30m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[33mfast mode\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/hooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m████████\u001b[0m\u001b[2m░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[33m20/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 40/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m30m\u001b[0m",
+              "plain": "Opus 5.5 · fast mode · billing-api (fix/hooks) · Today: ▕████████░░░░░░│▏ 20/28 · w 40/100 · 3d left · 30m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -3111,7 +3337,7 @@
                   "dim": true
                 },
                 {
-                  "text": "fix/webhooks"
+                  "text": "fix/hooks"
                 },
                 {
                   "text": ")",
@@ -3125,45 +3351,61 @@
                   "dim": true
                 },
                 {
-                  "text": " "
+                  "text": " Today: "
                 },
                 {
-                  "text": "s 61%",
-                  "color": "green"
+                  "text": "▕",
+                  "dim": true
                 },
                 {
-                  "text": " "
+                  "text": "████████",
+                  "color": "cyan"
                 },
                 {
-                  "text": "·",
+                  "text": "░░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
                   "dim": true
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "w 40%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "·",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "t 71%",
+                  "text": "20/28",
                   "color": "yellow"
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "of 28%",
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 40/100",
+                  "color": "green",
+                  "bold": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -3183,8 +3425,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;242;175;72mpaceline\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 61%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 40%\u001b[0m \u001b[2m·\u001b[0m \u001b[33mt 71%\u001b[0m \u001b[2mof 28%\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰\u001b[0m\u001b[36m▰\u001b[0m #43 2/3 \u001b[2m·\u001b[0m \u001b[2m25m\u001b[0m",
-              "plain": "Opus 5.5 · paceline (dev) · s 61% · w 40% · t 71% of 28% · loop ▰▰▰ #43 2/3 · 25m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;242;175;72mpaceline\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m████████\u001b[0m\u001b[2m░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[33m20/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 40/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰\u001b[0m\u001b[36m▰\u001b[0m #43 2/3 \u001b[2m·\u001b[0m \u001b[2m25m\u001b[0m",
+              "plain": "Opus 5.5 · paceline (dev) · Today: ▕████████░░░░░░│▏ 20/28 · w 40/100 · 3d left · loop ▰▰▰ #43 2/3 · 25m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -3226,45 +3468,61 @@
                   "dim": true
                 },
                 {
-                  "text": " "
+                  "text": " Today: "
                 },
                 {
-                  "text": "s 61%",
-                  "color": "green"
+                  "text": "▕",
+                  "dim": true
                 },
                 {
-                  "text": " "
+                  "text": "████████",
+                  "color": "cyan"
                 },
                 {
-                  "text": "·",
+                  "text": "░░░░░░",
+                  "dim": true
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "▏",
                   "dim": true
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "w 40%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "·",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "t 71%",
+                  "text": "20/28",
                   "color": "yellow"
                 },
                 {
                   "text": " "
                 },
                 {
-                  "text": "of 28%",
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "w 40/100",
+                  "color": "green",
+                  "bold": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "·",
+                  "dim": true
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "3d left",
                   "dim": true
                 },
                 {
@@ -3324,8 +3582,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 3%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 33%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 1%\u001b[0m \u001b[2mof 68%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m5m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (main) · s 3% · w 33% · t 1% of 68% · 5m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m██████\u001b[0m│\u001b[36m██████████████████████\u001b[0m\u001b[2m▏\u001b[0m \u001b[32m1/68\u001b[0m \u001b[32m+53 saved\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 33/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2mlast day\u001b[0m \u001b[2m·\u001b[0m \u001b[2m5m\u001b[0m",
+              "plain": "Opus 5.5 · field-app · Today: ▕██████│██████████████████████▏ 1/68 +53 saved · w 33/100 · last day · 5m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -3349,28 +3607,43 @@
                   "text": " "
                 },
                 {
-                  "text": "(",
-                  "dim": true
-                },
-                {
-                  "text": "main"
-                },
-                {
-                  "text": ")",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
                   "text": "·",
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "██████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "██████████████████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 3%",
+                  "text": "1/68",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "+53 saved",
                   "color": "green"
                 },
                 {
@@ -3384,8 +3657,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 33%",
-                  "color": "green"
+                  "text": "w 33/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -3398,14 +3672,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 1%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 68%",
+                  "text": "last day",
                   "dim": true
                 },
                 {
@@ -3438,8 +3705,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 31%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 45%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 19%\u001b[0m \u001b[2mof 68%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h35m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (main) · s 31% · w 45% · t 19% of 68% · 1h35m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m███████\u001b[0m│\u001b[36m█████████████████████\u001b[0m\u001b[2m▏\u001b[0m \u001b[32m13/68\u001b[0m \u001b[32m+41 saved\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 45/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2mlast day\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h35m\u001b[0m",
+              "plain": "Opus 5.5 · field-app · Today: ▕███████│█████████████████████▏ 13/68 +41 saved · w 45/100 · last day · 1h35m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -3463,28 +3730,43 @@
                   "text": " "
                 },
                 {
-                  "text": "(",
-                  "dim": true
-                },
-                {
-                  "text": "main"
-                },
-                {
-                  "text": ")",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
                   "text": "·",
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "███████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "█████████████████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 31%",
+                  "text": "13/68",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "+41 saved",
                   "color": "green"
                 },
                 {
@@ -3498,8 +3780,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 45%",
-                  "color": "green"
+                  "text": "w 45/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -3512,14 +3795,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 19%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 68%",
+                  "text": "last day",
                   "dim": true
                 },
                 {
@@ -3552,8 +3828,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 57%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mw 58%\u001b[0m \u001b[2m·\u001b[0m \u001b[32mt 38%\u001b[0m \u001b[2mof 68%\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h5m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (main) · s 57% · w 58% · t 38% of 68% · 3h5m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m│\u001b[36m███████████████████\u001b[0m\u001b[2m▏\u001b[0m \u001b[32m26/68\u001b[0m \u001b[32m+28 saved\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 58/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2mlast day\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h5m\u001b[0m",
+              "plain": "Opus 5.5 · field-app · Today: ▕█████████│███████████████████▏ 26/68 +28 saved · w 58/100 · last day · 3h5m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -3577,28 +3853,43 @@
                   "text": " "
                 },
                 {
-                  "text": "(",
-                  "dim": true
-                },
-                {
-                  "text": "main"
-                },
-                {
-                  "text": ")",
-                  "dim": true
-                },
-                {
-                  "text": " "
-                },
-                {
                   "text": "·",
                   "dim": true
                 },
                 {
+                  "text": " Today: "
+                },
+                {
+                  "text": "▕",
+                  "dim": true
+                },
+                {
+                  "text": "█████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "│"
+                },
+                {
+                  "text": "███████████████████",
+                  "color": "cyan"
+                },
+                {
+                  "text": "▏",
+                  "dim": true
+                },
+                {
                   "text": " "
                 },
                 {
-                  "text": "s 57%",
+                  "text": "26/68",
+                  "color": "green"
+                },
+                {
+                  "text": " "
+                },
+                {
+                  "text": "+28 saved",
                   "color": "green"
                 },
                 {
@@ -3612,8 +3903,9 @@
                   "text": " "
                 },
                 {
-                  "text": "w 58%",
-                  "color": "green"
+                  "text": "w 58/100",
+                  "color": "green",
+                  "bold": true
                 },
                 {
                   "text": " "
@@ -3626,14 +3918,7 @@
                   "text": " "
                 },
                 {
-                  "text": "t 38%",
-                  "color": "green"
-                },
-                {
-                  "text": " "
-                },
-                {
-                  "text": "of 68%",
+                  "text": "last day",
                   "dim": true
                 },
                 {

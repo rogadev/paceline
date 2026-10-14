@@ -58,7 +58,7 @@ func help() string {
 
 Usage:
   paceline install [--force]   set paceline as your Claude Code status line
-    [--regular | --verbose]    label style: "s 18%%" or "session 18%% used"
+    [--regular | --verbose]    label style: "w 86/100" or "week 86/100"
                                (asks if omitted)
   paceline uninstall           remove it and restore the previous status line
   paceline style [regular | verbose]
@@ -218,9 +218,9 @@ func chooseStyle(args []string, interactive, current bool, stdin io.Reader, stdo
 	if current {
 		def = "2"
 	}
-	fmt.Fprint(stdout, "Choose a label style (s = session, w = week, t = today):\n"+
-		"  1) Regular   s 18% \u00b7 w 86% \u00b7 t 25% of 8%\n"+
-		"  2) Verbose   session 18% used \u00b7 week 86% used \u00b7 today 25% used of 8% budget\n"+
+	fmt.Fprint(stdout, "Choose a label style (w = week):\n"+
+		"  1) Regular   Today: "+exampleBar+" 2/8 \u00b7 w 86/100 \u00b7 2d left\n"+
+		"  2) Verbose   Today: "+exampleBar+" 2/8 \u00b7 week 86/100 \u00b7 2d left\n"+
 		"Style ["+def+"]: ")
 	answer, err := bufio.NewReader(stdin).ReadString('\n')
 	switch strings.ToLower(strings.TrimSpace(answer)) {
@@ -233,6 +233,11 @@ func chooseStyle(args []string, interactive, current bool, stdin io.Reader, stdo
 	}
 	return current, true
 }
+
+// exampleBar is today's bar in the style prompt's examples: 6 of an 8-point
+// budget left, 2 spent, and the 6 points of the daily base below it.
+const exampleBar = "\u2595\u2588\u2588\u2588\u2588\u2588\u2588\u2591\u2591" +
+	"\u2592\u2592\u2592\u2592\u2592\u2592\u2502\u258f"
 
 func isTerminal(r io.Reader) bool {
 	f, ok := r.(*os.File)

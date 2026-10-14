@@ -128,8 +128,8 @@ func TestSVGDescriptionListsScenesInOrder(t *testing.T) {
 		}
 		at += i + len(sc.Title)
 	}
-	if !strings.Contains(desc, "count up what's used") {
-		t.Errorf("description %q does not say the numbers count up what's used", desc)
+	if !strings.Contains(desc, "bar drains") || !strings.Contains(desc, "counts up") {
+		t.Errorf("description %q does not say how today's bar and the week read", desc)
 	}
 }
 
