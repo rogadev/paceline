@@ -9,6 +9,10 @@
 // Unspent budget rolls over by spreading across the remaining days, since the
 // next day's budget divides whatever the week still has.
 //
+// Compute also reports the days left until the reset, tomorrow's budget if
+// nothing more is spent today, and, on the last day, when the week runs out
+// at today's pace.
+//
 // The exported API is a public contract: other modules, such as
 // paceline-tray, import this package, so changing it is a breaking change.
 package pace
@@ -16,6 +20,7 @@ package pace
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"math"
 	"os"
 	"path/filepath"
@@ -32,8 +37,9 @@ const EvenPace = 100.0 / 7
 const maxSnapshotSize = 4096
 
 // minPaceWindow is how long a day must have run before RunsOutAt projects
-// from its pace. Provisional: in the first minutes one burst of work swings
-// the projection by hours.
+// from its pace. Thirty minutes is a chosen value, not a measured one: in the
+// first minutes a single burst of work swings the projection by hours, and by
+// half an hour the pace is steady enough to be worth showing.
 const minPaceWindow = 30 * time.Minute
 
 // Snapshot records weekly usage at the start of a day.
@@ -86,14 +92,22 @@ type Result struct {
 	DaysLeft        float64 // days from local midnight to the reset, at least 1
 	LastDay         bool    // the reset falls on or before the next local midnight
 	Tomorrow        float64 // tomorrow's budget if nothing more is spent today; 0 on the last day
-	RunsOutAt       float64 // on the last day, unix seconds when the week reaches 100% at today's pace, or 0; see runsOutAt
+	RunsOutAt       float64 // unix seconds when the week reaches 100% at today's pace, or 0; see Compute
 	Pace            Direction
 	Snapshot        Snapshot
 	SnapshotChanged bool // the caller should persist Snapshot
 }
 
 // Compute works out today's budget. snap is the stored snapshot, or nil.
+//
+// RunsOutAt is set on the last day only. It is 0 before the last day, with
+// nothing spent, under 30 minutes after the day started, with the week
+// already used up, or when the projection falls at or after the reset.
 func Compute(usedPct, resetsAt float64, now time.Time, snap *Snapshot) Result {
+	// A reading past 100% (or below 0) would anchor an invalid snapshot that
+	// is rewritten on every refresh, and turn a used-up week into an
+	// overspent day.
+	usedPct = min(max(usedPct, 0), 100)
 	midnight := timefmt.StartOfDay(now)
 	reset := time.Unix(int64(resetsAt), 0)
 	daysLeft := reset.Sub(midnight).Hours() / 24
@@ -193,7 +207,14 @@ func SnapshotPath(configDir string) string {
 // ReadSnapshot loads a snapshot, returning nil for a missing, oversized,
 // corrupt, or invalid file.
 func ReadSnapshot(path string) *Snapshot {
-	data, err := os.ReadFile(path) //nolint:gosec // G304: path is paceline's own state file.
+	f, err := os.Open(path) //nolint:gosec // G304: path is paceline's own state file.
+	if err != nil {
+		return nil
+	}
+	defer func() { _ = f.Close() }() // read-only: a close error loses nothing
+	// Reading one byte past the limit tells an oversized file apart without
+	// reading all of it.
+	data, err := io.ReadAll(io.LimitReader(f, maxSnapshotSize+1))
 	if err != nil || len(data) > maxSnapshotSize {
 		return nil
 	}

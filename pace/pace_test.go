@@ -111,8 +111,8 @@ func TestLastDayIsACalendarDay(t *testing.T) {
 	}
 }
 
-// A week already past 100% leaves nothing for tomorrow, never a negative
-// budget.
+// A week already at 100% leaves nothing for tomorrow, never a negative
+// budget, even when the reading is past 100%.
 func TestTomorrowIsNeverNegative(t *testing.T) {
 	resets := epoch(local(2026, 9, 28, 0))
 	r := Compute(100.5, resets, now, &Snapshot{Date: "20260924", ResetsAt: resets, UsedAtStart: 52})
@@ -136,6 +136,23 @@ func TestOverBudgetLastDayStillRunsOut(t *testing.T) {
 	// 23.5 points in 2 hours leaves 0.5 points, 153 seconds away.
 	if !r.Over || !r.LastDay || r.RunsOutAt != epoch(now)+153 {
 		t.Errorf("got %+v, want over on the last day, running out at %v", r, epoch(now)+153)
+	}
+}
+
+// A reading outside 0-100% is clamped, so a day that starts past the limit
+// anchors a valid snapshot with a 0 budget and nothing spent, not an
+// overspent day whose snapshot is rejected and rewritten on every refresh.
+func TestUsageOutsideTheRangeIsClamped(t *testing.T) {
+	resets := epoch(local(2026, 9, 28, 0))
+	r := Compute(100.4, resets, now, nil)
+	if !r.Snapshot.Valid() || r.Snapshot.UsedAtStart != 100 || r.Budget != 0 || r.Spent != 0 || r.Over {
+		t.Errorf("past 100%%: got %+v", r)
+	}
+	if again := Compute(100.4, resets, now, &r.Snapshot); again.SnapshotChanged {
+		t.Error("past 100%: the snapshot was rewritten on the next refresh")
+	}
+	if r := Compute(-1, resets, now, nil); r.Snapshot.UsedAtStart != 0 || r.Spent != 0 {
+		t.Errorf("below 0%%: got %+v", r)
 	}
 }
 

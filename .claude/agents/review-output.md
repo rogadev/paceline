@@ -63,7 +63,7 @@ The brief's `Renders:` line points to `<scratch>/renders/summary.md` or says `no
 - Resets: every styled run ends with `ESC[0m` (the `style.wrap` helper does this). Hand-built escape strings that skip `wrap` are a finding.
 
 ### 4.4 Meaning never carried by color alone
-- Headroom color (green, yellow, red from `color.HeadroomLevel`) always travels with a number and a label (`w 58/100`, `Today: <bar> 7/12`). Over budget travels with red numbers past the budget (`15/12`) plus the `→ N tmrw` hint, and the bar's characters (`█ ░ ▒ │`) differ so it reads without color. The context and cache warnings appear only past their thresholds, so their presence is the signal.
+- Headroom color (green, yellow, red from `color.HeadroomLevel`) always travels with a number and a label (`w 58/100`, `Today: <bar> 7/12`). Over budget travels with red numbers past the budget (`15/12`, or `3 over/12` counting down), plus the `→ N tmrw` hint when tomorrow has a budget. The bar's drained, faint, and marker characters (`░ ▒ │`) differ so they read without color, but overage cells share `█` with budget-left cells: without color, the numbers carry the over state, not the bar. The context and cache warnings appear only past their thresholds, so their presence is the signal.
 - A change that drops the `over` word, the label, or the number and leaves only a color change hides the state from users with `NO_COLOR`, on a non-color terminal, or with color vision deficiency. That is a Warning, or a Blocker when it hides being over budget.
 - `NO_COLOR` output must be complete: every word, number, glyph, and separator, with no stray escape codes. Any new styling must go through the `style` type so `NoColor` switches it off.
 

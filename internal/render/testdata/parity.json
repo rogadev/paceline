@@ -147,7 +147,7 @@
             }
           }
         },
-        "want": "Today: \u001b[2m▕\u001b[0m\u001b[36m█████\u001b[0m\u001b[38;2;111;28;28m▒▒▒▒▒▒▒▒▒\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m5/5 left\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47m\u001b[1mw 12/100 left\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2d left\u001b[0m"
+        "want": "Today: \u001b[2m▕\u001b[0m\u001b[36m█████\u001b[0m\u001b[38;2;136;66;66m▒▒▒▒▒▒▒▒▒\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m5/5 left\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47m\u001b[1mw 12/100 left\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2d left\u001b[0m"
       }
     ]
   },
@@ -165,7 +165,7 @@
             }
           }
         },
-        "want": "Today: \u001b[2m▕\u001b[0m\u001b[36m████████\u001b[0m\u001b[38;2;111;28;28m▒▒▒▒▒▒\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m8/8 left\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47m\u001b[1mw 8/100 left\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2mlast day\u001b[0m"
+        "want": "Today: \u001b[2m▕\u001b[0m\u001b[36m████████\u001b[0m\u001b[38;2;136;66;66m▒▒▒▒▒▒\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m8/8 left\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47m\u001b[1mw 8/100 left\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2mlast day\u001b[0m"
       }
     ]
   },

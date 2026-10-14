@@ -51,10 +51,11 @@ var dailyBase = Round(pace.EvenPace)
 // chroma, so a warning that stays on screen is easier on the eyes.
 var mutedRed = color.RGB{185, 47, 47}
 
-// faintRed is mutedRed at 60% brightness. It marks the part of the daily base
+// faintRed is a darker, grayer mutedRed. It marks the part of the daily base
 // that earlier overspending took from today's budget: where the day started,
-// not a warning.
-var faintRed = color.RGB{111, 28, 28}
+// not a warning. On a near-black background it has about 2.7:1 contrast,
+// enough to see, against mutedRed's 3.3:1 at full chroma.
+var faintRed = color.RGB{136, 66, 66}
 
 var (
 	modelSuffix  = regexp.MustCompile(`\s*\(.*\)$`)
@@ -274,7 +275,7 @@ func computeToday(usedPct, resetsAt float64, ctx Context) pace.Result {
 		snap = ctx.ReadSnapshot()
 	}
 	r := pace.Compute(usedPct, resetsAt, ctx.Now, snap)
-	if r.Kind == pace.Budget && r.SnapshotChanged && ctx.WriteSnapshot != nil {
+	if r.SnapshotChanged && ctx.WriteSnapshot != nil {
 		ctx.WriteSnapshot(r.Snapshot)
 	}
 	return r
@@ -286,8 +287,8 @@ func computeToday(usedPct, resetsAt float64, ctx Context) pace.Result {
 // above the even daily base adds what's left of that surplus ("+4 saved").
 // Over budget, tomorrow's budget follows ("-> 11 tmrw"), unless the week has
 // nothing left for it or it is the last day, when the reset brings a fresh
-// week. On the last day, the time the week
-// runs out at today's pace follows instead, when that comes before the reset.
+// week. On the last day, the time the week runs out at today's pace follows
+// instead, when that comes before the reset.
 func renderToday(r pace.Result, ctx Context, st style, headroom func(int, string) string) string {
 	spent, budget := Round(r.Spent), Round(r.Budget)
 	if r.Over {
@@ -329,9 +330,11 @@ func renderToday(r pace.Result, ctx Context, st style, headroom func(int, string
 // drained cells the rest of the base, and a faint red stretch the part of the
 // base below a smaller budget. A budget above the base starts with full cells
 // past the marker, and spending removes those first, so the bar shortens.
-// Over budget, the full cells are red and count the overage instead. The
-// characters differ, not only the colors, so the bar reads without color. A
-// bar longer than maxBarCells scales down to fit, marker included.
+// Over budget, the same full cells turn red and count the overage instead.
+// Drained cells and the faint stretch have characters of their own, so they
+// read without color, but the over state does not: without color it reads
+// from the numbers ("15/12", or "3 over/12" counting down). A bar longer than
+// maxBarCells scales down to fit, marker included.
 func todayBar(budget, spent int, st style) string {
 	over := spent > budget
 	full := budget - spent

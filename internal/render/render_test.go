@@ -277,12 +277,11 @@ func todayAt(t *testing.T, c Context, start float64, days int, used string) stri
 // the last day, the time the week runs out at today's pace follows instead.
 func TestTodayBarDrains(t *testing.T) {
 	tests := []struct {
-		name        string
-		start       float64
-		days        int
-		used        string
-		want, down  string
-		wantVerbose string
+		name       string
+		start      float64
+		days       int
+		used       string
+		want, down string
 	}{
 		{name: "below base", start: 52, days: 4, used: "59",
 			want: bar("#####.......~~|") + " 7/12", down: bar("#####.......~~|") + " 5/12 left"},
@@ -309,9 +308,10 @@ func TestTodayBarDrains(t *testing.T) {
 			want: bar("###.........~~|") + " 15/12" + tmrw + "11 tmrw", down: bar("###.........~~|") + " 3 over/12" + tmrw + "11 tmrw"},
 		{name: "over late in the week", start: 76, days: 2, used: "91",
 			want: bar("###.........~~|") + " 15/12" + tmrw + "9 tmrw", down: bar("###.........~~|") + " 3 over/12" + tmrw + "9 tmrw"},
-		// The reset brings a fresh week, so the last day has no tomorrow.
-		{name: "over on the last day", start: 95, days: 1, used: "100.4",
-			want: bar("#....~~~~~~~~~|") + " 6/5", down: bar("#....~~~~~~~~~|") + " 1 over/5"},
+		// A reading past 100% counts as 100%: the last 5 points are spent, not
+		// overspent.
+		{name: "past the limit on the last day", start: 95, days: 1, used: "100.4",
+			want: bar(".....~~~~~~~~~|") + " 5/5", down: bar(".....~~~~~~~~~|") + " 0/5 left"},
 		{name: "overage past the marker", start: 52, days: 4, used: "82",
 			want: bar("##############|####") + " 30/12" + tmrw + "6 tmrw", down: bar("##############|####") + " 18 over/12" + tmrw + "6 tmrw"},
 		// On the last day, today's pace projects when the week runs out:
@@ -348,8 +348,8 @@ func TestTodayBarDrains(t *testing.T) {
 		// faint band, and any spend is over.
 		{name: "zero budget", start: 100, days: 4, used: "100",
 			want: bar("~~~~~~~~~~~~~~|") + " 0/0", down: bar("~~~~~~~~~~~~~~|") + " 0/0 left"},
-		{name: "zero budget, over", start: 100, days: 4, used: "100.4",
-			want: bar("#~~~~~~~~~~~~~|") + " 1/0", down: bar("#~~~~~~~~~~~~~|") + " 1 over/0"},
+		{name: "zero budget, reading past the limit", start: 100, days: 4, used: "100.4",
+			want: bar("~~~~~~~~~~~~~~|") + " 0/0", down: bar("~~~~~~~~~~~~~~|") + " 0/0 left"},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -375,7 +375,7 @@ func TestTodayBarDrains(t *testing.T) {
 func TestTodayBarColors(t *testing.T) {
 	const (
 		dim, cyan, green = "\x1b[2m", "\x1b[36m", "\x1b[32m"
-		red, faint, off  = "\x1b[38;2;185;47;47m", "\x1b[38;2;111;28;28m", "\x1b[0m"
+		red, faint, off  = "\x1b[38;2;185;47;47m", "\x1b[38;2;136;66;66m", "\x1b[0m"
 	)
 	ends := func(cells string) string { return dim + "\u2595" + off + cells + dim + "\u258f" + off }
 	run := func(code, glyph string, n int) string { return code + strings.Repeat(glyph, n) + off }
@@ -498,7 +498,22 @@ func TestWeekAloneWritesTheDaySnapshot(t *testing.T) {
 	if got, want := Render(decode(t, weekAt(4, "59")), c), "w 59/100 "+middleDot+" 4d left"; got != want {
 		t.Errorf("got %q, want %q", got, want)
 	}
-	if written == nil || written.UsedAtStart != 59 || written.Date != "20260924" {
+	if written == nil || written.UsedAtStart != 59 || written.Date != "20260924" || written.StartedAt != float64(c.Now.Unix()) {
+		t.Errorf("snapshot written: %+v", written)
+	}
+}
+
+// A day that starts with the week past 100% anchors at 100%: today reads 0/0,
+// all faint band and not over, and the snapshot it writes is valid.
+func TestDayStartingPastTheLimitReadsZeroOfZero(t *testing.T) {
+	c := ctx()
+	c.Config.Segments.Week = false
+	var written *pace.Snapshot
+	c.WriteSnapshot = func(s pace.Snapshot) { written = &s }
+	if got, want := Render(decode(t, weekAt(4, "100.4")), c), "Today: "+bar("~~~~~~~~~~~~~~|")+" 0/0"; got != want {
+		t.Errorf("got %q, want %q", got, want)
+	}
+	if written == nil || !written.Valid() || written.UsedAtStart != 100 {
 		t.Errorf("snapshot written: %+v", written)
 	}
 }
