@@ -383,7 +383,11 @@ func todayBar(budget, spent int, st style) string {
 		}
 		i = j
 	}
-	b.WriteString(st.dim(barRight))
+	// When nothing extends past the base, the marker closes the bar; an end
+	// cap right after it would read as a leftover sliver of surplus.
+	if cells > marker {
+		b.WriteString(st.dim(barRight))
+	}
 	return b.String()
 }
 

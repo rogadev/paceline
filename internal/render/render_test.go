@@ -243,8 +243,12 @@ func TestSessionAndWeekTurnRedNearTheLimit(t *testing.T) {
 
 // bar spells a NoColor today bar in ASCII: '#' is a full cell, '.' a drained
 // one, '~' the stretch below the daily base, and '|' the base marker.
+// A bar that ends at the marker has no end cap: the marker closes it.
 func bar(cells string) string {
 	glyphs := strings.NewReplacer("#", "\u2588", ".", "\u2591", "~", "\u2592", "|", "\u2502")
+	if strings.HasSuffix(cells, "|") {
+		return "\u2595" + glyphs.Replace(cells)
+	}
 	return "\u2595" + glyphs.Replace(cells) + "\u258f"
 }
 
@@ -377,7 +381,12 @@ func TestTodayBarColors(t *testing.T) {
 		dim, cyan, green = "\x1b[2m", "\x1b[36m", "\x1b[32m"
 		red, faint, off  = "\x1b[38;2;185;47;47m", "\x1b[38;2;136;66;66m", "\x1b[0m"
 	)
-	ends := func(cells string) string { return dim + "\u2595" + off + cells + dim + "\u258f" + off }
+	ends := func(cells string) string {
+		if strings.HasSuffix(cells, "\u2502") {
+			return dim + "\u2595" + off + cells
+		}
+		return dim + "\u2595" + off + cells + dim + "\u258f" + off
+	}
 	run := func(code, glyph string, n int) string { return code + strings.Repeat(glyph, n) + off }
 	tests := []struct {
 		name  string
