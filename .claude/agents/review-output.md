@@ -63,7 +63,7 @@ The brief's `Renders:` line points to `<scratch>/renders/summary.md` or says `no
 - Resets: every styled run ends with `ESC[0m` (the `style.wrap` helper does this). Hand-built escape strings that skip `wrap` are a finding.
 
 ### 4.4 Meaning never carried by color alone
-- Headroom color (green, yellow, red from `color.HeadroomLevel`) always travels with a number and a label (`s 84%`, `w 96%`). Over budget travels with the word `over` as well as red (`t over 18% of 28%`). The context and cache warnings appear only past their thresholds, so their presence is the signal.
+- Headroom color (green, yellow, red from `color.HeadroomLevel`) always travels with a number and a label (`w 58/100`, `Today: <bar> 7/12`). Over budget travels with red numbers past the budget (`15/12`) plus the `→ N tmrw` hint, and the bar's characters (`█ ░ ▒ │`) differ so it reads without color. The context and cache warnings appear only past their thresholds, so their presence is the signal.
 - A change that drops the `over` word, the label, or the number and leaves only a color change hides the state from users with `NO_COLOR`, on a non-color terminal, or with color vision deficiency. That is a Warning, or a Blocker when it hides being over budget.
 - `NO_COLOR` output must be complete: every word, number, glyph, and separator, with no stray escape codes. Any new styling must go through the `style` type so `NoColor` switches it off.
 
@@ -73,7 +73,7 @@ The brief's `Renders:` line points to `<scratch>/renders/summary.md` or says `no
 - The model segment strips a trailing parenthetical (`modelSuffix`). A change there must still leave a readable model name, never an empty segment or a dangling parenthesis.
 
 ### 4.6 Numbers and time
-- Percentages are integers rounded half up (`round`), followed by `%` with no space: `s 84%`, `ctx 72%`. Session, week, and today count down what's left from 100% (verbose adds "left": `session 84% left`); only the context warning reads as used. Today reads `t N% of M%`: N is the share of today's budget left, and the budget after it is dim. Past the budget it reads `t over N% of M%` in red, where N is how far over, at least 1. Check that new wording keeps N unambiguous as "left" and never prints a negative percentage or "over 0%".
+- Numbers are integers rounded half up (`round`). The session (off by default) and context warning are percentages (`s 84%`, `ctx 72%`). Today and the week are weekly percentage points: `Today: <bar> 7/12` (spent of today's budget, label `Today:` in both styles) and `w 58/100`, then a dim `4d left` or `last day`. The today bar drains: full cells are budget left, a fixed `│` marks the even base of 14, surplus shows past the marker with a green `+N saved` that shrinks to nothing, and a faint red `▒` stretch marks a below-base budget. Over budget the numbers are red and never show spent equal to budget, followed by `→ N tmrw`; on the last day, `out ~<clock>` replaces it. With `countDirection` down: `5/12 left`, `3 over/12`, `w 42/100 left`. Check that new wording never prints a negative number or `0 over`.
 - Times come from `timefmt.Clock`: `9pm`, `3:40pm`, and `Thu 9pm` when the reset is on another local day. Durations come from `timefmt.Duration`: `1h5m`, `12m`, `40s`. A new time or duration uses these helpers, never a new layout string, so the formats stay consistent. Watch for `12:00am` style edge cases and for a weekday prefix that is missing when the reset is tomorrow.
 - A Go formatting mistake prints `%!d(MISSING)`, `%!s(<nil>)`, `<nil>`, or `NaN` into the status line. That is a Blocker on any common payload.
 
@@ -105,7 +105,7 @@ Known values on 2026-09-24 (recompute if `internal/color` changed):
 
 ## 6. paceline specifics
 
-- `internal/render/render.go`: `Render` builds every segment in order (model, effort, fast mode, project and branch, session, week, today, context, cache, duration); `project` builds the folder and branch; `renderToday` builds today's budget and the last-day line. The `style` type (`red`, `green`, `yellow`, `cyan`, `dim`, `rgb`) is the only place escape codes are made.
+- `internal/render/render.go`: `Render` builds every segment in order (model, effort, fast mode, project and branch, session, today, week, days left, context, cache, progress, duration); `project` builds the folder and branch; `renderToday` and `todayBar` build today's budget, and `renderWeek` the week and days left. The `style` type (`red`, `green`, `yellow`, `cyan`, `dim`, `rgb`) is the only place escape codes are made.
 - `internal/color/color.go`: `HeadroomLevel`, `OklchToRGB`, `RelativeLuminance`, `ContrastRatio`, `ProjectSlot`, `SlotColor`.
 - `timefmt/timefmt.go`: `Clock` and `Duration` are the only time formats a user sees.
 - `internal/sanitize`: `Text(s, maxRunes)` strips unsafe characters and adds the ellipsis when it truncates.
