@@ -43,12 +43,14 @@ type Config struct {
 	Feed bool
 }
 
-// Default returns the built-in configuration.
+// Default returns the built-in configuration. The session segment is off:
+// today's budget and the week cover pacing, and segments.session turns the
+// five-hour limit on.
 func Default() Config {
 	return Config{
 		Segments: Segments{
 			Model: true, Effort: true, FastMode: true, Project: true, Branch: true,
-			Session: true, Week: true, Today: true, Context: true, Cache: true, Duration: true,
+			Week: true, Today: true, Context: true, Cache: true, Duration: true,
 			Progress: true,
 		},
 		Thresholds:   Thresholds{HeadroomGreen: 30, HeadroomYellow: 15, ContextWarn: 70, ContextCritical: 85},

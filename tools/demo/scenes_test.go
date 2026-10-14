@@ -15,6 +15,10 @@ const (
 	checkMark = "\u2713"
 	// mutedRed is the renderer's red, as a truecolor run.
 	mutedRed = "#b92f2f"
+	// fullCell and rightArrow start today's overage cells and tomorrow's
+	// budget.
+	fullCell   = "\u2588"
+	rightArrow = "\u2192"
 )
 
 // sgr matches the escape sequences the renderer emits, to strip them
@@ -59,6 +63,20 @@ func runStarting(t *testing.T, sl StatusLine, prefix string) Run {
 		}
 	}
 	t.Fatalf("no run starts with %q in %q", prefix, sl.Plain)
+	return Run{}
+}
+
+// todayNumbers is the run holding today's spent and budget, such as "7/12".
+var todayNumbers = regexp.MustCompile(`^\d+/\d+$`)
+
+func todayRun(t *testing.T, sl StatusLine) Run {
+	t.Helper()
+	for _, r := range sl.Runs {
+		if todayNumbers.MatchString(r.Text) {
+			return r
+		}
+	}
+	t.Fatalf("no today numbers in %q", sl.Plain)
 	return Run{}
 }
 
@@ -123,7 +141,7 @@ func TestDocumentShape(t *testing.T) {
 func TestWorkingDayTodayGoesGreenYellowRed(t *testing.T) {
 	var colors []string
 	for _, step := range sceneByID(t, buildDoc(t), "working-day").Steps {
-		c := runStarting(t, line(t, step), "t ").Color
+		c := todayRun(t, line(t, step)).Color
 		if len(colors) == 0 || colors[len(colors)-1] != c {
 			colors = append(colors, c)
 		}
@@ -133,19 +151,22 @@ func TestWorkingDayTodayGoesGreenYellowRed(t *testing.T) {
 	}
 }
 
-func TestOverBudgetCountsPastTheBudgetInRed(t *testing.T) {
+func TestOverBudgetShowsTheOverageAndTomorrowInRed(t *testing.T) {
 	for i, step := range sceneByID(t, buildDoc(t), "over-budget").Steps {
 		sl := line(t, step)
-		r := runStarting(t, sl, "t ")
-		var used int
-		if _, err := fmt.Sscanf(r.Text, "t %d%%", &used); err != nil || used <= 100 {
-			t.Errorf("step %d: %q is not past 100%%", i+1, r.Text)
+		r := todayRun(t, sl)
+		var spent, budget int
+		if _, err := fmt.Sscanf(r.Text, "%d/%d", &spent, &budget); err != nil || spent <= budget {
+			t.Errorf("step %d: %q is not over budget", i+1, r.Text)
 		}
 		if r.Color != mutedRed {
 			t.Errorf("step %d: %q is %q, want red", i+1, r.Text, r.Color)
 		}
-		if r := runStarting(t, sl, "of 28%"); !r.Dim {
-			t.Errorf("step %d: the budget is not dim", i+1)
+		if r := runStarting(t, sl, fullCell); r.Color != mutedRed {
+			t.Errorf("step %d: the overage cells are %q, want red", i+1, r.Color)
+		}
+		if r := runStarting(t, sl, rightArrow); r.Color != mutedRed || !strings.HasSuffix(r.Text, " tmrw") {
+			t.Errorf("step %d: tomorrow's budget is %q in %q, want red", i+1, r.Text, r.Color)
 		}
 	}
 }
@@ -155,7 +176,7 @@ func TestSessionLowShowsResetAndContext(t *testing.T) {
 	wantCtx := []string{"", "yellow", mutedRed}
 	for i, step := range steps {
 		sl := line(t, step)
-		resets := strings.Contains(sl.Plain, "(resets 3:40pm)")
+		resets := strings.Contains(sl.Plain, "(resets 3pm)")
 		if resets != (i > 0) {
 			t.Errorf("step %d: shows the reset time = %v: %q", i+1, resets, sl.Plain)
 		}
@@ -232,8 +253,8 @@ func TestSeveralWindowsShareLimitsInTheirOwnColors(t *testing.T) {
 				t.Errorf("step %d: %s has no project color", i+1, projects[j])
 			}
 			colors[r.Color] = true
-			start := strings.Index(sl.Plain, " s ")
-			end := strings.Index(sl.Plain, " of 28%")
+			start := strings.Index(sl.Plain, "Today: ")
+			end := strings.Index(sl.Plain, "d left")
 			if start < 0 || end < start {
 				t.Fatalf("step %d: no usage segments in %q", i+1, sl.Plain)
 			}
@@ -252,7 +273,7 @@ func TestSeveralWindowsShareLimitsInTheirOwnColors(t *testing.T) {
 
 func TestLastDayBudgetIsTheRestOfTheWeek(t *testing.T) {
 	for i, step := range sceneByID(t, buildDoc(t), "last-day").Steps {
-		if sl := line(t, step); !strings.Contains(sl.Plain, " of 68%") {
+		if sl := line(t, step); !strings.Contains(sl.Plain, "/68 ") || !strings.Contains(sl.Plain, " last day ") {
 			t.Errorf("step %d: %q", i+1, sl.Plain)
 		}
 	}

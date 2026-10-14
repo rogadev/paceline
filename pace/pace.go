@@ -1,4 +1,4 @@
-// Package pace computes today's share of the weekly limit, as a countdown.
+// Package pace computes today's share of the weekly limit.
 //
 // The budget is anchored at the first render of each local day (a snapshot
 // in paceline-day.json) so it stays fixed while you work instead of drifting
@@ -16,6 +16,7 @@ package pace
 import (
 	"encoding/json"
 	"fmt"
+	"math"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -24,16 +25,26 @@ import (
 	"github.com/rogadev/paceline/timefmt"
 )
 
-const (
-	evenPace        = 100.0 / 7
-	maxSnapshotSize = 4096
-)
+// EvenPace is an even share of the week: 100% / 7, the base daily budget
+// that carryover raises and earlier overspending lowers.
+const EvenPace = 100.0 / 7
+
+const maxSnapshotSize = 4096
+
+// minPaceWindow is how long a day must have run before RunsOutAt projects
+// from its pace. Provisional: in the first minutes one burst of work swings
+// the projection by hours.
+const minPaceWindow = 30 * time.Minute
 
 // Snapshot records weekly usage at the start of a day.
 type Snapshot struct {
 	Date        string  `json:"date"`
 	ResetsAt    float64 `json:"resetsAt"`
 	UsedAtStart float64 `json:"usedAtStart"`
+	// StartedAt is when the snapshot was taken, in unix seconds. Files
+	// written before it was recorded read as 0, and the day starts at local
+	// midnight instead.
+	StartedAt float64 `json:"startedAt,omitempty"`
 }
 
 var dateKeyPattern = regexp.MustCompile(`^\d{8}$`)
@@ -72,6 +83,10 @@ type Result struct {
 	PctLeft         float64 // % of today's budget left
 	PctUsed         float64 // % of today's budget used, may exceed 100
 	Over            bool
+	DaysLeft        float64 // days from local midnight to the reset, at least 1
+	LastDay         bool    // the reset falls on or before the next local midnight
+	Tomorrow        float64 // tomorrow's budget if nothing more is spent today; 0 on the last day
+	RunsOutAt       float64 // on the last day, unix seconds when the week reaches 100% at today's pace, or 0; see runsOutAt
 	Pace            Direction
 	Snapshot        Snapshot
 	SnapshotChanged bool // the caller should persist Snapshot
@@ -80,7 +95,8 @@ type Result struct {
 // Compute works out today's budget. snap is the stored snapshot, or nil.
 func Compute(usedPct, resetsAt float64, now time.Time, snap *Snapshot) Result {
 	midnight := timefmt.StartOfDay(now)
-	daysLeft := time.Unix(int64(resetsAt), 0).Sub(midnight).Hours() / 24
+	reset := time.Unix(int64(resetsAt), 0)
+	daysLeft := reset.Sub(midnight).Hours() / 24
 	if daysLeft <= 0 {
 		return Result{Kind: None}
 	}
@@ -92,7 +108,7 @@ func Compute(usedPct, resetsAt float64, now time.Time, snap *Snapshot) Result {
 		snap.Date != date ||
 		snap.ResetsAt != resetsAt ||
 		usedPct < snap.UsedAtStart // the window reset under us
-	current := Snapshot{Date: date, ResetsAt: resetsAt, UsedAtStart: usedPct}
+	current := Snapshot{Date: date, ResetsAt: resetsAt, UsedAtStart: usedPct, StartedAt: float64(now.Unix())}
 	if !stale {
 		current = *snap
 	}
@@ -105,20 +121,66 @@ func Compute(usedPct, resetsAt float64, now time.Time, snap *Snapshot) Result {
 		Budget:          budget,
 		Spent:           spent,
 		Over:            spent > budget,
+		DaysLeft:        daysLeft,
+		LastDay:         isLastDay(reset, now),
 		Snapshot:        current,
 		SnapshotChanged: stale,
+	}
+	// Tomorrow divides what the week has left now by the days after today,
+	// with the same final-day rule as today's budget. On the last day the
+	// reset brings a fresh week instead, and what's worth knowing is when
+	// the week runs out before it.
+	if r.LastDay {
+		r.RunsOutAt = runsOutAt(usedPct, spent, resetsAt, dayStart(current, midnight, now), now)
+	} else {
+		r.Tomorrow = max(0, 100-usedPct) / max(daysLeft-1, 1)
 	}
 	if budget > 0 {
 		r.PctLeft = 100 * (budget - spent) / budget
 		r.PctUsed = 100 * spent / budget
 	}
-	switch ratio := budget / evenPace; {
+	switch ratio := budget / EvenPace; {
 	case ratio >= 1.25:
 		r.Pace = Up
 	case ratio <= 0.8:
 		r.Pace = Down
 	}
 	return r
+}
+
+// isLastDay reports whether the reset falls on or before the next local
+// midnight. It compares calendar days rather than counting hours, so a 23- or
+// 25-hour day at a daylight saving change is still one day.
+func isLastDay(reset, now time.Time) bool {
+	return !reset.After(timefmt.StartOfDay(now.AddDate(0, 0, 1)))
+}
+
+// dayStart is when today's snapshot was taken, or local midnight for a
+// snapshot without a start or with one outside today so far, such as a
+// hand-edited file.
+func dayStart(s Snapshot, midnight, now time.Time) time.Time {
+	started := time.Unix(int64(s.StartedAt), 0)
+	if started.Before(midnight) || started.After(now) {
+		return midnight
+	}
+	return started
+}
+
+// runsOutAt projects when weekly usage reaches 100% if it keeps rising at the
+// rate it has since start, in whole unix seconds. It returns 0 when there is
+// nothing to project: nothing spent, under minPaceWindow since the start, the
+// week already used up, or a projection at or past the reset.
+func runsOutAt(usedPct, spent, resetsAt float64, start, now time.Time) float64 {
+	elapsed := now.Sub(start)
+	if spent <= 0 || usedPct >= 100 || elapsed < minPaceWindow {
+		return 0
+	}
+	perSecond := spent / elapsed.Seconds()
+	at := math.Round(float64(now.Unix()) + (100-usedPct)/perSecond)
+	if at >= resetsAt {
+		return 0
+	}
+	return at
 }
 
 // SnapshotPath is where the day snapshot lives inside configDir, the Claude

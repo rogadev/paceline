@@ -119,13 +119,15 @@ type stepDef struct {
 type window struct {
 	project, branch, effort string
 	fastMode                bool
-	sessionUsed             float64
-	sessionResets           time.Time
-	weekUsed                float64
-	ctx                     float64
-	durationMs              float64
-	cache                   *promptCache
-	run                     *progress.Run
+	// session turns on the session segment, which is off by default.
+	session       bool
+	sessionUsed   float64
+	sessionResets time.Time
+	weekUsed      float64
+	ctx           float64
+	durationMs    float64
+	cache         *promptCache
+	run           *progress.Run
 }
 
 type promptCache struct {
@@ -201,8 +203,9 @@ func (w window) payload() (*payload.Payload, error) {
 	return payload.Decode(data)
 }
 
-// render calls the real renderer with fixed inputs: Now, the default config,
-// the scene's snapshot (never written back, so every step stands alone), and
+// render calls the real renderer with fixed inputs: Now, the default config
+// (with the session segment on when the window asks for it), the scene's
+// snapshot (never written back, so every step stands alone), and
 // the window's branch and progress run.
 func (w window) render(now time.Time, snap pace.Snapshot) (string, error) {
 	p, err := w.payload()
@@ -215,9 +218,11 @@ func (w window) render(now time.Time, snap pace.Snapshot) (string, error) {
 		}
 	}
 	dir := w.dir()
+	cfg := config.Default()
+	cfg.Segments.Session = w.session
 	line := render.Render(p, render.Context{
 		Now:    now,
-		Config: config.Default(),
+		Config: cfg,
 		ReadSnapshot: func() *pace.Snapshot {
 			s := snap
 			return &s
@@ -370,9 +375,9 @@ func freshDay() sceneDef {
 	return terminalScene(
 		sceneDef{
 			id: "fresh-day", title: "Fresh day", layout: LayoutTerminal, snapshot: friday,
-			caption: "Each morning, today's budget is set from what's left in the week, and it starts at 0% used.",
+			caption: "Each morning, today's budget is set from what's left in the week, and its bar starts full.",
 		},
-		window{project: "acme-portal", branch: "dev", sessionResets: utc(9, 13, 0)},
+		window{project: "acme-portal", sessionResets: utc(9, 13, 0)},
 		[]usageRow{
 			{2500, utc(9, 9, 2), 2, 19.5, 8, 120000},
 			{2500, utc(9, 9, 6), 4, 19.9, 11, 360000},
@@ -387,9 +392,9 @@ func workingDay() sceneDef {
 	return terminalScene(
 		sceneDef{
 			id: "working-day", title: "Working through the day", layout: LayoutTerminal, snapshot: friday,
-			caption: "As you work, every number counts up, and today turns yellow, then red, as its budget runs low.",
+			caption: "As you work, today's bar drains, and its numbers turn yellow, then red, as the budget runs low.",
 		},
-		window{project: "field-app", branch: "feat/offline", sessionResets: utc(9, 17, 0)},
+		window{project: "field-app", branch: "feat/sync", sessionResets: utc(9, 17, 0)},
 		[]usageRow{
 			{1800, utc(9, 12, 10), 20, 25.5, 22, 2400000},
 			{1800, utc(9, 13, 20), 45, 33.5, 38, 6600000},
@@ -409,9 +414,9 @@ func overBudget() sceneDef {
 	return terminalScene(
 		sceneDef{
 			id: "over-budget", title: "Over budget", layout: LayoutTerminal, snapshot: friday,
-			caption: "Past today's budget, it keeps counting past 100%, in red.",
+			caption: "Past today's budget, red cells count the overage, and tomorrow's smaller budget follows.",
 		},
-		window{project: "billing-api", branch: "fix/webhooks", sessionResets: utc(9, 20, 0)},
+		window{project: "billing-api", branch: "fix/hooks", sessionResets: utc(9, 20, 0)},
 		[]usageRow{
 			{1800, utc(9, 16, 10), 52, 48.5, 41, 7800000},
 			{1800, utc(9, 16, 25), 57, 51.1, 44, 8700000},
@@ -429,13 +434,13 @@ func sessionLow() sceneDef {
 	return terminalScene(
 		sceneDef{
 			id: "session-low", title: "Session running low", layout: LayoutTerminal, snapshot: friday,
-			caption: "When the five-hour session runs low, it shows when it resets, and a filling context window gets a warning.",
+			caption: "With the session segment on, a low session shows when it resets, and a filling context gets a warning.",
 		},
-		window{project: "acme-portal", branch: "dev", effort: "high", sessionResets: utc(9, 15, 40)},
+		window{project: "acme-portal", session: true, sessionResets: utc(9, 15, 0)},
 		[]usageRow{
-			{1800, utc(9, 13, 10), 66, 38, 62, 9900000},
-			{1800, utc(9, 13, 50), 74, 40, 72, 12300000},
-			{2600, utc(9, 14, 30), 88, 42, 86, 14700000},
+			{1800, utc(9, 13, 10), 66, 38, 62, 0},
+			{1800, utc(9, 13, 50), 74, 40, 72, 0},
+			{2600, utc(9, 14, 30), 88, 42, 86, 0},
 		},
 		"The flaky test is a race in the session refresh. Tracing where the token gets swapped.",
 		"Investigating", []string{
@@ -451,12 +456,12 @@ func cacheCold() sceneDef {
 		caption: "After a long pause the prompt cache expires, so it warns that the next message costs about twice as much.",
 	}
 	w := window{
-		project: "docs-site", branch: "main", sessionResets: utc(9, 19, 0),
+		project: "docs", branch: "main", sessionResets: utc(9, 19, 0),
 		cache: &promptCache{expiresAt: utc(9, 15, 5), recacheTokens: 82000},
 	}
 	rows := []usageRow{
-		{2200, utc(9, 15, 0), 37, 30, 34, 2820000},
-		{2800, utc(9, 15, 12), 37, 30, 34, 3540000},
+		{2200, utc(9, 15, 0), 37, 34, 34, 2820000},
+		{2800, utc(9, 15, 12), 37, 34, 34, 3540000},
 	}
 	prompts := []string{"", "add a search box to the docs sidebar"}
 	for i, row := range rows {
@@ -513,7 +518,7 @@ func agentJob() sceneDef {
 	}
 	for _, s := range steps {
 		w := window{
-			project: "acme-portal", branch: "dev", sessionResets: utc(9, 17, 0),
+			project: "acme-portal", sessionResets: utc(9, 17, 0),
 			sessionUsed: s.row.session, weekUsed: s.row.week, ctx: s.row.ctx, durationMs: s.row.millis,
 			run: loopRun(s.row.now, s.phase, ids, s.statuses...),
 		}
@@ -548,8 +553,8 @@ func severalWindows() sceneDef {
 		shared := window{sessionUsed: s.session, sessionResets: utc(9, 17, 0), weekUsed: s.week}
 		acme, field, billing, pl := shared, shared, shared, shared
 		acme.project, acme.branch, acme.ctx, acme.durationMs = "acme-portal", "dev", 22, s.acme
-		field.project, field.branch, field.effort, field.ctx, field.durationMs = "field-app", "feat/offline", "high", 74, s.field
-		billing.project, billing.branch, billing.fastMode, billing.ctx, billing.durationMs = "billing-api", "fix/webhooks", true, 40, s.billing
+		field.project, field.branch, field.effort, field.ctx, field.durationMs = "field-app", "feat/sync", "high", 30, s.field
+		billing.project, billing.branch, billing.fastMode, billing.ctx, billing.durationMs = "billing-api", "fix/hooks", true, 40, s.billing
 		pl.project, pl.branch, pl.ctx, pl.durationMs = "paceline", "dev", 15, s.pline
 		pl.run = loopRun(s.now, progress.Running, ids, s.paceRunStatuses...)
 		def.steps = append(def.steps, stepDef{ms: s.ms, now: s.now, windows: []window{acme, field, billing, pl}})
@@ -563,7 +568,7 @@ func lastDay() sceneDef {
 			id: "last-day", title: "Last day", layout: LayoutTerminal, snapshot: snapshot(11, 32),
 			caption: "On the last day before the weekly reset, today's budget is everything left in the week.",
 		},
-		window{project: "field-app", branch: "main", sessionResets: utc(11, 14, 0)},
+		window{project: "field-app", sessionResets: utc(11, 14, 0)},
 		[]usageRow{
 			{1800, utc(11, 10, 0), 3, 32.5, 9, 300000},
 			{1800, utc(11, 11, 30), 31, 45, 27, 5700000},
