@@ -237,7 +237,7 @@ func chooseStyle(args []string, interactive, current bool, stdin io.Reader, stdo
 // exampleBar is today's bar in the style prompt's examples: 6 of an 8-point
 // budget left, 2 spent, and the 6 points of the daily base below it.
 const exampleBar = "\u2595\u2588\u2588\u2588\u2588\u2588\u2588\u2591\u2591" +
-	"\u2592\u2592\u2592\u2592\u2592\u2592\u2502\u258f"
+	"\u2592\u2592\u2592\u2592\u2592\u2592\u2502"
 
 func isTerminal(r io.Reader) bool {
 	f, ok := r.(*os.File)

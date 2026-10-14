@@ -5,7 +5,7 @@ A Claude Code status line that paces your usage limits and shows, at a glance, w
 ![paceline in a Claude Code window, cycling through a fresh day, working through the day, over budget, a session running low, a cold cache, an agent job, several windows, and the last day](docs/paceline-states.svg)
 
 ```
-Opus 5.5 · techcentral (dev) · Today: ▕█████░░░░░░░▒▒│▏ 7/12 · w 59/100 · 4d left · 16m
+Opus 5.5 · techcentral (dev) · Today: ▕█████░░░░░░░▒▒│ 7/12 · w 59/100 · 4d left · 16m
 ```
 
 `Today:` is today's budget as a bar that drains as you work: full cells are what's left (past the budget, they turn red and count the overage instead), drained cells what you've spent, and the marker `│` sits at an even share of the week. The numbers after it are weekly percentage points spent of today's budget, so `7/12` and `w 59/100`, your week, add up. The days until the weekly reset follow. Prefer words? The verbose style reads `week 59/100`. Rather count down what's left? Set [`countDirection`](#configuration). The five-hour session segment, `s 16%`, is off by default; turn it on with `"segments": {"session": true}`.
@@ -73,7 +73,7 @@ gh attestation verify paceline_1.1.0_linux_amd64.tar.gz --repo rogadev/paceline
 | Fast mode | `fast mode` | Only while fast mode is on. |
 | Project | `techcentral (dev)` | The folder, in a color unique to the project, and the git branch. |
 | Session | `s 82% (resets 3:40pm)` | Off by default; turn it on with `"segments": {"session": true}`. How much of the five-hour limit you've used. The reset time appears once less than 30% is left. Verbose: `session 82% used`. |
-| Today | `Today: ▕█████░░░░░░░▒▒│▏ 7/12` | Today's budget as a bar, then the weekly points you've spent of it. See [today's budget](#todays-budget) below. Both styles read `Today:`. The bar makes a typical line about 120 columns wide; on a narrow pane, hide segments you can spare, such as `"segments": {"branch": false}`, or `"today": false`. |
+| Today | `Today: ▕█████░░░░░░░▒▒│ 7/12` | Today's budget as a bar, then the weekly points you've spent of it. See [today's budget](#todays-budget) below. Both styles read `Today:`. The bar makes a typical line about 120 columns wide; on a narrow pane, hide segments you can spare, such as `"segments": {"branch": false}`, or `"today": false`. |
 | Week | `w 59/100` | How much of the weekly limit you've used, in points of 100. Bold from three days before the reset, when a single day's budget can swing. Verbose: `week 59/100`. |
 | Days left | `4d left` | Days until the weekly limit resets, or `last day` on the final day. Only when Claude Code reports the reset time. |
 | Context | `ctx 72%` | Only when the context window is 70% or more full. |
@@ -89,9 +89,9 @@ gh attestation verify paceline_1.1.0_linux_amd64.tar.gz --repo rogadev/paceline
 
 The bar measures it at one cell per weekly point, against a marker at an even share of the week, 14 points (100 / 7):
 
-- `Today: ▕█████░░░░░░░▒▒│▏ 7/12` is a 12-point budget with 7 spent. The 5 full cells are what's left and the 7 drained cells what you've spent. The 2 faint red cells are the part of the even share that spending earlier in the week took from today.
-- `Today: ▕██████████████│████▏ 0/18 +4 saved` is a budget above the even share. It starts full past the marker, and `+4 saved` is what's left of the surplus. Spending uses the surplus first, so the bar gets shorter: `▕██████████████│██▏ 2/18 +2 saved`, then `▕██████████████│▏ 4/18`, and from there it drains like any other day.
-- `Today: ▕███░░░░░░░░░▒▒│▏ 15/12 → 11 tmrw` is over budget. The numbers turn red, red cells count the overage from the left (the same `█` as budget left, so without color the numbers are what say you're over), and `→ 11 tmrw` is tomorrow's budget if you spend nothing more today. It's left out once the week has nothing left for tomorrow. The same overspend costs tomorrow more late in the week, when fewer days are left to absorb it.
+- `Today: ▕█████░░░░░░░▒▒│ 7/12` is a 12-point budget with 7 spent. The 5 full cells are what's left and the 7 drained cells what you've spent. The 2 faint red cells are the part of the even share that spending earlier in the week took from today.
+- `Today: ▕██████████████│████▏ 0/18 +4 saved` is a budget above the even share. It starts full past the marker, and `+4 saved` is what's left of the surplus. Spending uses the surplus first, so the bar gets shorter: `▕██████████████│██▏ 2/18 +2 saved`, then `▕██████████████│ 4/18`, and from there it drains like any other day.
+- `Today: ▕███░░░░░░░░░▒▒│ 15/12 → 11 tmrw` is over budget. The numbers turn red, red cells count the overage from the left (the same `█` as budget left, so without color the numbers are what say you're over), and `→ 11 tmrw` is tomorrow's budget if you spend nothing more today. It's left out once the week has nothing left for tomorrow. The same overspend costs tomorrow more late in the week, when fewer days are left to absorb it.
 
 The numbers' color is your pace advice: green while you have room, yellow once you've used more than 70% of the budget, and red past 85%. A bar longer than 28 cells scales down to fit. On the final day before the reset, the budget is everything left in the week, and there's no tomorrow hint, because the reset brings a fresh week. Instead, `out ~4:40pm` shows in red when the week runs out at today's pace, if that comes before the reset. Today's pace counts from the day's first status line, and the projection waits until that's at least 30 minutes old, since earlier projections swing too much.
 

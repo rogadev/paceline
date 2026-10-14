@@ -438,8 +438,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m██████████████\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m14/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 34/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h50m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (feat/sync) · Today: ▕██████████████│▏ 14/28 · w 34/100 · 3d left · 1h50m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m██████████████\u001b[0m│ \u001b[32m14/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 34/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h50m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (feat/sync) · Today: ▕██████████████│ 14/28 · w 34/100 · 3d left · 1h50m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -492,14 +492,7 @@
                   "color": "cyan"
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "14/28",
@@ -564,8 +557,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m███████\u001b[0m\u001b[2m░░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[33m21/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 41/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h0m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (feat/sync) · Today: ▕███████░░░░░░░│▏ 21/28 · w 41/100 · 3d left · 3h0m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m███████\u001b[0m\u001b[2m░░░░░░░\u001b[0m│ \u001b[33m21/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 41/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3h0m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (feat/sync) · Today: ▕███████░░░░░░░│ 21/28 · w 41/100 · 3d left · 3h0m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -622,14 +615,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "21/28",
@@ -694,8 +680,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m███\u001b[0m\u001b[2m░░░░░░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[38;2;185;47;47m25/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 45/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m4h10m\u001b[0m",
-              "plain": "Opus 5.5 · field-app (feat/sync) · Today: ▕███░░░░░░░░░░░│▏ 25/28 · w 45/100 · 3d left · 4h10m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m███\u001b[0m\u001b[2m░░░░░░░░░░░\u001b[0m│ \u001b[38;2;185;47;47m25/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 45/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m4h10m\u001b[0m",
+              "plain": "Opus 5.5 · field-app (feat/sync) · Today: ▕███░░░░░░░░░░░│ 25/28 · w 45/100 · 3d left · 4h10m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -752,14 +738,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "25/28",
@@ -833,8 +812,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/hooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[38;2;185;47;47m█\u001b[0m\u001b[2m░░░░░░░░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[38;2;185;47;47m29/28\u001b[0m \u001b[38;2;185;47;47m→ 27 tmrw\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 49/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h10m\u001b[0m",
-              "plain": "Opus 5.5 · billing-api (fix/hooks) · Today: ▕█░░░░░░░░░░░░░│▏ 29/28 → 27 tmrw · w 49/100 · 3d left · 2h10m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/hooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[38;2;185;47;47m█\u001b[0m\u001b[2m░░░░░░░░░░░░░\u001b[0m│ \u001b[38;2;185;47;47m29/28\u001b[0m \u001b[38;2;185;47;47m→ 27 tmrw\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 49/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h10m\u001b[0m",
+              "plain": "Opus 5.5 · billing-api (fix/hooks) · Today: ▕█░░░░░░░░░░░░░│ 29/28 → 27 tmrw · w 49/100 · 3d left · 2h10m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -891,14 +870,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "29/28",
@@ -970,8 +942,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/hooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[38;2;185;47;47m████\u001b[0m\u001b[2m░░░░░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[38;2;185;47;47m32/28\u001b[0m \u001b[38;2;185;47;47m→ 26 tmrw\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 51/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h25m\u001b[0m",
-              "plain": "Opus 5.5 · billing-api (fix/hooks) · Today: ▕████░░░░░░░░░░│▏ 32/28 → 26 tmrw · w 51/100 · 3d left · 2h25m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/hooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[38;2;185;47;47m████\u001b[0m\u001b[2m░░░░░░░░░░\u001b[0m│ \u001b[38;2;185;47;47m32/28\u001b[0m \u001b[38;2;185;47;47m→ 26 tmrw\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 51/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h25m\u001b[0m",
+              "plain": "Opus 5.5 · billing-api (fix/hooks) · Today: ▕████░░░░░░░░░░│ 32/28 → 26 tmrw · w 51/100 · 3d left · 2h25m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1028,14 +1000,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "32/28",
@@ -1107,8 +1072,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/hooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[38;2;185;47;47m█████\u001b[0m\u001b[2m░░░░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[38;2;185;47;47m33/28\u001b[0m \u001b[38;2;185;47;47m→ 25 tmrw\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 53/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h40m\u001b[0m",
-              "plain": "Opus 5.5 · billing-api (fix/hooks) · Today: ▕█████░░░░░░░░░│▏ 33/28 → 25 tmrw · w 53/100 · 3d left · 2h40m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/hooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[38;2;185;47;47m█████\u001b[0m\u001b[2m░░░░░░░░░\u001b[0m│ \u001b[38;2;185;47;47m33/28\u001b[0m \u001b[38;2;185;47;47m→ 25 tmrw\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 53/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h40m\u001b[0m",
+              "plain": "Opus 5.5 · billing-api (fix/hooks) · Today: ▕█████░░░░░░░░░│ 33/28 → 25 tmrw · w 53/100 · 3d left · 2h40m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1165,14 +1130,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "33/28",
@@ -1253,8 +1211,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 66%\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m\u001b[2m░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m19/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 38/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal · s 66% · Today: ▕█████████░░░░░│▏ 19/28 · w 38/100 · 3d left",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m \u001b[32ms 66%\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m\u001b[2m░░░░░\u001b[0m│ \u001b[32m19/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 38/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · s 66% · Today: ▕█████████░░░░░│ 19/28 · w 38/100 · 3d left",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1311,14 +1269,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "19/28",
@@ -1369,8 +1320,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m \u001b[33ms 74% (resets 3pm)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m███████\u001b[0m\u001b[2m░░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[33m21/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 40/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[33mctx 72%\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal · s 74% (resets 3pm) · Today: ▕███████░░░░░░░│▏ 21/28 · w 40/100 · 3d left · ctx 72%",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m \u001b[33ms 74% (resets 3pm)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m███████\u001b[0m\u001b[2m░░░░░░░\u001b[0m│ \u001b[33m21/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 40/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[33mctx 72%\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · s 74% (resets 3pm) · Today: ▕███████░░░░░░░│ 21/28 · w 40/100 · 3d left · ctx 72%",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1427,14 +1378,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "21/28",
@@ -1499,8 +1443,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47ms 88% (resets 3pm)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████\u001b[0m\u001b[2m░░░░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[33m23/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 42/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mctx 86%\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal · s 88% (resets 3pm) · Today: ▕█████░░░░░░░░░│▏ 23/28 · w 42/100 · 3d left · ctx 86%",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47ms 88% (resets 3pm)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████\u001b[0m\u001b[2m░░░░░░░░░\u001b[0m│ \u001b[33m23/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 42/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mctx 86%\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · s 88% (resets 3pm) · Today: ▕█████░░░░░░░░░│ 23/28 · w 42/100 · 3d left · ctx 86%",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1557,14 +1501,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "23/28",
@@ -1634,8 +1571,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210mdocs\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████████\u001b[0m\u001b[2m░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m15/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 34/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m47m\u001b[0m",
-              "plain": "Opus 5.5 · docs (main) · Today: ▕█████████████░│▏ 15/28 · w 34/100 · 3d left · 47m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210mdocs\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████████\u001b[0m\u001b[2m░\u001b[0m│ \u001b[32m15/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 34/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m47m\u001b[0m",
+              "plain": "Opus 5.5 · docs (main) · Today: ▕█████████████░│ 15/28 · w 34/100 · 3d left · 47m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1692,14 +1629,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "15/28",
@@ -1760,8 +1690,8 @@
           "modeLine": "⏵⏵ bypass permissions on (shift+tab to cycle)",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210mdocs\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████████\u001b[0m\u001b[2m░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m15/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 34/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mcache cold: 82k @ ~2x\u001b[0m \u001b[2m·\u001b[0m \u001b[2m59m\u001b[0m",
-              "plain": "Opus 5.5 · docs (main) · Today: ▕█████████████░│▏ 15/28 · w 34/100 · 3d left · cache cold: 82k @ ~2x · 59m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210mdocs\u001b[0m \u001b[2m(\u001b[0mmain\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████████\u001b[0m\u001b[2m░\u001b[0m│ \u001b[32m15/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 34/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;185;47;47mcache cold: 82k @ ~2x\u001b[0m \u001b[2m·\u001b[0m \u001b[2m59m\u001b[0m",
+              "plain": "Opus 5.5 · docs (main) · Today: ▕█████████████░│ 15/28 · w 34/100 · 3d left · cache cold: 82k @ ~2x · 59m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1818,14 +1748,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "15/28",
@@ -1934,8 +1857,8 @@
           ],
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████████\u001b[0m\u001b[2m░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m15/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 34/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱▱\u001b[0m #328 2/5 \u001b[2m·\u001b[0m \u001b[2m1h30m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal · Today: ▕█████████████░│▏ 15/28 · w 34/100 · 3d left · loop ▰▰▰▱▱ #328 2/5 · 1h30m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████████\u001b[0m\u001b[2m░\u001b[0m│ \u001b[32m15/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 34/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱▱\u001b[0m #328 2/5 \u001b[2m·\u001b[0m \u001b[2m1h30m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · Today: ▕█████████████░│ 15/28 · w 34/100 · 3d left · loop ▰▰▰▱▱ #328 2/5 · 1h30m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -1978,14 +1901,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "15/28",
@@ -2093,8 +2009,8 @@
           ],
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m████████████\u001b[0m\u001b[2m░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m16/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 35/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱\u001b[0m #329 3/5 \u001b[2m·\u001b[0m \u001b[2m1h50m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal · Today: ▕████████████░░│▏ 16/28 · w 35/100 · 3d left · loop ▰▰▰▰▱ #329 3/5 · 1h50m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m████████████\u001b[0m\u001b[2m░░\u001b[0m│ \u001b[32m16/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 35/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱\u001b[0m #329 3/5 \u001b[2m·\u001b[0m \u001b[2m1h50m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · Today: ▕████████████░░│ 16/28 · w 35/100 · 3d left · loop ▰▰▰▰▱ #329 3/5 · 1h50m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2137,14 +2053,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "16/28",
@@ -2248,8 +2157,8 @@
           ],
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m███████████\u001b[0m\u001b[2m░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m17/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 36/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰▰\u001b[0m\u001b[36m▰\u001b[0m #330 4/5 \u001b[2m·\u001b[0m \u001b[2m2h10m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal · Today: ▕███████████░░░│▏ 17/28 · w 36/100 · 3d left · loop ▰▰▰▰▰ #330 4/5 · 2h10m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m███████████\u001b[0m\u001b[2m░░░\u001b[0m│ \u001b[32m17/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 36/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰▰\u001b[0m\u001b[36m▰\u001b[0m #330 4/5 \u001b[2m·\u001b[0m \u001b[2m2h10m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · Today: ▕███████████░░░│ 17/28 · w 36/100 · 3d left · loop ▰▰▰▰▰ #330 4/5 · 2h10m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2292,14 +2201,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "17/28",
@@ -2383,8 +2285,8 @@
           ],
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m██████████\u001b[0m\u001b[2m░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m18/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 37/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰▰▰\u001b[0m \u001b[32m✓ done\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h30m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal · Today: ▕██████████░░░░│▏ 18/28 · w 37/100 · 3d left · loop ▰▰▰▰▰ ✓ done · 2h30m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m██████████\u001b[0m\u001b[2m░░░░\u001b[0m│ \u001b[32m18/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 37/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰▰▰▰\u001b[0m \u001b[32m✓ done\u001b[0m \u001b[2m·\u001b[0m \u001b[2m2h30m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal · Today: ▕██████████░░░░│ 18/28 · w 37/100 · 3d left · loop ▰▰▰▰▰ ✓ done · 2h30m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2427,14 +2329,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "18/28",
@@ -2522,8 +2417,8 @@
           "now": "2026-10-09T14:00:00Z",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m\u001b[2m░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m19/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 39/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h10m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · Today: ▕█████████░░░░░│▏ 19/28 · w 39/100 · 3d left · 1h10m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m\u001b[2m░░░░░\u001b[0m│ \u001b[32m19/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 39/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h10m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · Today: ▕█████████░░░░░│ 19/28 · w 39/100 · 3d left · 1h10m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2580,14 +2475,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "19/28",
@@ -2639,8 +2527,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m\u001b[2m░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m19/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 39/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m25m\u001b[0m",
-              "plain": "Opus 5.5 · high effort · field-app (feat/sync) · Today: ▕█████████░░░░░│▏ 19/28 · w 39/100 · 3d left · 25m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m\u001b[2m░░░░░\u001b[0m│ \u001b[32m19/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 39/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m25m\u001b[0m",
+              "plain": "Opus 5.5 · high effort · field-app (feat/sync) · Today: ▕█████████░░░░░│ 19/28 · w 39/100 · 3d left · 25m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2711,14 +2599,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "19/28",
@@ -2770,8 +2651,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[33mfast mode\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/hooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m\u001b[2m░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m19/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 39/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m10m\u001b[0m",
-              "plain": "Opus 5.5 · fast mode · billing-api (fix/hooks) · Today: ▕█████████░░░░░│▏ 19/28 · w 39/100 · 3d left · 10m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[33mfast mode\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/hooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m\u001b[2m░░░░░\u001b[0m│ \u001b[32m19/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 39/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m10m\u001b[0m",
+              "plain": "Opus 5.5 · fast mode · billing-api (fix/hooks) · Today: ▕█████████░░░░░│ 19/28 · w 39/100 · 3d left · 10m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2842,14 +2723,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "19/28",
@@ -2901,8 +2775,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;242;175;72mpaceline\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m\u001b[2m░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[32m19/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 39/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱\u001b[0m #42 1/3 \u001b[2m·\u001b[0m \u001b[2m5m\u001b[0m",
-              "plain": "Opus 5.5 · paceline (dev) · Today: ▕█████████░░░░░│▏ 19/28 · w 39/100 · 3d left · loop ▰▰▱ #42 1/3 · 5m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;242;175;72mpaceline\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m█████████\u001b[0m\u001b[2m░░░░░\u001b[0m│ \u001b[32m19/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 39/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰\u001b[0m\u001b[36m▰\u001b[0m\u001b[2m▱\u001b[0m #42 1/3 \u001b[2m·\u001b[0m \u001b[2m5m\u001b[0m",
+              "plain": "Opus 5.5 · paceline (dev) · Today: ▕█████████░░░░░│ 19/28 · w 39/100 · 3d left · loop ▰▰▱ #42 1/3 · 5m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -2959,14 +2833,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "19/28",
@@ -3046,8 +2913,8 @@
           "now": "2026-10-09T14:20:00Z",
           "statusLines": [
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m████████\u001b[0m\u001b[2m░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[33m20/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 40/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h30m\u001b[0m",
-              "plain": "Opus 5.5 · acme-portal (dev) · Today: ▕████████░░░░░░│▏ 20/28 · w 40/100 · 3d left · 1h30m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;253;151;210macme-portal\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m████████\u001b[0m\u001b[2m░░░░░░\u001b[0m│ \u001b[33m20/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 40/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m1h30m\u001b[0m",
+              "plain": "Opus 5.5 · acme-portal (dev) · Today: ▕████████░░░░░░│ 20/28 · w 40/100 · 3d left · 1h30m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -3104,14 +2971,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "20/28",
@@ -3163,8 +3023,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m████████\u001b[0m\u001b[2m░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[33m20/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 40/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m45m\u001b[0m",
-              "plain": "Opus 5.5 · high effort · field-app (feat/sync) · Today: ▕████████░░░░░░│▏ 20/28 · w 40/100 · 3d left · 45m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[2mhigh effort\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;183;181;252mfield-app\u001b[0m \u001b[2m(\u001b[0mfeat/sync\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m████████\u001b[0m\u001b[2m░░░░░░\u001b[0m│ \u001b[33m20/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 40/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m45m\u001b[0m",
+              "plain": "Opus 5.5 · high effort · field-app (feat/sync) · Today: ▕████████░░░░░░│ 20/28 · w 40/100 · 3d left · 45m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -3235,14 +3095,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "20/28",
@@ -3294,8 +3147,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[33mfast mode\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/hooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m████████\u001b[0m\u001b[2m░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[33m20/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 40/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m30m\u001b[0m",
-              "plain": "Opus 5.5 · fast mode · billing-api (fix/hooks) · Today: ▕████████░░░░░░│▏ 20/28 · w 40/100 · 3d left · 30m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[33mfast mode\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;150;210;115mbilling-api\u001b[0m \u001b[2m(\u001b[0mfix/hooks\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m████████\u001b[0m\u001b[2m░░░░░░\u001b[0m│ \u001b[33m20/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 40/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m \u001b[2m30m\u001b[0m",
+              "plain": "Opus 5.5 · fast mode · billing-api (fix/hooks) · Today: ▕████████░░░░░░│ 20/28 · w 40/100 · 3d left · 30m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -3366,14 +3219,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "20/28",
@@ -3425,8 +3271,8 @@
               ]
             },
             {
-              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;242;175;72mpaceline\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m████████\u001b[0m\u001b[2m░░░░░░\u001b[0m│\u001b[2m▏\u001b[0m \u001b[33m20/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 40/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰\u001b[0m\u001b[36m▰\u001b[0m #43 2/3 \u001b[2m·\u001b[0m \u001b[2m25m\u001b[0m",
-              "plain": "Opus 5.5 · paceline (dev) · Today: ▕████████░░░░░░│▏ 20/28 · w 40/100 · 3d left · loop ▰▰▰ #43 2/3 · 25m",
+              "ansi": "\u001b[36mOpus 5.5\u001b[0m \u001b[2m·\u001b[0m \u001b[38;2;242;175;72mpaceline\u001b[0m \u001b[2m(\u001b[0mdev\u001b[2m)\u001b[0m \u001b[2m·\u001b[0m Today: \u001b[2m▕\u001b[0m\u001b[36m████████\u001b[0m\u001b[2m░░░░░░\u001b[0m│ \u001b[33m20/28\u001b[0m \u001b[2m·\u001b[0m \u001b[32m\u001b[1mw 40/100\u001b[0m\u001b[0m \u001b[2m·\u001b[0m \u001b[2m3d left\u001b[0m \u001b[2m·\u001b[0m loop \u001b[32m▰▰\u001b[0m\u001b[36m▰\u001b[0m #43 2/3 \u001b[2m·\u001b[0m \u001b[2m25m\u001b[0m",
+              "plain": "Opus 5.5 · paceline (dev) · Today: ▕████████░░░░░░│ 20/28 · w 40/100 · 3d left · loop ▰▰▰ #43 2/3 · 25m",
               "runs": [
                 {
                   "text": "Opus 5.5",
@@ -3483,14 +3329,7 @@
                   "dim": true
                 },
                 {
-                  "text": "│"
-                },
-                {
-                  "text": "▏",
-                  "dim": true
-                },
-                {
-                  "text": " "
+                  "text": "│ "
                 },
                 {
                   "text": "20/28",
