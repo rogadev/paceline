@@ -1,6 +1,14 @@
 import { describe, expect, test } from 'claude-code/testing'
 
-import { applyProgressCall, decodeProgressCall, parseRun, type ProgressTool, type ProgressWrite } from '../src/progress.ts'
+import {
+  applyProgressCall,
+  decodeProgressCall,
+  isValidSession,
+  parseRun,
+  progressPath,
+  type ProgressTool,
+  type ProgressWrite,
+} from '../src/progress.ts'
 
 // The Go tests' clock.
 const NOW = Date.parse('2026-10-06T12:00:00Z')
@@ -1104,3 +1112,30 @@ function goSequences(): Sequence[] {
     },
   ]
 }
+
+describe('progressPath', () => {
+  const GIT = '/repo/.git'
+  // The guard hooks/register.ts applies before it picks the file to write.
+  const guarded = (id: string) => progressPath(GIT, isValidSession(id) ? id : '')
+
+  test('names a per-session file for a valid session id', () => {
+    const id = '0f8e2c1a-3b4d-4e5f-8a9b-0c1d2e3f4a5b'
+    expect(isValidSession(id)).toBe(true)
+    expect(guarded(id)).toBe(`${GIT}/paceline/progress-${id}.json`)
+  })
+
+  test('accepts a 64-character id', () => {
+    const id = 'a'.repeat(64)
+    expect(isValidSession(id)).toBe(true)
+    expect(guarded(id)).toBe(`${GIT}/paceline/progress-${id}.json`)
+  })
+
+  test('falls back to the shared file for an id that is empty, too long, or not a plain name', () => {
+    const bad = ['', '../x', 'a/b', 'a\b', 'a.b', 'a b', 'a'.repeat(65), 'a\nb', 'a\u0000b']
+    for (const id of bad) {
+      expect([id, isValidSession(id)]).toEqual([id, false])
+      expect([id, guarded(id)]).toEqual([id, `${GIT}/paceline/progress.json`])
+      expect([id, progressPath(GIT, id)]).toEqual([id, `${GIT}/paceline/progress.json`])
+    }
+  })
+})
