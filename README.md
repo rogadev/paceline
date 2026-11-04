@@ -26,6 +26,14 @@ In a Claude Code session in your terminal, add this repo as a marketplace, then 
 
 Pick a scope when asked (user scope puts it in every session). The line appears above the prompt right away.
 
+If you had the Go paceline MCP server (`paceline-mcp`) configured, remove it:
+
+```
+claude mcp remove paceline -s user
+```
+
+The mod now serves those tools itself. While a server named `paceline` is configured, it owns the `mcp__paceline__` tool names, so the mod's tools stay hidden: the band still draws, and the Go server keeps answering its own tools until you remove it.
+
 To get new versions automatically, turn on auto-update for the marketplace: run `/plugin`, open the **Marketplaces** tab, select `paceline-mod`, and choose **Enable auto-update**. Claude Code leaves it off for marketplaces outside Anthropic's own, and a marketplace can't turn it on for you. Without it, update from the **Installed** tab in `/plugin` with **Update now**.
 
 Requirements:
@@ -154,7 +162,20 @@ loop ▰▰▰ ✓ done             finished; hidden 30 minutes later
 
 Any agent can report a run, under any name. [orc-pack](https://github.com/rogadev/orc-pack) uses it too: `/orc` reports the tasks of each run, and `/orc-loop` reports its batch of issues (orc-pack 1.14.0 and later), so both show here as they work.
 
-The mod reads the same progress files as the Go paceline: `.git/paceline/progress-<session id>.json` for this session's run, or `.git/paceline/progress.json` for a writer outside Claude Code. Agents write them through `paceline-mcp`, the MCP server that ships with [paceline](https://github.com/rogadev/paceline#let-agents-report-progress). The file format is documented there.
+The mod reads the same progress files as the Go paceline: `.git/paceline/progress-<session id>.json` for this session's run, or `.git/paceline/progress.json` for a writer outside Claude Code. Agents write them through the mod's own tools, which take the same names, arguments, and answers as `paceline-mcp`, the MCP server that ships with [paceline](https://github.com/rogadev/paceline#let-agents-report-progress). The file format is documented there.
+
+The mod serves these tools, each named `mcp__paceline__<name>`:
+
+| Tool | Does |
+| --- | --- |
+| `progress_start` | Starts a run with its steps, weights, and stages |
+| `progress_step` | Marks a step active, at a stage, or ended |
+| `progress_label` | Changes the run's label |
+| `progress_add_steps` | Adds steps when the plan grows |
+| `progress_finish` | Ends the run as done or halted |
+| `get_usage` | The five-hour session and weekly limits, from the session's live figures |
+| `get_today_budget` | How much of today's budget is used and left; it never moves the day's anchor |
+| `get_forecast_debug` | The forecast's inputs and result, for checking a wrong `out ~` time |
 
 ## Loop and batch
 
@@ -191,8 +212,9 @@ A mod runs inside Claude Code with your permissions, so here is everything this 
 - **Reads** your session's usage figures, model, working folder, and settings through the mods API.
 - **Reads** `paceline.json` and `paceline-day.json` in your Claude config folder, and, in the repository you're working in, `.git/HEAD`, its branch and `origin/main` refs (and `packed-refs`), `.git/paceline/progress*.json`, and `.git/orc-loop/state.json`. In a repo that keeps a deep-review ledger, it also checks that `.claude/skills/deep-review/scripts/ledger.mjs` exists and reads `tmp/reviews/ledger.jsonl`.
 - **Reads** the environment variables `CLAUDE_CONFIG_DIR`, `USERPROFILE`, and `HOME`, only to find your Claude config folder, and `GIT_DIR` and `GIT_WORK_TREE`, only to skip the batch segment when either is set.
+- **Writes** `.git/paceline/progress-<session id>.json` (or `progress.json` when the session has no id), only when an agent calls one of the progress tools.
 - **Writes** two values to its own plugin store: today's budget anchor, and which hours of the last 14 days your usage went up in, for the forecast.
-- **Watches** tool calls and turns only to notice progress updates and the effort level. It never changes, blocks, or approves anything.
+- **Watches** tool calls and turns only to notice progress updates and the effort level, and answers calls to its own tools. It never changes, blocks, or approves any other tool call.
 - **Starts** `git merge-base`, `git log`, and `git rev-list` only for the batch segment: only in repos that keep a deep-review ledger, off `main`, with a 1.5-second timeout each, repository hooks off, and only when HEAD, `origin/main`, or the ledger changed. A call that times out or won't start is tried again a minute later. With `segments.batch` off, it starts no processes at all. The reasoning is in [docs/notes.md](docs/notes.md#running-git-for-the-batch-segment).
 - It makes no network requests and calls no model.
 

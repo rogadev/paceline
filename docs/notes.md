@@ -83,12 +83,22 @@ The line warns about at most one of `s` and `w`, chosen in `src/forecast.ts`. Th
 - **Display.** The pick shows only when it has an out time, that is, when it runs out before it resets. The warning replaces the week's days left or the session's reset time: `out ~Tue` while the week runs out more than a day away, then `out ~9pm`, and `out ~3:45pm` for the session. A pick without an out time changes nothing. The out time rounds down, to the hour for the week and to the quarter hour for the session, with `floorInDay` in `src/timefmt.ts`, which counts steps from the local start of the day so a half-hour-offset zone keeps its own hours. If the rounded time is already before now, the exact minute shows instead. A week warning is yellow until it's within 24 hours of running out, then red; a session warning is always red. With `"limits": "both"` there is no pick, and the line shows both percentages after the today bar.
 - **Gaps.** Usage on another device while the mod isn't running lands in the hour of the next reading. Time zones with half-hour offsets bucket hours on UTC hour boundaries. API-key users have no rate limits, so there's nothing to forecast; a cost forecast for them is a separate idea.
 
+## Budget and progress tools
+
+Built for #7 (0.6.0): the mod serves the Go `paceline-mcp` server's seven tools (`progress_start`, `progress_step`, `progress_label`, `progress_add_steps`, `progress_finish`, `get_usage`, and `get_today_budget`) plus `get_forecast_debug`, so the Go server can be uninstalled. A plugin named `paceline` gets tool names `mcp__paceline__<name>`, the same as the MCP server's, so agents and orc-pack keep working. The specs in `src/tools.ts` are pinned to the Go server's `tools/list` by `test/tools.test.ts`.
+
+- **Registered in `session.start`, each guarded.** Each `$.tool.register` call sits in its own `try/catch`, after `/paceline-debug`. When an MCP server named `paceline` is configured, it owns the names, registration throws, and that tool's `tool.call` hook passes the call on, so the Go server answers it. The band and `/paceline-debug` are unaffected.
+- **Live figures, not the feed.** `get_usage` and `get_today_budget` answer from the session's own usage figures (`src/usage.ts`), so `ageSeconds` is always 0 and `stale` always false; the fields stay so callers keep the same shape. The Go stale lead lines and its answers for a missing feed are dropped. `get_today_budget` reads the day snapshot the band uses and never writes `$.store` `day` or `paceline-day.json`.
+- **Two Go sentences reworded.** They named the feed file, which the mod doesn't have: "no reading in the feed" is now "no reading from Claude Code", and "The feed has no weekly reading..." is now "There is no weekly reading from Claude Code...". The rest of the text and every JSON field match the Go answers.
+- **No `instructions` text.** The Go server's MCP `instructions` (when to call each tool) has no place in the mods tool spec, so it isn't carried over. The tool descriptions still carry their own guidance.
+- **No pruning.** `$.fs` has no delete, so the mod doesn't remove other sessions' day-old progress files as the Go server does.
+- **Not atomic, and links are followed.** `$.fs` has no rename, so the write isn't Go's temp file and rename; a reader can catch a half-written file. `$.fs.write` follows links, so a link at the progress path is followed (#16).
+
 ## Ideas not built yet
 
 - **Toast when today's budget runs out**, from `session.measure`. Only a mod can do this.
 - **`/paceline` command** to change the style, segments, or count direction without editing `paceline.json`. Register it in `session.start` with `$.command.register`.
 - **A history pane**: day-by-day usage kept in `$.store`, drawn with `Raster` for a sparkline in the terminal.
-- **Built-in budget and progress tools** with `$.tool.register`, replacing `paceline-mcp`. A plugin named `paceline` gets tool names `mcp__paceline__<name>`, the same as the MCP server's today, so agents and orc-pack keep working. Users must not run both at once.
 - **The prompt-cache warning**, from the events above.
 - **CI** that installs Claude Code and runs `validate` and `test`.
 
