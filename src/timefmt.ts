@@ -14,6 +14,7 @@ type Parts = {
   day: number
   hour: number
   minute: number
+  second: number
   weekday: number
 }
 
@@ -26,6 +27,7 @@ function parts(ms: number, zone: Zone): Parts {
         day: d.getUTCDate(),
         hour: d.getUTCHours(),
         minute: d.getUTCMinutes(),
+        second: d.getUTCSeconds(),
         weekday: d.getUTCDay(),
       }
     : {
@@ -34,9 +36,12 @@ function parts(ms: number, zone: Zone): Parts {
         day: d.getDate(),
         hour: d.getHours(),
         minute: d.getMinutes(),
+        second: d.getSeconds(),
         weekday: d.getDay(),
       }
 }
+
+const pad = (n: number, width: number) => String(n).padStart(width, '0')
 
 /** Midnight at the start of the day that holds `ms`, in epoch milliseconds. */
 export function startOfDay(ms: number, zone: Zone): number {
@@ -71,8 +76,32 @@ export function floorInDay(ms: number, stepMs: number, dayStartMs: number): numb
 /** The day that holds `ms` as `yyyymmdd`. */
 export function dateKey(ms: number, zone: Zone): string {
   const p = parts(ms, zone)
-  const pad = (n: number, width: number) => String(n).padStart(width, '0')
   return pad(p.year, 4) + pad(p.month + 1, 2) + pad(p.day, 2)
+}
+
+/**
+ * Formats epoch seconds as an RFC 3339 timestamp to the whole second, as Go's
+ * `time.RFC3339` layout does: `2026-10-08T21:00:00Z` in UTC, or the local
+ * time with its offset, such as `2026-10-08T14:00:00-07:00`. The offset is the
+ * one in effect at that instant, so a time across a daylight saving change
+ * carries that day's offset, not today's.
+ */
+export function rfc3339(epochSeconds: number, zone: Zone): string {
+  const ms = Math.trunc(epochSeconds) * 1000
+  const p = parts(ms, zone)
+  const date = `${pad(p.year, 4)}-${pad(p.month + 1, 2)}-${pad(p.day, 2)}`
+  const time = `${pad(p.hour, 2)}:${pad(p.minute, 2)}:${pad(p.second, 2)}`
+  return `${date}T${time}${utcOffset(ms, zone)}`
+}
+
+// The zone's offset from UTC at `ms` as RFC 3339 writes it: `Z` for none,
+// otherwise `+hh:mm` or `-hh:mm`.
+function utcOffset(ms: number, zone: Zone): string {
+  const minutes = zone === 'utc' ? 0 : -new Date(ms).getTimezoneOffset()
+  if (minutes === 0) return 'Z'
+  const sign = minutes < 0 ? '-' : '+'
+  const abs = Math.abs(minutes)
+  return `${sign}${pad(Math.trunc(abs / 60), 2)}:${pad(abs % 60, 2)}`
 }
 
 /**
