@@ -196,12 +196,12 @@ export function batchSegment(state: BatchState): Segment | null {
 /** The ref the batch is measured against. */
 export const ORIGIN_MAIN_REF = 'refs/remotes/origin/main'
 
-/** The deep-review script whose presence marks a repository that keeps a review ledger. */
+/** Returns the path of the deep-review script whose presence marks a repository that keeps a review ledger. */
 export function ledgerScriptPath(workTree: string): string {
   return `${workTree}/.claude/skills/deep-review/scripts/ledger.mjs`
 }
 
-/** The review ledger deep-review appends to, in the work tree. */
+/** Returns the path of the review ledger deep-review appends to, in the work tree. */
 export function ledgerPath(workTree: string): string {
   return `${workTree}/tmp/reviews/ledger.jsonl`
 }
@@ -330,13 +330,13 @@ export function acceptResult(flow: BatchFlow, entry: BatchCache): { next: BatchF
   return { next: { cache: entry, pending, wanted: flow.wanted }, redraw: true }
 }
 
-/** The arguments of `git merge-base` for origin/main and HEAD, by sha. */
+/** Builds the arguments of `git merge-base` for origin/main and HEAD, by sha. */
 export function mergeBaseArgv(workTree: string, mainSha: string, headSha: string): string[] {
   return ['-C', workTree, ...GIT_PIN, 'merge-base', mainSha, headSha]
 }
 
 /**
- * The arguments of `git log` for the batch's messages, in the format
+ * Builds the arguments of `git log` for the batch's messages, in the format
  * {@link splitCommitMessages} reads, at most {@link MAX_BATCH_COMMITS} of them.
  * `--no-show-signature` keeps a repo's `log.showSignature` from starting its
  * `gpg.program`.
@@ -354,7 +354,7 @@ export function logArgv(workTree: string, base: string, headSha: string): string
   ]
 }
 
-/** The arguments of `git rev-list --count` from the reviewed commit to HEAD. */
+/** Builds the arguments of `git rev-list --count` from the reviewed commit to HEAD. */
 export function sinceArgv(workTree: string, reviewHead: string, headSha: string): string[] {
   return ['-C', workTree, ...GIT_PIN, 'rev-list', '--count', `${reviewHead}^{commit}..${headSha}`]
 }

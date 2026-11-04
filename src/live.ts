@@ -47,7 +47,7 @@ export type Figures = {
   envEffort?: string
 }
 
-/** Claude Code's config directory, honoring CLAUDE_CONFIG_DIR. */
+/** Gets Claude Code's config directory, honoring CLAUDE_CONFIG_DIR. */
 export function configDirFrom(env: {
   claudeConfigDir?: string
   userProfile?: string
@@ -60,7 +60,7 @@ export function configDirFrom(env: {
   return home ? `${slash(home)}/.claude` : '.claude'
 }
 
-/** One rate-limit window in the payload's shape: epoch seconds for the reset. */
+/** Converts one rate-limit window to the payload's shape: epoch seconds for the reset. */
 export function toLimit(r: SessionRateLimit | undefined): Limit | undefined {
   if (!r) return undefined
   const resetsMs = r.resetsAt === undefined ? NaN : Date.parse(r.resetsAt)
@@ -163,10 +163,10 @@ export type LiveState = {
 }
 
 /**
- * The line in the compact layout, the limit the forecast picked, and the
- * snapshot to save when today's anchor changed. Unless the config asks for
- * both limits, the line warns only when the picked limit is forecast to run
- * out before it resets.
+ * Renders the line in the compact layout and returns it with the limit the
+ * forecast picked and the snapshot to save when today's anchor changed.
+ * Unless the config asks for both limits, the line warns only when the picked
+ * limit is forecast to run out before it resets.
  */
 export function renderLive(
   payload: Payload,
@@ -217,9 +217,9 @@ export type DebugInput = {
 }
 
 /**
- * Everything behind the line's forecast as plain data, for the debug tool: the
- * readings, the day snapshot and where it came from, the stored activity, and
- * the forecast's own figures.
+ * Gathers everything behind the line's forecast as plain data, for the debug
+ * tool: the readings, the day snapshot and where it came from, the stored
+ * activity, and the forecast's own figures.
  */
 export function debugReport(d: DebugInput) {
   const iso = (sec: number | undefined) => (sec === undefined ? undefined : new Date(sec * 1000).toISOString())

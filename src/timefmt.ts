@@ -43,7 +43,7 @@ function parts(ms: number, zone: Zone): Parts {
 
 const pad = (n: number, width: number) => String(n).padStart(width, '0')
 
-/** Midnight at the start of the day that holds `ms`, in epoch milliseconds. */
+/** Gets the midnight at the start of the day that holds `ms`, in epoch milliseconds. */
 export function startOfDay(ms: number, zone: Zone): number {
   const p = parts(ms, zone)
   return zone === 'utc'
@@ -52,9 +52,9 @@ export function startOfDay(ms: number, zone: Zone): number {
 }
 
 /**
- * The next midnight after the day that holds `ms`. It steps a calendar day,
- * not 24 hours, so a 23- or 25-hour day at a daylight saving change is still
- * one day.
+ * Gets the next midnight after the day that holds `ms`. It steps a calendar
+ * day, not 24 hours, so a 23- or 25-hour day at a daylight saving change is
+ * still one day.
  */
 export function startOfNextDay(ms: number, zone: Zone): number {
   const p = parts(ms, zone)
@@ -73,7 +73,7 @@ export function floorInDay(ms: number, stepMs: number, dayStartMs: number): numb
   return dayStartMs + Math.floor((ms - dayStartMs) / stepMs) * stepMs
 }
 
-/** The day that holds `ms` as `yyyymmdd`. */
+/** Formats the day that holds `ms` as `yyyymmdd`. */
 export function dateKey(ms: number, zone: Zone): string {
   const p = parts(ms, zone)
   return pad(p.year, 4) + pad(p.month + 1, 2) + pad(p.day, 2)
@@ -117,7 +117,7 @@ export function clock(epochSeconds: number, nowMs: number, zone: Zone): string {
   return dateKey(ms, zone) === dateKey(nowMs, zone) ? text : `${WEEKDAYS[p.weekday]} ${text}`
 }
 
-/** The short weekday name (`Tue`) of the day that holds `ms`. */
+/** Gets the short weekday name (`Tue`) of the day that holds `ms`. */
 export function weekday(ms: number, zone: Zone): string {
   return WEEKDAYS[parts(ms, zone).weekday]
 }

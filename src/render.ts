@@ -90,10 +90,10 @@ export type RenderContext = {
   /** Where the session's dev -> main batch stands in review, or null. Only the compact layout draws it. */
   batch?: () => BatchState | null
   /**
-   * Draws the mod's compact layout: the project ahead of the model, effort as
-   * the bare level, a limit's run-out time when the forecast says it runs out
-   * before it resets, and the loop and batch segments before the duration.
-   * Absent, the line is the Go paceline's, byte for byte.
+   * When set, the line uses the mod's compact layout: the project ahead of the
+   * model, effort as the bare level, a limit's run-out time when the forecast
+   * says it runs out before it resets, and the loop and batch segments before
+   * the duration. Absent, the line is the Go paceline's, byte for byte.
    */
   compact?: boolean
   /**
@@ -167,7 +167,7 @@ export const round = (v: number) => Math.floor(v + 0.5)
 // Go's \s is ASCII whitespace only; JavaScript's would also match Unicode spaces.
 const MODEL_SUFFIX = /[\t\n\f\r ]*\(.*\)$/
 
-/** The last path segment, for either separator style. */
+/** Gets the last path segment, for either separator style. */
 function leaf(p: string): string {
   const s = p.replace(/[\\/]+$/, '').replaceAll('\\', '/')
   if (s === '') return '.'
@@ -178,12 +178,12 @@ function workDir(p: Payload): string {
   return p.workspace?.currentDir || p.cwd || ''
 }
 
-/** The short label, or the long one when the config is verbose. */
+/** Picks the short label, or the long one when the config is verbose. */
 function label(ctx: RenderContext, short: string, long: string): string {
   return ctx.config.verbose ? long : short
 }
 
-/** `text` in the headroom tone for `left` percent left. */
+/** Colors `text` in the headroom tone for `left` percent left. */
 function headroom(ctx: RenderContext, left: number, text: string): Span {
   const th = ctx.config.thresholds
   return span(text, headroomLevel(left, th.headroomGreen, th.headroomYellow))
@@ -510,8 +510,8 @@ function sgr(tone: Tone): string {
 }
 
 /**
- * The line as ANSI text, segments joined by a dim middle dot, exactly as the
- * Go paceline prints it. With `noColor`, the same text with no escapes.
+ * Renders the line as ANSI text, segments joined by a dim middle dot, exactly
+ * as the Go paceline prints it. With `noColor`, the same text with no escapes.
  */
 export function toAnsi(line: Line, noColor = false): string {
   const wrap = (code: string, text: string) => (noColor || code === '' ? text : `\x1b[${code}m${text}\x1b[0m`)

@@ -86,7 +86,7 @@ export function isValidSession(session: string): boolean {
   return session.length > 0 && session.length <= MAX_SESSION_LEN && /^[0-9A-Za-z-]+$/.test(session)
 }
 
-/** The progress file inside a git directory for a session, or the shared file. */
+/** Returns the path of the progress file inside a git directory for a session, or the shared file. */
 export function progressPath(gitDir: string, session: string): string {
   const name = isValidSession(session) ? `progress-${session}.json` : 'progress.json'
   return `${gitDir}/paceline/${name}`
@@ -186,20 +186,21 @@ export function isPlanned(r: Run): boolean {
   return r.steps.some(s => s.weight > 0 || s.stages.length > 0)
 }
 
-/** The first active step's index, or -1. */
+/** Finds the first active step's index, or -1. */
 export function activeIndex(r: Run): number {
   return r.steps.findIndex(s => s.status === 'active')
 }
 
-/** How many steps are no longer pending or active. */
+/** Counts how many steps are no longer pending or active. */
 export function settledCount(r: Run): number {
   return r.steps.filter(s => s.status !== 'pending' && s.status !== 'active').length
 }
 
 /**
- * The weighted share of planned work finished, 0 to 100. Skipped and blocked
- * steps leave the total, since the run will not do them. An active step counts
- * the stages it has finished: a step in the third of four stages is half done.
+ * Computes the weighted share of planned work finished, 0 to 100. Skipped and
+ * blocked steps leave the total, since the run will not do them. An active
+ * step counts the stages it has finished: a step in the third of four stages
+ * is half done.
  */
 export function percent(r: Run): number {
   let total = 0

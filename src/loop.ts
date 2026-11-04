@@ -67,7 +67,7 @@ export type LoopFile = {
   mtimeMs: number
 }
 
-/** The state file inside a git directory. */
+/** Returns the path of the state file inside a git directory. */
 export function loopStatePath(gitDir: string): string {
   return `${gitDir}/orc-loop/state.json`
 }

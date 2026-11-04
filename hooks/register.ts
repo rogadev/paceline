@@ -124,7 +124,7 @@ async function kindOf($: EngineInterface, path: string): Promise<'file' | 'dir' 
   return (await statOf($, path))?.kind ?? null
 }
 
-/** The repository's progress run for this session, or the shared run. */
+/** Loads the repository's progress run for this session, or the shared run. */
 async function loadProgress($: EngineInterface, gitDir: string, session: string): Promise<Run | null> {
   if (gitDir === '') return null
   for (const id of isValidSession(session) ? [session, ''] : ['']) {
@@ -135,7 +135,7 @@ async function loadProgress($: EngineInterface, gitDir: string, session: string)
   return null
 }
 
-/** The repository's `/orc-loop` state file, decoded, or null when it is missing or unreadable. */
+/** Loads the repository's `/orc-loop` state file, decoded, or null when it is missing or unreadable. */
 async function loadLoop($: EngineInterface, gitDir: string): Promise<LoopFile | null> {
   if (gitDir === '') return null
   const file = await readStamped($, loopStatePath(gitDir), MAX_STATE_BYTES)
@@ -196,8 +196,8 @@ async function updateBatch(
 }
 
 /**
- * The batch to draw now, from the cache, starting a background update when
- * `planBatch` says to. With `refs` null (the batch path was skipped), it
+ * Gets the batch to draw now, from the cache, starting a background update
+ * when `planBatch` says to. With `refs` null (the batch path was skipped), it
  * draws nothing and forgets the wanted key.
  */
 function currentBatch($: EngineInterface, refs: BatchRefs | null, nowMs: number, gitCwd: string): BatchState | null {

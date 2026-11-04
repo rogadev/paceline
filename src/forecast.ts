@@ -191,10 +191,10 @@ export function recordActivity(
 }
 
 /**
- * The chance of working in each hour of the day, from the completed days on
- * record (today is still in progress). A light prior (a quarter of a day each
- * way) keeps a new install at an even chance and never rules an hour out,
- * while a week of steady use moves an hour close to 0 or 1.
+ * Estimates the chance of working in each hour of the day, from the completed
+ * days on record (today is still in progress). A light prior (a quarter of a
+ * day each way) keeps a new install at an even chance and never rules an hour
+ * out, while a week of steady use moves an hour close to 0 or 1.
  */
 export function hourProfile(a: Activity | null, nowMs: number, zone: Zone): number[] {
   const today = dateKey(nowMs, zone)
@@ -205,7 +205,7 @@ export function hourProfile(a: Activity | null, nowMs: number, zone: Zone): numb
   })
 }
 
-/** Active hours on record between two times, counting whole hours that saw usage rise. */
+/** Counts the whole hours on record between two times that saw usage rise. */
 function activeHoursBetween(a: Activity | null, fromMs: number, toMs: number, zone: Zone): number {
   let hours = 0
   // Step hour by hour from the hour that holds fromMs.
@@ -223,11 +223,12 @@ const countBits = (mask: number) => {
 }
 
 /**
- * Points per active hour, averaged over the recorded days with the newest
- * counting most: a day's weight halves for each day back, and a day with few
- * active hours counts for less. One hard day followed by a relaxed one then
- * pulls the rate down instead of projecting the hard day forward. Returns
- * undefined until a day on record has both points spent and active hours.
+ * Computes the points per active hour, averaged over the recorded days with
+ * the newest counting most: a day's weight halves for each day back, and a
+ * day with few active hours counts for less. One hard day followed by a
+ * relaxed one then pulls the rate down instead of projecting the hard day
+ * forward. Returns undefined until a day on record has both points spent and
+ * active hours.
  */
 function recentRate(
   a: Activity | null,
@@ -250,7 +251,7 @@ function recentRate(
   return weight >= MIN_RATE_WEIGHT ? weighted / weight : undefined
 }
 
-/** Epoch ms of the start of the day a `yyyymmdd` key names. */
+/** Returns the epoch ms of the start of the day a `yyyymmdd` key names. */
 function dayStartOf(key: string, zone: Zone): number {
   const y = Number(key.slice(0, 4))
   const m = Number(key.slice(4, 6)) - 1
@@ -340,7 +341,7 @@ export function forecastLimits(input: ForecastInput): LimitPick | null {
   return explainForecast(input)?.pick ?? null
 }
 
-/** Like `forecastLimits`, and returns the figures behind the pick too. */
+/** Picks a limit like `forecastLimits` and returns the figures behind the pick too. */
 export function explainForecast(input: ForecastInput): { pick: LimitPick; trace: ForecastTrace } | null {
   const { nowMs, zone, activity } = input
   const s = input.session
