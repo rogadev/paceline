@@ -130,6 +130,65 @@ describe('compact layout', () => {
     )
   })
 
+  describe('a run-out on the last day is colored by how late it falls', () => {
+    // Thursday, the week's last day: the week resets at Friday midnight.
+    const out = (now: string, outAt: string) =>
+      compact({}, defaultConfig(), { show: 'week', outAt: sec(outAt) }, { nowMs: Date.parse(now) })[DAYS]
+
+    test('the week warning: red before 5pm, yellow to 8pm, green after', () => {
+      const now = '2026-10-08T06:00:00Z'
+      expect(out(now, '2026-10-08T16:59:00Z')).toEqual([{ text: 'out ~4pm', tone: 'red' }])
+      expect(out(now, '2026-10-08T17:00:00Z')).toEqual([{ text: 'out ~5pm', tone: 'yellow' }])
+      expect(out(now, '2026-10-08T19:59:00Z')).toEqual([{ text: 'out ~7pm', tone: 'yellow' }])
+      expect(out(now, '2026-10-08T20:00:00Z')).toEqual([{ text: 'out ~8pm', tone: 'green' }])
+      expect(out(now, '2026-10-08T23:30:00Z')).toEqual([{ text: 'out ~11pm', tone: 'green' }])
+    })
+
+    test('the week warning counts the reset day, seen from the day before', () => {
+      expect(out('2026-10-07T22:00:00Z', '2026-10-08T21:00:00Z')).toEqual([{ text: 'out ~Thu 9pm', tone: 'green' }])
+    })
+
+    test('a run-out before the last day stays red, however late', () => {
+      expect(out('2026-10-07T12:00:00Z', '2026-10-07T21:00:00Z')).toEqual([{ text: 'out ~9pm', tone: 'red' }])
+    })
+
+    // Today's own out time, from its pace since midnight: at noon with 80% used
+    // at the start of the day, a reading of `used` runs the week out this many
+    // seconds from now.
+    const lastNoon = Date.parse('2026-10-08T12:00:00Z')
+    const lastDaySnapshot: Snapshot = {
+      date: '20261008',
+      resetsAt: WEEK_RESET,
+      usedAtStart: 80,
+      startedAt: sec('2026-10-08T00:00:00Z'),
+    }
+    const usedFor = (outAt: string) => {
+      const ahead = sec(outAt) - lastNoon / 1000
+      return 80 + (20 * 43200) / (43200 + ahead)
+    }
+    const todayOut = (outAt: string, compactLayout = true) => {
+      const line = render(payload({ week: usedFor(outAt) }), {
+        nowMs: lastNoon,
+        zone: 'utc',
+        config: defaultConfig(),
+        readSnapshot: () => lastDaySnapshot,
+        compact: compactLayout,
+      })
+      return line.flat().find(s => s.text.startsWith('out ~'))
+    }
+
+    test('the today segment: red before 5pm, yellow to 8pm, green after', () => {
+      expect(todayOut('2026-10-08T16:59:00Z')).toEqual({ text: 'out ~4:59pm', tone: 'red' })
+      expect(todayOut('2026-10-08T17:00:00Z')).toEqual({ text: 'out ~5pm', tone: 'yellow' })
+      expect(todayOut('2026-10-08T19:59:00Z')).toEqual({ text: 'out ~7:59pm', tone: 'yellow' })
+      expect(todayOut('2026-10-08T20:00:00Z')).toEqual({ text: 'out ~8pm', tone: 'green' })
+    })
+
+    test("the Go layout keeps today's out time red", () => {
+      expect(todayOut('2026-10-08T20:00:00Z', false)).toEqual({ text: 'out ~8pm', tone: 'red' })
+    })
+  })
+
   test('a session that runs out says when in place of its reset time', () => {
     const line = (outAt: string) => compact({ session: 80 }, withSession(), { show: 'session', outAt: sec(outAt) })
     expect(line('2026-10-07T13:59:00Z').slice(3, 5)).toEqual([

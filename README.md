@@ -101,6 +101,7 @@ The underlines and arrows in the image point at the part of the line each state 
 Your session and weekly limits are separate, and usually neither is close to stopping you. paceline forecasts both and warns you only when one is on track to run out:
 
 - **A limit that runs out before it resets says when.** The week's `4d left` becomes `out ~Tue`, in yellow, while that's more than a day away, then the time, `out ~9pm`, in red, within a day. The session's reset time becomes `out ~3:45pm`, always in red. The `~` marks an estimate, the same as today's `out ~4pm` on the last day. If both are forecast to run out, only the sooner one shows.
+- **On the week's last day, the out time is colored by how late it falls**: red before 5 p.m., yellow from 5 p.m. to 8 p.m., and green from 8 p.m., when the week is used up in the evening as planned. This applies to today's `out ~4pm` and to the week's warning when it lands on the week's last day. On earlier days the week's time stays red, and the Go paceline always shows today's in red.
 - **The time rounds down**, to the hour for the week and to the quarter hour for the session, so it never promises more time than the forecast gives. If rounding down would give a time that's already past, the exact minute shows instead.
 - **Otherwise, nothing changes.** A limit that lasts until it resets shows its days left or reset time as usual.
 - **A warning needs its segment on.** The session segment is off by default, so a session warning shows only once you turn it on.

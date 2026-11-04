@@ -117,6 +117,16 @@ export function clock(epochSeconds: number, nowMs: number, zone: Zone): string {
   return dateKey(ms, zone) === dateKey(nowMs, zone) ? text : `${WEEKDAYS[p.weekday]} ${text}`
 }
 
+/**
+ * Gets the wall-clock minute of the day that `ms` falls on, 0 to 1439: 17:00
+ * is 1020. It reads the clock, not the time since midnight, so a daylight
+ * saving day still puts 5 p.m. at 1020.
+ */
+export function minuteOfDay(ms: number, zone: Zone): number {
+  const p = parts(ms, zone)
+  return p.hour * 60 + p.minute
+}
+
 /** Gets the short weekday name (`Tue`) of the day that holds `ms`. */
 export function weekday(ms: number, zone: Zone): string {
   return WEEKDAYS[parts(ms, zone).weekday]
