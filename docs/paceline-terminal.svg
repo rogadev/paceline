@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="640" viewBox="0 0 1200 640" role="img" aria-labelledby="t d">
+<title id="t">paceline in a Claude Code terminal window</title>
+<desc id="d">A Windows Terminal window running Claude Code on a project called api-server. Claude is partway through a task, and the paceline line sits in the band just above the prompt box: the project and branch, the model, effort, today’s budget bar with 5 of 14 points spent, the week at 63 of 100 with 3 days left, and the session time.</desc>
+<style>text{font-family:"Cascadia Mono",Consolas,"DejaVu Sans Mono",monospace;font-size:14px;white-space:pre}.b{font-weight:bold}.ui{font-family:"Segoe UI",Helvetica,Arial,sans-serif;font-size:13px}</style>
+<clipPath id="win"><rect x="14" y="14" width="1172" height="612" rx="8"/></clipPath>
+<g clip-path="url(#win)">
+<rect x="14" y="14" width="1172" height="612" fill="#0c0c0c"/>
+<rect x="14" y="14" width="1172" height="42" fill="#202020"/>
+<path d="M22 56V28Q22 22 28 22H276Q282 22 282 28V56Z" fill="#0c0c0c"/>
+<rect x="34" y="32" width="16" height="14" rx="2" fill="#2f6fb8"/>
+<path d="M37 35.5L41.5 39L37 42.5M43 43H47" stroke="#ffffff" stroke-width="1.4" fill="none"/>
+<text x="60" y="44" class="ui" fill="#f2f2f2"><tspan fill="#d77757">✳</tspan> Add rate limiting</text>
+<path d="M259 34L269 44M269 34L259 44" stroke="#9a9a9a" stroke-width="1.2" fill="none"/>
+<path d="M298 39H310M304 33V45" stroke="#9a9a9a" stroke-width="1.2" fill="none"/>
+<path d="M332 37L336 41L340 37" stroke="#9a9a9a" stroke-width="1.2" fill="none"/>
+<line x1="1022" x2="1034" y1="35" y2="35" stroke="#cfcfcf" stroke-width="1.1" fill="none"/>
+<rect x="1082" y="29" width="12" height="12" rx="1.5" stroke="#cfcfcf" stroke-width="1.1" fill="none"/>
+<path d="M1142 29L1154 41M1154 29L1142 41" stroke="#cfcfcf" stroke-width="1.2" fill="none"/>
+<rect x="43" y="76" width="11" height="11" fill="#d77757"/>
+<rect x="54" y="76" width="11" height="11" fill="#d77757"/>
+<rect x="65" y="76" width="11" height="11" fill="#d77757"/>
+<rect x="76" y="76" width="11" height="11" fill="#d77757"/>
+<rect x="87" y="76" width="11" height="11" fill="#d77757"/>
+<rect x="98" y="76" width="11" height="11" fill="#d77757"/>
+<rect x="109" y="76" width="11" height="11" fill="#d77757"/>
+<rect x="43" y="87" width="11" height="11" fill="#d77757"/>
+<rect x="65" y="87" width="11" height="11" fill="#d77757"/>
+<rect x="76" y="87" width="11" height="11" fill="#d77757"/>
+<rect x="87" y="87" width="11" height="11" fill="#d77757"/>
+<rect x="109" y="87" width="11" height="11" fill="#d77757"/>
+<rect x="32" y="98" width="11" height="11" fill="#d77757"/>
+<rect x="43" y="98" width="11" height="11" fill="#d77757"/>
+<rect x="54" y="98" width="11" height="11" fill="#d77757"/>
+<rect x="65" y="98" width="11" height="11" fill="#d77757"/>
+<rect x="76" y="98" width="11" height="11" fill="#d77757"/>
+<rect x="87" y="98" width="11" height="11" fill="#d77757"/>
+<rect x="98" y="98" width="11" height="11" fill="#d77757"/>
+<rect x="109" y="98" width="11" height="11" fill="#d77757"/>
+<rect x="120" y="98" width="11" height="11" fill="#d77757"/>
+<rect x="43" y="109" width="11" height="11" fill="#d77757"/>
+<rect x="54" y="109" width="11" height="11" fill="#d77757"/>
+<rect x="65" y="109" width="11" height="11" fill="#d77757"/>
+<rect x="76" y="109" width="11" height="11" fill="#d77757"/>
+<rect x="87" y="109" width="11" height="11" fill="#d77757"/>
+<rect x="98" y="109" width="11" height="11" fill="#d77757"/>
+<rect x="109" y="109" width="11" height="11" fill="#d77757"/>
+<rect x="54" y="120" width="5.5" height="11" fill="#d77757"/>
+<rect x="76" y="120" width="5.5" height="11" fill="#d77757"/>
+<rect x="98" y="120" width="5.5" height="11" fill="#d77757"/>
+<rect x="120" y="120" width="5.5" height="11" fill="#d77757"/>
+<text x="155.0" y="90" textLength="92.4" lengthAdjust="spacing" fill="#f2f2f2" class="b" xml:space="preserve">Claude Code</text>
+<text x="247.4" y="90" textLength="75.6" lengthAdjust="spacing" fill="#767676" xml:space="preserve"> v2.1.325</text>
+<text x="155.0" y="111" textLength="319.2" lengthAdjust="spacing" fill="#767676" xml:space="preserve">Opus 5.5 with high effort · Claude Max</text>
+<text x="155.0" y="132" textLength="243.6" lengthAdjust="spacing" fill="#767676" xml:space="preserve">~\Documents\GitHub\api-server</text>
+<rect x="24" y="159" width="1152" height="21" fill="#ffffff" fill-opacity="0.08"/>
+<text x="32.0" y="174" textLength="16.8" lengthAdjust="spacing" fill="#767676" xml:space="preserve">&gt; </text>
+<text x="48.8" y="174" textLength="646.8" lengthAdjust="spacing" fill="#f2f2f2" xml:space="preserve">Add rate limiting to the public endpoints, 100 requests a minute per API key.</text>
+<text x="32.0" y="205.5" textLength="16.8" lengthAdjust="spacing" fill="#cccccc" xml:space="preserve">● </text>
+<text x="48.8" y="205.5" textLength="672.0" lengthAdjust="spacing" fill="#cccccc" xml:space="preserve">I'll add a token-bucket limiter as middleware and apply it to the public router.</text>
+<text x="32.0" y="237" textLength="16.8" lengthAdjust="spacing" fill="#13a10e" xml:space="preserve">● </text>
+<text x="48.8" y="237" textLength="50.4" lengthAdjust="spacing" fill="#cccccc" class="b" xml:space="preserve">Update</text>
+<text x="99.2" y="237" textLength="243.6" lengthAdjust="spacing" fill="#cccccc" xml:space="preserve">(src/middleware/rateLimit.ts)</text>
+<text x="32.0" y="258" textLength="42.0" lengthAdjust="spacing" fill="#767676" xml:space="preserve">  ⎿  </text>
+<text x="74.0" y="258" textLength="117.6" lengthAdjust="spacing" fill="#767676" xml:space="preserve">Added 42 lines</text>
+<text x="32.0" y="289.5" textLength="16.8" lengthAdjust="spacing" fill="#13a10e" xml:space="preserve">● </text>
+<text x="48.8" y="289.5" textLength="50.4" lengthAdjust="spacing" fill="#cccccc" class="b" xml:space="preserve">Update</text>
+<text x="99.2" y="289.5" textLength="184.8" lengthAdjust="spacing" fill="#cccccc" xml:space="preserve">(src/routes/public.ts)</text>
+<text x="32.0" y="310.5" textLength="42.0" lengthAdjust="spacing" fill="#767676" xml:space="preserve">  ⎿  </text>
+<text x="74.0" y="310.5" textLength="243.6" lengthAdjust="spacing" fill="#767676" xml:space="preserve">Added 2 lines, removed 1 line</text>
+<text x="32.0" y="342" textLength="16.8" lengthAdjust="spacing" fill="#767676" xml:space="preserve">● </text>
+<text x="48.8" y="342" textLength="33.6" lengthAdjust="spacing" fill="#cccccc" class="b" xml:space="preserve">Bash</text>
+<text x="82.4" y="342" textLength="193.2" lengthAdjust="spacing" fill="#cccccc" xml:space="preserve">(npm test -- rateLimit)</text>
+<text x="32.0" y="363" textLength="42.0" lengthAdjust="spacing" fill="#767676" xml:space="preserve">  ⎿  </text>
+<text x="74.0" y="363" textLength="67.2" lengthAdjust="spacing" fill="#767676" xml:space="preserve">Running…</text>
+<text x="32.0" y="394.5" textLength="16.8" lengthAdjust="spacing" fill="#d77757" xml:space="preserve">✻ </text>
+<text x="48.8" y="394.5" textLength="75.6" lengthAdjust="spacing" fill="#d77757" xml:space="preserve">Brewing… </text>
+<text x="124.4" y="394.5" textLength="361.2" lengthAdjust="spacing" fill="#767676" xml:space="preserve">(1m 12s · ↓ 4.1k tokens · esc to interrupt)</text>
+<text x="48.8" y="541.4" textLength="84.0" lengthAdjust="spacing" fill="#51daa7" xml:space="preserve">api-server</text>
+<text x="141.2" y="541.4" textLength="8.4" lengthAdjust="spacing" fill="#767676" xml:space="preserve">(</text>
+<text x="149.6" y="541.4" textLength="25.2" lengthAdjust="spacing" fill="#cccccc" xml:space="preserve">dev</text>
+<text x="174.8" y="541.4" textLength="8.4" lengthAdjust="spacing" fill="#767676" xml:space="preserve">)</text>
+<text x="183.2" y="541.4" textLength="25.2" lengthAdjust="spacing" fill="#767676" xml:space="preserve"> · </text>
+<text x="208.4" y="541.4" textLength="67.2" lengthAdjust="spacing" fill="#3a96dd" xml:space="preserve">Opus 5.5</text>
+<text x="275.6" y="541.4" textLength="25.2" lengthAdjust="spacing" fill="#767676" xml:space="preserve"> · </text>
+<text x="300.8" y="541.4" textLength="33.6" lengthAdjust="spacing" fill="#767676" xml:space="preserve">high</text>
+<text x="334.4" y="541.4" textLength="25.2" lengthAdjust="spacing" fill="#767676" xml:space="preserve"> · </text>
+<text x="359.6" y="541.4" textLength="50.4" lengthAdjust="spacing" fill="#cccccc" xml:space="preserve">Today:</text>
+<text x="418.4" y="541.4" textLength="8.4" lengthAdjust="spacing" fill="#767676" xml:space="preserve">▕</text>
+<text x="426.8" y="541.4" textLength="75.6" lengthAdjust="spacing" fill="#3a96dd" xml:space="preserve">█████████</text>
+<text x="502.4" y="541.4" textLength="42.0" lengthAdjust="spacing" fill="#767676" xml:space="preserve">░░░░░</text>
+<text x="544.4" y="541.4" textLength="8.4" lengthAdjust="spacing" fill="#cccccc" xml:space="preserve">│</text>
+<text x="561.2" y="541.4" textLength="33.6" lengthAdjust="spacing" fill="#13a10e" xml:space="preserve">5/14</text>
+<text x="594.8" y="541.4" textLength="25.2" lengthAdjust="spacing" fill="#767676" xml:space="preserve"> · </text>
+<text x="620.0" y="541.4" textLength="67.2" lengthAdjust="spacing" fill="#13a10e" class="b" xml:space="preserve">w 63/100</text>
+<text x="687.2" y="541.4" textLength="25.2" lengthAdjust="spacing" fill="#767676" xml:space="preserve"> · </text>
+<text x="712.4" y="541.4" textLength="58.8" lengthAdjust="spacing" fill="#767676" xml:space="preserve">3d left</text>
+<text x="771.2" y="541.4" textLength="25.2" lengthAdjust="spacing" fill="#767676" xml:space="preserve"> · </text>
+<text x="796.4" y="541.4" textLength="25.2" lengthAdjust="spacing" fill="#767676" xml:space="preserve">47m</text>
+<text x="1142.8" y="541.4" textLength="25.2" lengthAdjust="spacing" fill="#cccccc" xml:space="preserve">[-]</text>
+<line x1="32" x2="1168" y1="555.4" y2="555.4" stroke="#5a5a5a"/>
+<text x="32.0" y="574.4" textLength="16.8" lengthAdjust="spacing" fill="#cccccc" xml:space="preserve">&gt; </text>
+<rect x="48.8" y="560.4" width="8.4" height="18" fill="#cccccc" fill-opacity="0.75"/>
+<line x1="32" x2="1168" y1="589" y2="589" stroke="#5a5a5a"/>
+<text x="32.0" y="608" textLength="168.0" lengthAdjust="spacing" fill="#d77757" xml:space="preserve">  ⏵⏵ accept edits on</text>
+<text x="200.0" y="608" textLength="176.4" lengthAdjust="spacing" fill="#767676" xml:space="preserve"> (shift+tab to cycle)</text>
+</g>
+<rect x="14.5" y="14.5" width="1171" height="611" rx="8" fill="none" stroke="#3c3c3c"/>
+<rect x="22" y="522.4" width="1156" height="28" rx="6" fill="none" stroke="#e8c468" stroke-width="2"/>
+<rect x="36" y="503.4" width="68.8" height="22" rx="11" fill="#1a1a1a" stroke="#e8c468" stroke-width="1.5"/>
+<text x="70.4" y="518.9" text-anchor="middle" fill="#e8c468" style="font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:12.5px;font-weight:600">paceline</text>
+</svg>

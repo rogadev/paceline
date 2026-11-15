@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1240" height="800" viewBox="0 0 1240 800" role="img" aria-labelledby="t d">
+<title id="t">paceline in the Claude desktop app</title>
+<desc id="d">The Code tab of the Claude desktop app, with Claude partway through a task on a project called api-server. The paceline line sits in a band just above the prompt box: the project and branch, the model, effort, today’s budget bar, the week at 67 of 100, and the warning out ~Fri because the week is forecast to run out before it resets.</desc>
+<style>text{font-family:"Segoe UI",Helvetica,Arial,sans-serif;white-space:pre}</style>
+<defs><pattern id="drained" width="3" height="3" patternUnits="userSpaceOnUse"><rect width="3" height="3" fill="#3a3a3a"/><rect width="1.5" height="1.5" fill="#6a6a6a"/></pattern><pattern id="below" width="3" height="3" patternUnits="userSpaceOnUse"><rect width="3" height="3" fill="#3a2424"/><rect width="1.5" height="1.5" fill="#b92f2f"/></pattern></defs>
+<clipPath id="app"><rect x="14" y="14" width="1212" height="772" rx="8"/></clipPath>
+<g clip-path="url(#app)">
+<rect x="14" y="14" width="1212" height="772" fill="#1a1a1a"/>
+<rect x="14" y="14" width="1212" height="46" fill="#1f1f1f"/>
+<line x1="14" x2="1226" y1="60.5" y2="60.5" stroke="#2e2e2e"/>
+<path d="M36 31H54M36 37H50M36 43H54" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<rect x="72" y="29" width="20" height="16" rx="3" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/><line x1="79" x2="79" y1="29" y2="45" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<path d="M120 31L114 37L120 43M150 31L156 37L150 43" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<text x="182" y="43" fill="#e6e6e6" font-size="16">Add rate limiting</text>
+<path d="M320 35L325 40L330 35" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<rect x="726" y="21" width="36" height="32" rx="6" fill="#2c2c2c"/>
+<path d="M737 31H739M743 31H753M737 37H739M743 37H753M737 43H739M743 43H753" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<path d="M782 31L788 37L782 43M791 44H799" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<rect x="824" y="29" width="16" height="16" rx="2" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M832 33V41M828 37H836" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<circle cx="876" cy="37" r="8" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M868 37H884M876 29C871 34 871 40 876 45C881 40 881 34 876 29" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<path d="M910 30H917L919 33H928V44H910Z" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<path d="M950 37h0.1M956 37h0.1M962 37h0.1" stroke="#9b9b9b" stroke-width="2.4" stroke-linecap="round"/>
+<line x1="1062" x2="1074" y1="37" y2="37" stroke="#cfcfcf" stroke-width="1.1" fill="none"/>
+<rect x="1122" y="31" width="12" height="12" rx="1.5" stroke="#cfcfcf" stroke-width="1.1" fill="none"/>
+<path d="M1182 31L1194 43M1194 31L1182 43" stroke="#cfcfcf" stroke-width="1.2" fill="none"/>
+<rect x="334" y="100" width="470" height="70" rx="14" fill="#262626"/>
+<text x="356" y="132" fill="#e6e6e6" font-size="16">Add rate limiting to the public endpoints, 100 requests</text>
+<text x="356" y="156" fill="#e6e6e6" font-size="16">a minute per API key.</text>
+<text x="104" y="216" fill="#9b9b9b" font-size="15.5">Read 3 files, searched for 2 patterns</text>
+<path d="M366 207L370 211L366 215" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<text x="104" y="258" fill="#d4d4d4" font-size="16">I'll add a token-bucket limiter as middleware and apply it only to the public</text>
+<text x="104" y="284" fill="#d4d4d4" font-size="16">router, so internal routes and health checks stay unlimited.</text>
+<text x="104" y="326" fill="#9b9b9b" font-size="15.5">Edited 2 files</text>
+<text x="208" y="326" fill="#4caf6a" font-size="15.5">+42</text>
+<text x="238" y="326" fill="#e5534b" font-size="15.5">−1</text>
+<path d="M264 317L268 321L264 325" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<circle cx="112" cy="353" r="2.6" fill="#d4d4d4"/>
+<text x="128" y="358" font-size="16"><tspan fill="#e6e6e6" font-family="Cascadia Mono, Consolas, monospace" font-size="14.5">src/middleware/rateLimit.ts</tspan><tspan fill="#d4d4d4">: the limiter, keyed on the API key header</tspan></text>
+<circle cx="112" cy="383" r="2.6" fill="#d4d4d4"/>
+<text x="128" y="388" font-size="16"><tspan fill="#e6e6e6" font-family="Cascadia Mono, Consolas, monospace" font-size="14.5">src/routes/public.ts</tspan><tspan fill="#d4d4d4">: applies it to every public route</tspan></text>
+<circle cx="106" cy="426" r="2" fill="#d97757"/><circle cx="111" cy="431" r="2" fill="#d97757" fill-opacity="0.7"/><circle cx="106" cy="436" r="2" fill="#d97757" fill-opacity="0.45"/>
+<text x="128" y="436" font-size="15.5" fill="#9b9b9b">Running <tspan font-family="Cascadia Mono, Consolas, monospace" font-size="14">npm test -- rateLimit</tspan> · 12s</text>
+<rect x="62" y="610" width="784" height="50" rx="12" fill="#262626"/>
+<text x="78.0" y="641" textLength="71.4" lengthAdjust="spacingAndGlyphs" fill="#51daa7" xml:space="preserve">api-server</text>
+<text x="153.5" y="641" textLength="5.4" lengthAdjust="spacingAndGlyphs" fill="#767676" xml:space="preserve">(</text>
+<text x="159.0" y="641" textLength="25.4" lengthAdjust="spacingAndGlyphs" fill="#e6e6e6" xml:space="preserve">dev</text>
+<text x="184.4" y="641" textLength="5.4" lengthAdjust="spacingAndGlyphs" fill="#767676" xml:space="preserve">)</text>
+<text x="189.8" y="641" textLength="12.5" lengthAdjust="spacingAndGlyphs" fill="#767676" xml:space="preserve"> · </text>
+<text x="202.3" y="641" textLength="60.6" lengthAdjust="spacingAndGlyphs" fill="#2f9fbf" xml:space="preserve">Opus 5.5</text>
+<text x="263.0" y="641" textLength="12.5" lengthAdjust="spacingAndGlyphs" fill="#767676" xml:space="preserve"> · </text>
+<text x="275.4" y="641" textLength="29.6" lengthAdjust="spacingAndGlyphs" fill="#767676" xml:space="preserve">high</text>
+<text x="305.0" y="641" textLength="12.5" lengthAdjust="spacingAndGlyphs" fill="#767676" xml:space="preserve"> · </text>
+<text x="317.5" y="641" textLength="48.0" lengthAdjust="spacingAndGlyphs" fill="#e6e6e6" xml:space="preserve">Today:</text>
+<rect x="377.2" y="626" width="1.5" height="21" fill="#767676"/>
+<rect x="378.7" y="627" width="9.3" height="19" fill="#2f9fbf"/>
+<rect x="387.7" y="627" width="9.3" height="19" fill="#2f9fbf"/>
+<rect x="396.7" y="627" width="9.3" height="19" fill="#2f9fbf"/>
+<rect x="405.7" y="627" width="9.3" height="19" fill="#2f9fbf"/>
+<rect x="414.7" y="627" width="9.3" height="19" fill="#2f9fbf"/>
+<rect x="423.7" y="627" width="9.3" height="19" fill="url(#drained)"/>
+<rect x="432.7" y="627" width="9.3" height="19" fill="url(#drained)"/>
+<rect x="441.7" y="627" width="9.3" height="19" fill="url(#drained)"/>
+<rect x="450.7" y="627" width="9.3" height="19" fill="url(#drained)"/>
+<rect x="459.7" y="627" width="9.3" height="19" fill="url(#drained)"/>
+<rect x="468.7" y="627" width="9.3" height="19" fill="url(#drained)"/>
+<rect x="477.7" y="627" width="9.3" height="19" fill="url(#drained)"/>
+<rect x="486.7" y="627" width="9.3" height="19" fill="url(#drained)"/>
+<rect x="495.7" y="627" width="9.3" height="19" fill="url(#drained)"/>
+<rect x="508.4" y="626" width="1.5" height="21" fill="#e6e6e6"/>
+<text x="517.8" y="641" textLength="30.9" lengthAdjust="spacingAndGlyphs" fill="#2e9e44" xml:space="preserve">9/14</text>
+<text x="548.7" y="641" textLength="12.5" lengthAdjust="spacingAndGlyphs" fill="#767676" xml:space="preserve"> · </text>
+<text x="561.2" y="641" textLength="65.4" lengthAdjust="spacingAndGlyphs" fill="#2e9e44" font-weight="600" xml:space="preserve">w 67/100</text>
+<text x="626.6" y="641" textLength="12.5" lengthAdjust="spacingAndGlyphs" fill="#767676" xml:space="preserve"> · </text>
+<text x="639.1" y="641" textLength="54.6" lengthAdjust="spacingAndGlyphs" fill="#c99a1a" xml:space="preserve">out ~Fri</text>
+<text x="693.7" y="641" textLength="12.5" lengthAdjust="spacingAndGlyphs" fill="#767676" xml:space="preserve"> · </text>
+<text x="706.2" y="641" textLength="30.4" lengthAdjust="spacingAndGlyphs" fill="#767676" xml:space="preserve">38m</text>
+<rect x="62" y="670" width="784" height="62" rx="16" fill="#2a2a2a" stroke="#3a3a3a"/>
+<path d="M86 701H104M95 692V710" stroke="#e6e6e6" stroke-width="1.6" stroke-linecap="round"/>
+<text x="126" y="707" fill="#8a8a8a" font-size="16.5">Enter to send, Ctrl+Enter to queue for later</text>
+<rect x="748" y="693" width="16" height="16" rx="3" fill="#e6e6e6"/>
+<rect x="804" y="689" width="10" height="16" rx="5" stroke="#e6e6e6" stroke-width="1.6" fill="none"/><path d="M802 699A7 7 0 0 0 816 699M809 706V711" stroke="#e6e6e6" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+<text x="812" y="764" text-anchor="end" font-size="15.5"><tspan fill="#e6e6e6">Opus 5.5</tspan><tspan fill="#9b9b9b"> High</tspan><tspan fill="#e6e6e6" dx="22">Auto</tspan></text>
+<path d="M835 751A8 8 0 1 1 827 759" stroke="#3b82f6" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+<rect x="894" y="61" width="332" height="725" fill="#1c1c1c"/>
+<line x1="894.5" x2="894.5" y1="61" y2="786" stroke="#2e2e2e"/>
+<text x="918" y="100" fill="#e6e6e6" font-size="15.5">Environment</text>
+<rect x="918" y="131" width="18" height="11" rx="2" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M915 145H939" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<text x="954" y="144" fill="#e6e6e6" font-size="15.5">api-server</text>
+<path d="M918 178H925L927 181H936V191H918Z" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<text x="954" y="190" fill="#e6e6e6" font-size="15.5">api-server · C:\Users\dev\GitHub</text>
+<circle cx="922" cy="225" r="2.5" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="922" cy="237" r="2.5" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="932" cy="229" r="2.5" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M922 228V234M932 232Q932 235 924 236" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<text x="954" y="236" fill="#e6e6e6" font-size="15.5">dev</text>
+<rect x="918" y="269" width="18" height="13" rx="2" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M923 285H931" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<text x="954" y="282" fill="#e6e6e6" font-size="15.5">Remote Control</text>
+<rect x="1162" y="266" width="40" height="22" rx="11" fill="#2e2e2e" stroke="#444"/><circle cx="1173" cy="277" r="7" fill="#e6e6e6"/>
+<line x1="918" x2="1202" y1="312" y2="312" stroke="#2e2e2e"/>
+<text x="918" y="352" fill="#e6e6e6" font-size="15.5">Context</text>
+<path d="M986 343L990 347L986 351" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<text x="1156" y="352" fill="#9b9b9b" font-size="15.5" text-anchor="end">18%</text>
+<rect x="1168" y="342" width="34" height="8" rx="4" fill="#2e2e2e"/><rect x="1168" y="342" width="8" height="8" rx="4" fill="#3b82f6"/>
+<line x1="918" x2="1202" y1="382" y2="382" stroke="#2e2e2e"/>
+<text x="918" y="422" fill="#e6e6e6" font-size="15.5">Changes</text>
+<rect x="918" y="453" width="18" height="18" rx="3" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/><path d="M927 457V465M923 461H931M923 468H931" stroke="#9b9b9b" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+<text x="954" y="468" font-size="15"><tspan fill="#4caf6a">+42</tspan><tspan fill="#e5534b" dx="8">−1</tspan></text>
+<rect x="1098" y="446" width="104" height="32" rx="8" fill="#2c2c2c"/>
+<text x="1150" y="468" fill="#e6e6e6" font-size="15" text-anchor="middle">Create PR</text>
+</g>
+<rect x="14.5" y="14.5" width="1211" height="771" rx="8" fill="none" stroke="#3c3c3c"/>
+<rect x="56" y="604" width="796" height="62" rx="16" fill="none" stroke="#e8c468" stroke-width="2"/>
+<rect x="70" y="585" width="68.8" height="22" rx="11" fill="#1a1a1a" stroke="#e8c468" stroke-width="1.5"/>
+<text x="104.4" y="600.5" text-anchor="middle" fill="#e8c468" style="font-family:'Segoe UI',Helvetica,Arial,sans-serif;font-size:12.5px;font-weight:600">paceline</text>
+</svg>

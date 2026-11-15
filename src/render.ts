@@ -25,7 +25,16 @@ import {
   type Status,
 } from './progress.ts'
 import { clean } from './sanitize.ts'
-import { clock, duration, floorInDay, startOfDay, weekday, type Zone } from './timefmt.ts'
+import {
+  clock,
+  duration,
+  floorInDay,
+  minuteOfDay,
+  startOfDay,
+  startOfNextDay,
+  weekday,
+  type Zone,
+} from './timefmt.ts'
 
 const MIDDLE_DOT = '\u00b7'
 const CELL_FULL = '\u25b0'
@@ -56,6 +65,16 @@ const DAY_MS = 24 * HOUR_MS
 const SESSION_OUT_STEP_MS = 15 * MINUTE_MS
 /** A week's out time is shown to the hour. */
 const WEEK_OUT_STEP_MS = HOUR_MS
+/**
+ * On the week's last day, a run-out time is colored by the local clock time
+ * it shows: red before LAST_DAY_YELLOW_FROM (the week runs dry inside the
+ * workday), yellow until LAST_DAY_GREEN_FROM, and green from then on, the
+ * target of a week used up in the evening. Both are minutes of the day and
+ * provisional: move them if last days that feel on target keep landing in
+ * yellow, or ones that cut the evening short show green.
+ */
+const LAST_DAY_YELLOW_FROM = 17 * 60
+const LAST_DAY_GREEN_FROM = 20 * 60
 
 /** Windows Terminal's default red with 15% less chroma, easier on the eyes. */
 export const MUTED_RED: RGB = [185, 47, 47]
@@ -90,10 +109,10 @@ export type RenderContext = {
   /** Where the session's dev -> main batch stands in review, or null. Only the compact layout draws it. */
   batch?: () => BatchState | null
   /**
-   * Draws the mod's compact layout: the project ahead of the model, effort as
-   * the bare level, a limit's run-out time when the forecast says it runs out
-   * before it resets, and the loop and batch segments before the duration.
-   * Absent, the line is the Go paceline's, byte for byte.
+   * When set, the line uses the mod's compact layout: the project ahead of the
+   * model, effort as the bare level, a limit's run-out time when the forecast
+   * says it runs out before it resets, and the loop and batch segments before
+   * the duration. Absent, the line is the Go paceline's, byte for byte.
    */
   compact?: boolean
   /**
@@ -167,7 +186,7 @@ export const round = (v: number) => Math.floor(v + 0.5)
 // Go's \s is ASCII whitespace only; JavaScript's would also match Unicode spaces.
 const MODEL_SUFFIX = /[\t\n\f\r ]*\(.*\)$/
 
-/** The last path segment, for either separator style. */
+/** Gets the last path segment, for either separator style. */
 function leaf(p: string): string {
   const s = p.replace(/[\\/]+$/, '').replaceAll('\\', '/')
   if (s === '') return '.'
@@ -178,12 +197,12 @@ function workDir(p: Payload): string {
   return p.workspace?.currentDir || p.cwd || ''
 }
 
-/** The short label, or the long one when the config is verbose. */
+/** Picks the short label, or the long one when the config is verbose. */
 function label(ctx: RenderContext, short: string, long: string): string {
   return ctx.config.verbose ? long : short
 }
 
-/** `text` in the headroom tone for `left` percent left. */
+/** Colors `text` in the headroom tone for `left` percent left. */
 function headroom(ctx: RenderContext, left: number, text: string): Span {
   const th = ctx.config.thresholds
   return span(text, headroomLevel(left, th.headroomGreen, th.headroomYellow))
@@ -202,7 +221,10 @@ export function render(p: Payload, ctx: RenderContext): Line {
     fastMode: on.fastMode && p.fastMode === true ? [[span('fast mode', 'yellow')]] : [],
     session: on.session ? session(p, ctx, runOut(pick, 'session', ctx)) : [],
     today: on.today && r ? [today(r, ctx)] : [],
-    week: on.week && sd?.usedPercentage !== undefined ? week(sd.usedPercentage, r, ctx, runOut(pick, 'week', ctx)) : [],
+    week:
+      on.week && sd?.usedPercentage !== undefined
+        ? week(sd.usedPercentage, r, ctx, runOut(pick, 'week', ctx, sd.resetsAt))
+        : [],
     context: on.context ? present(contextWarning(p, ctx)) : [],
     cache: on.cache ? present(cacheWarning(p, ctx)) : [],
     progress: on.progress ? present(progress(p, ctx)) : [],
@@ -267,15 +289,31 @@ function session(p: Payload, ctx: RenderContext, out: Span | null): Segment[] {
   return [[headroom(ctx, left, `${name} ${shown}${when}`)]]
 }
 
+// Colors a last-day run-out time, in epoch seconds, by the clock time it
+// shows. Seconds are dropped as `clock` drops them, so the color agrees with
+// the text.
+function lastDayTone(epochSeconds: number, zone: Zone): Tone {
+  const minute = minuteOfDay(Math.trunc(epochSeconds) * 1000, zone)
+  if (minute >= LAST_DAY_GREEN_FROM) return 'green'
+  return minute >= LAST_DAY_YELLOW_FROM ? 'yellow' : 'red'
+}
+
 // When the forecast says `limit` runs out before it resets, when: the weekday
 // alone ("out ~Tue") in yellow while that is more than a day away, then the
-// time ("out ~9pm") in red. A session is always within five hours, so it
-// always shows the time. The time rounds down, to the hour for the week and
+// time ("out ~9pm") in red. A week that runs out on its last day, the last
+// local day before `weekResetsAt` (the day before, for a reset at midnight), is
+// colored by `lastDayTone` instead, since it costs hours, not days. A session is always within five hours, so it always
+// shows the time, in red. The time rounds down, to the hour for the week and
 // the quarter hour for the session, so it never promises more time than the
 // forecast gives, unless rounding would land before now: then it shows the
 // exact minute instead of a time already passed. The "~" marks an estimate,
 // as on today's last-day "out ~4pm".
-function runOut(pick: LimitPick | undefined, limit: LimitPick['show'], ctx: RenderContext): Span | null {
+function runOut(
+  pick: LimitPick | undefined,
+  limit: LimitPick['show'],
+  ctx: RenderContext,
+  weekResetsAt?: number,
+): Span | null {
   if (pick?.show !== limit || pick.outAt === undefined) return null
   const outMs = pick.outAt * 1000
   const isSession = limit === 'session'
@@ -283,7 +321,11 @@ function runOut(pick: LimitPick | undefined, limit: LimitPick['show'], ctx: Rend
   const step = isSession ? SESSION_OUT_STEP_MS : WEEK_OUT_STEP_MS
   const rounded = floorInDay(outMs, step, startOfDay(outMs, ctx.zone))
   const at = rounded < ctx.nowMs ? outMs : rounded
-  return span(`out ~${clock(at / 1000, ctx.nowMs, ctx.zone)}`, 'red')
+  // The same test as computeBudget's lastDay, asked of the run-out's day
+  // rather than today's, so a reset at midnight makes the day before it last.
+  const onLastDay =
+    !isSession && weekResetsAt !== undefined && Math.trunc(weekResetsAt) * 1000 <= startOfNextDay(at, ctx.zone)
+  return span(`out ~${clock(at / 1000, ctx.nowMs, ctx.zone)}`, onLastDay ? lastDayTone(at / 1000, ctx.zone) : 'red')
 }
 
 // Today's budget, from the weekly limit, or null without a reset time or once
@@ -307,7 +349,8 @@ const DAILY_BASE = round(EVEN_PACE)
 // tomorrow's budget follows ("-> 11 tmrw"), unless the week has nothing left
 // for it or it is the last day, when the reset brings a fresh week. On the
 // last day, the time the week runs out at today's pace follows instead, when
-// that comes before the reset.
+// that comes before the reset, in red, or in the compact layout colored by how
+// late it falls.
 function today(r: Budget, ctx: RenderContext): Segment {
   const budget = round(r.budget)
   // A reading just past the budget can round to it; never show 12/12 in red.
@@ -327,7 +370,10 @@ function today(r: Budget, ctx: RenderContext): Segment {
   if (left > DAILY_BASE) pieces.push([span(`+${left - DAILY_BASE} saved`, 'green')])
   else if (r.over && tomorrow > 0) pieces.push([span(`${RIGHT_ARROW} ${tomorrow} tmrw`, 'red')])
   // computeBudget sets runsOutAt only on the last day.
-  if (r.runsOutAt > 0) pieces.push([span('out ~' + clock(r.runsOutAt, ctx.nowMs, ctx.zone), 'red')])
+  if (r.runsOutAt > 0) {
+    const tone = ctx.compact ? lastDayTone(r.runsOutAt, ctx.zone) : 'red'
+    pieces.push([span('out ~' + clock(r.runsOutAt, ctx.nowMs, ctx.zone), tone)])
+  }
   return spaced(pieces)
 }
 
@@ -510,8 +556,8 @@ function sgr(tone: Tone): string {
 }
 
 /**
- * The line as ANSI text, segments joined by a dim middle dot, exactly as the
- * Go paceline prints it. With `noColor`, the same text with no escapes.
+ * Renders the line as ANSI text, segments joined by a dim middle dot, exactly
+ * as the Go paceline prints it. With `noColor`, the same text with no escapes.
  */
 export function toAnsi(line: Line, noColor = false): string {
   const wrap = (code: string, text: string) => (noColor || code === '' ? text : `\x1b[${code}m${text}\x1b[0m`)

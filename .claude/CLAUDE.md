@@ -11,7 +11,7 @@ Read `docs/notes.md` before changing how the mod talks to Claude Code: it holds 
 .claude-plugin/marketplace.json  makes this repo a marketplace (`/plugin marketplace add rogadev/paceline-mod`, then `/plugin install paceline@paceline-mod`)
 hooks/hooks.json                 names the hooks module
 hooks/register.ts                the hooks module: events, refresh loop, and EVERY call on `$`
-src/                             pure logic, no `$`: pace, render, color, md5, config, payload, progress, forecast, loop, batch, gitinfo, sanitize, timefmt, model, live, band
+src/                             pure logic, no `$`: pace, render, color, md5, config, payload, progress, forecast, loop, batch, gitinfo, sanitize, timefmt, model, live, band, usage, tools
 test/                            *.test.ts, run by `claude plugin test`
 test/fixtures/                   the Go repo's parity.json and progress.json, copied as TypeScript
 .claude-plugin/types/            written by the engine when it loads the mod; gitignored

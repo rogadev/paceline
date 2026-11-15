@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'claude-code/testing'
 
-import { branchIn, commonDir, findRepo, readHead, resolveRef, type GitFs } from '../src/gitinfo.ts'
+import { absoluteDir, branchIn, commonDir, findRepo, readHead, resolveRef, type GitFs } from '../src/gitinfo.ts'
 
 const SHA_A = '941a425efb86dc5cc3a59082283721566108dbc8'
 const SHA_B = 'c69f8f68635e733b01b54cc7316e3248465374f3'
@@ -198,5 +198,26 @@ describe('resolveRef', () => {
       expect(await resolveRef(fakeFs({ '/g/packed-refs': PACKED }, [], reads), '/g', bad)).toBe(null)
       expect(reads.filter(p => p !== '/g/commondir')).toEqual([])
     }
+  })
+})
+
+describe('absoluteDir', () => {
+  test('keeps an absolute directory, in forward slashes', () => {
+    expect(absoluteDir('C:/r/app', 'D:\\other\\repo')).toBe('D:/other/repo')
+    expect(absoluteDir('/r/app', '/w/tree/')).toBe('/w/tree')
+  })
+
+  test('resolves a relative directory against the base', () => {
+    expect(absoluteDir('C:\\r\\app', 'src\\deep')).toBe('C:/r/app/src/deep')
+    expect(absoluteDir('/r/app', './src/../docs')).toBe('/r/app/docs')
+    expect(absoluteDir('/r/app', '..')).toBe('/r')
+  })
+
+  test('lets findRepo walk up from a relative directory', async () => {
+    const fs = fakeFs({}, ['C:/r/app/.git'])
+    expect(await findRepo(fs, absoluteDir('C:/r/app', 'src/deep'))).toEqual({
+      gitDir: 'C:/r/app/.git',
+      workTree: 'C:/r/app',
+    })
   })
 })

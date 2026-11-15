@@ -64,10 +64,10 @@ export function projectSlot(name: string, overrides: Readonly<Record<string, num
 }
 
 /**
- * The color for a slot: evenly spaced hues at a fixed high lightness, so every
- * project reads clearly on a dark background. Chroma backs off per hue until
- * the color fits in sRGB, since blues and purples cannot be as vivid as other
- * hues at this lightness.
+ * Gets the color for a slot: evenly spaced hues at a fixed high lightness, so
+ * every project reads clearly on a dark background. Chroma backs off per hue
+ * until the color fits in sRGB, since blues and purples cannot be as vivid as
+ * other hues at this lightness.
  */
 export function slotColor(slot: number): RGB {
   const hue = 15 + (360 / SLOTS) * slot

@@ -65,6 +65,17 @@ function resolvePath(dir: string, rel: string): string {
   return out
 }
 
+/**
+ * Resolves `dir` against `base`, as Go's `filepath.Abs` resolves a path
+ * against the working directory: an absolute `dir` stands, and a relative one
+ * is joined onto `base` with its `.` and `..` segments folded. The result uses
+ * forward slashes.
+ */
+export function absoluteDir(base: string, dir: string): string {
+  const d = slashPath(dir)
+  return isAbsolute(d) ? d : resolvePath(slashPath(base), d)
+}
+
 async function firstLine(fs: GitFs, path: string): Promise<string | null> {
   const text = await fs.read(path)
   if (text === null) return null

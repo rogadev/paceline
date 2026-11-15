@@ -2,6 +2,14 @@
 
 A Claude Code mod that paces your usage limits and shows, at a glance, where every session stands, in a line above the prompt.
 
+In the terminal, the line sits just above the prompt box:
+
+![A Windows Terminal window running Claude Code on a project called api-server, partway through a task. The paceline line, outlined, sits just above the prompt box: the project and branch, the model, effort, today's budget bar with 5 of 14 points spent, the week at 63 of 100 with 3 days left, and the session time.](docs/paceline-terminal.svg)
+
+In the Code tab of the Claude desktop app, it draws in a band above the prompt box:
+
+![The Code tab of the Claude desktop app, partway through a task on a project called api-server. The paceline line, outlined, sits in a band just above the prompt box, here warning out ~Fri because the week is forecast to run out before it resets.](docs/paceline-desktop.svg)
+
 ![paceline in thirteen states: a fresh day, working through the day, the session time, most of the budget used, over budget, over budget by a whole day, a week forecast to run out, a session running low, the last day, an agent job, an /orc-loop run with its review batch, verbose with counting down and fast mode, and both limits](docs/paceline-states.svg)
 
 Colors follow your terminal's palette, with fixed colors for the project name and for red. See [every state](#every-state) for what each one means.
@@ -25,6 +33,14 @@ In a Claude Code session in your terminal, add this repo as a marketplace, then 
 ```
 
 Pick a scope when asked (user scope puts it in every session). The line appears above the prompt right away.
+
+If you had the Go paceline MCP server (`paceline-mcp`) configured, remove it:
+
+```
+claude mcp remove paceline -s user
+```
+
+The mod now serves those tools itself. While a server named `paceline` is configured, it owns the `mcp__paceline__` tool names, so the mod's tools stay hidden: the band still draws, and the Go server keeps answering its own tools until you remove it.
 
 To get new versions automatically, turn on auto-update for the marketplace: run `/plugin`, open the **Marketplaces** tab, select `paceline-mod`, and choose **Enable auto-update**. Claude Code leaves it off for marketplaces outside Anthropic's own, and a marketplace can't turn it on for you. Without it, update from the **Installed** tab in `/plugin` with **Update now**.
 
@@ -86,13 +102,14 @@ The image above shows the line as it draws, in color, for the states you'll see 
 | Verbose, counting down, fast mode | `max effort · fast mode`, `8/14 left`, `week 36/100 left` | `verbose` and `countDirection` in [`paceline.json`](#configuration); fast mode comes from your settings. |
 | Both limits | `s 22%` next to the week, no `out ~` | `"limits": "both"` skips the forecast and shows the line as the Go paceline does. |
 
-The underlines and arrows in the image point at the part of the line each state is about; the arrows show the bar draining as you spend and filling with red past the budget. The image is generated from the mod's own renderer with fixed figures by `node docs/gallery/render.mts` (Node 23.6 or later), so it matches what the code draws; run it again after changing what a segment shows. In a terminal with colors turned off, the same text prints without color.
+The underlines and arrows in the image point at the part of the line each state is about; the arrows show the bar draining as you spend and filling with red past the budget. The image is generated from the mod's own renderer with fixed figures by `node docs/gallery/render.mts` (Node 23.6 or later), so it matches what the code draws; run it again after changing what a segment shows. The two window pictures at the top come from `node docs/gallery/windows.mts` the same way: the line is the renderer's, and the windows around it are mock-ups. In a terminal with colors turned off, the same text prints without color.
 
 ### Run-out warnings
 
 Your session and weekly limits are separate, and usually neither is close to stopping you. paceline forecasts both and warns you only when one is on track to run out:
 
 - **A limit that runs out before it resets says when.** The week's `4d left` becomes `out ~Tue`, in yellow, while that's more than a day away, then the time, `out ~9pm`, in red, within a day. The session's reset time becomes `out ~3:45pm`, always in red. The `~` marks an estimate, the same as today's `out ~4pm` on the last day. If both are forecast to run out, only the sooner one shows.
+- **On the week's last day, the out time is colored by how late it falls**: red before 5 p.m., yellow from 5 p.m. to 8 p.m., and green from 8 p.m., when the week is used up in the evening as planned. This applies to today's `out ~4pm` and to the week's warning when it lands on the week's last day. On earlier days the week's time stays red, and the Go paceline always shows today's in red.
 - **The time rounds down**, to the hour for the week and to the quarter hour for the session, so it never promises more time than the forecast gives. If rounding down would give a time that's already past, the exact minute shows instead.
 - **Otherwise, nothing changes.** A limit that lasts until it resets shows its days left or reset time as usual.
 - **A warning needs its segment on.** The session segment is off by default, so a session warning shows only once you turn it on.
@@ -154,7 +171,20 @@ loop ▰▰▰ ✓ done             finished; hidden 30 minutes later
 
 Any agent can report a run, under any name. [orc-pack](https://github.com/rogadev/orc-pack) uses it too: `/orc` reports the tasks of each run, and `/orc-loop` reports its batch of issues (orc-pack 1.14.0 and later), so both show here as they work.
 
-The mod reads the same progress files as the Go paceline: `.git/paceline/progress-<session id>.json` for this session's run, or `.git/paceline/progress.json` for a writer outside Claude Code. Agents write them through `paceline-mcp`, the MCP server that ships with [paceline](https://github.com/rogadev/paceline#let-agents-report-progress). The file format is documented there.
+The mod reads the same progress files as the Go paceline: `.git/paceline/progress-<session id>.json` for this session's run, or `.git/paceline/progress.json` for a writer outside Claude Code. Agents write them through the mod's own tools, which take the same names, arguments, and answers as `paceline-mcp`, the MCP server that ships with [paceline](https://github.com/rogadev/paceline#let-agents-report-progress). The file format is documented there.
+
+The mod serves these tools, each named `mcp__paceline__<name>`:
+
+| Tool | Does |
+| --- | --- |
+| `progress_start` | Starts a run with its steps, weights, and stages |
+| `progress_step` | Marks a step active, at a stage, or ended |
+| `progress_label` | Changes the run's label |
+| `progress_add_steps` | Adds steps when the plan grows |
+| `progress_finish` | Ends the run as done or halted |
+| `get_usage` | The five-hour session and weekly limits, from the session's live figures |
+| `get_today_budget` | How much of today's budget is used and left; it never moves the day's anchor |
+| `get_forecast_debug` | The forecast's inputs and result, for checking a wrong `out ~` time |
 
 ## Loop and batch
 
@@ -191,8 +221,9 @@ A mod runs inside Claude Code with your permissions, so here is everything this 
 - **Reads** your session's usage figures, model, working folder, and settings through the mods API.
 - **Reads** `paceline.json` and `paceline-day.json` in your Claude config folder, and, in the repository you're working in, `.git/HEAD`, its branch and `origin/main` refs (and `packed-refs`), `.git/paceline/progress*.json`, and `.git/orc-loop/state.json`. In a repo that keeps a deep-review ledger, it also checks that `.claude/skills/deep-review/scripts/ledger.mjs` exists and reads `tmp/reviews/ledger.jsonl`.
 - **Reads** the environment variables `CLAUDE_CONFIG_DIR`, `USERPROFILE`, and `HOME`, only to find your Claude config folder, and `GIT_DIR` and `GIT_WORK_TREE`, only to skip the batch segment when either is set.
+- **Writes** `.git/paceline/progress-<session id>.json` (or `progress.json` when the session has no id), only when an agent calls one of the progress tools.
 - **Writes** two values to its own plugin store: today's budget anchor, and which hours of the last 14 days your usage went up in, for the forecast.
-- **Watches** tool calls and turns only to notice progress updates and the effort level. It never changes, blocks, or approves anything.
+- **Watches** tool calls and turns only to notice progress updates and the effort level, and answers calls to its own tools. It never changes, blocks, or approves any other tool call.
 - **Starts** `git merge-base`, `git log`, and `git rev-list` only for the batch segment: only in repos that keep a deep-review ledger, off `main`, with a 1.5-second timeout each, repository hooks off, and only when HEAD, `origin/main`, or the ledger changed. A call that times out or won't start is tried again a minute later. With `segments.batch` off, it starts no processes at all. The reasoning is in [docs/notes.md](docs/notes.md#running-git-for-the-batch-segment).
 - It makes no network requests and calls no model.
 
