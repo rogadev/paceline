@@ -2,6 +2,14 @@
 
 A Claude Code mod that paces your usage limits and shows, at a glance, where every session stands, in a line above the prompt.
 
+In the terminal, the line sits just above the prompt box:
+
+![A Windows Terminal window running Claude Code on a project called api-server, partway through a task. The paceline line, outlined, sits just above the prompt box: the project and branch, the model, effort, today's budget bar with 5 of 14 points spent, the week at 63 of 100 with 3 days left, and the session time.](docs/paceline-terminal.svg)
+
+In the Code tab of the Claude desktop app, it draws in a band above the prompt box:
+
+![The Code tab of the Claude desktop app, partway through a task on a project called api-server. The paceline line, outlined, sits in a band just above the prompt box, here warning out ~Fri because the week is forecast to run out before it resets.](docs/paceline-desktop.svg)
+
 ![paceline in thirteen states: a fresh day, working through the day, the session time, most of the budget used, over budget, over budget by a whole day, a week forecast to run out, a session running low, the last day, an agent job, an /orc-loop run with its review batch, verbose with counting down and fast mode, and both limits](docs/paceline-states.svg)
 
 Colors follow your terminal's palette, with fixed colors for the project name and for red. See [every state](#every-state) for what each one means.
@@ -94,7 +102,7 @@ The image above shows the line as it draws, in color, for the states you'll see 
 | Verbose, counting down, fast mode | `max effort · fast mode`, `8/14 left`, `week 36/100 left` | `verbose` and `countDirection` in [`paceline.json`](#configuration); fast mode comes from your settings. |
 | Both limits | `s 22%` next to the week, no `out ~` | `"limits": "both"` skips the forecast and shows the line as the Go paceline does. |
 
-The underlines and arrows in the image point at the part of the line each state is about; the arrows show the bar draining as you spend and filling with red past the budget. The image is generated from the mod's own renderer with fixed figures by `node docs/gallery/render.mts` (Node 23.6 or later), so it matches what the code draws; run it again after changing what a segment shows. In a terminal with colors turned off, the same text prints without color.
+The underlines and arrows in the image point at the part of the line each state is about; the arrows show the bar draining as you spend and filling with red past the budget. The image is generated from the mod's own renderer with fixed figures by `node docs/gallery/render.mts` (Node 23.6 or later), so it matches what the code draws; run it again after changing what a segment shows. The two window pictures at the top come from `node docs/gallery/windows.mts` the same way: the line is the renderer's, and the windows around it are mock-ups. In a terminal with colors turned off, the same text prints without color.
 
 ### Run-out warnings
 
