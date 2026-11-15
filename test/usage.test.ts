@@ -80,8 +80,8 @@ function figuresWith(rateLimits: SessionUsage['rateLimits']) {
   return {
     usage: { startedAt: NOW, context: { window: 200_000 }, rateLimits },
     modelId: 'claude-opus-5-5',
-    cwd: 'C:/r/paceline-mod',
-    root: 'C:/r/paceline-mod',
+    cwd: 'C:/r/paceline',
+    root: 'C:/r/paceline',
     sessionId: 'abc',
     nowMs: NOW,
     settings: {},
