@@ -1,4 +1,4 @@
-# paceline (mod)
+# paceline
 
 A Claude Code mod that paces your usage limits and shows, at a glance, where every session stands, in a line above the prompt.
 
@@ -21,15 +21,15 @@ paceline (dev) · Opus 5.5 · high · Today: ▕██████░░░░�
 
 Your weekly limit resets on a fixed schedule, but Claude Code only tells you how much is left, not whether that's a lot or a little for the days remaining. paceline divides what's left by the days until the reset and gives you **today's budget**, then counts up how much of it you've used as you work. A light week gives you a big budget; a heavy one, a small budget.
 
-This is the mod version of [paceline](https://github.com/rogadev/paceline), the Go status line. Its segments come from the same math, checked against the same test fixtures, but it installs as a plugin, draws in the band above the prompt, puts the project first, and says when a usage limit is about to run out.
+paceline started as a Go status line, which is now retired. This mod carries it on: its segments come from the same math, checked against the Go line's test fixtures, but it installs as a plugin, draws in the band above the prompt, puts the project first, and says when a usage limit is about to run out.
 
 ## Install
 
 In a Claude Code session in your terminal, add this repo as a marketplace, then install the plugin from it:
 
 ```
-/plugin marketplace add rogadev/paceline-mod
-/plugin install paceline@paceline-mod
+/plugin marketplace add rogadev/paceline
+/plugin install paceline@paceline
 ```
 
 Pick a scope when asked (user scope puts it in every session). The line appears above the prompt right away.
@@ -42,7 +42,7 @@ claude mcp remove paceline -s user
 
 The mod now serves those tools itself. While a server named `paceline` is configured, it owns the `mcp__paceline__` tool names, so the mod's tools stay hidden: the band still draws, and the Go server keeps answering its own tools until you remove it.
 
-To get new versions automatically, turn on auto-update for the marketplace: run `/plugin`, open the **Marketplaces** tab, select `paceline-mod`, and choose **Enable auto-update**. Claude Code leaves it off for marketplaces outside Anthropic's own, and a marketplace can't turn it on for you. Without it, update from the **Installed** tab in `/plugin` with **Update now**.
+To get new versions automatically, turn on auto-update for the marketplace: run `/plugin`, open the **Marketplaces** tab, select `paceline`, and choose **Enable auto-update**. Claude Code leaves it off for marketplaces outside Anthropic's own, and a marketplace can't turn it on for you. Without it, update from the **Installed** tab in `/plugin` with **Update now**.
 
 Requirements:
 
@@ -171,7 +171,7 @@ loop ▰▰▰ ✓ done             finished; hidden 30 minutes later
 
 Any agent can report a run, under any name. [orc-pack](https://github.com/rogadev/orc-pack) uses it too: `/orc` reports the tasks of each run, and `/orc-loop` reports its batch of issues (orc-pack 1.14.0 and later), so both show here as they work.
 
-The mod reads the same progress files as the Go paceline: `.git/paceline/progress-<session id>.json` for this session's run, or `.git/paceline/progress.json` for a writer outside Claude Code. Agents write them through the mod's own tools, which take the same names, arguments, and answers as `paceline-mcp`, the MCP server that ships with [paceline](https://github.com/rogadev/paceline#let-agents-report-progress). The file format is documented there.
+The mod reads the same progress files as the Go paceline: `.git/paceline/progress-<session id>.json` for this session's run, or `.git/paceline/progress.json` for a writer outside Claude Code. Agents write them through the mod's own tools, which take the same names, arguments, and answers as `paceline-mcp`, the Go paceline's MCP server. Any other tool can write the file too; see [Progress file format](#progress-file-format).
 
 The mod serves these tools, each named `mcp__paceline__<name>`:
 
@@ -185,6 +185,39 @@ The mod serves these tools, each named `mcp__paceline__<name>`:
 | `get_usage` | The five-hour session and weekly limits, from the session's live figures |
 | `get_today_budget` | How much of today's budget is used and left; it never moves the day's anchor |
 | `get_forecast_debug` | The forecast's inputs and result, for checking a wrong `out ~` time |
+
+### Progress file format
+
+Any tool can write this file. Write it through a temp file and a rename, so paceline never reads half of it.
+
+```json
+{
+  "version": 1,
+  "name": "orc",
+  "phase": "running",
+  "label": "",
+  "steps": [
+    { "id": "41", "label": "#41", "status": "done", "weight": 3 },
+    { "id": "42", "label": "#42", "status": "active", "weight": 5,
+      "stages": ["design", "build", "review", "commit"], "stage": "review" },
+    { "id": "43", "label": "#43", "status": "pending", "weight": 2 }
+  ],
+  "updatedAt": "2026-10-06T10:15:00Z"
+}
+```
+
+| Field | Required | Meaning |
+|---|---|---|
+| `version` | yes | Always `1`. |
+| `name` | yes | Short name shown before the bar, such as `loop` or `orc`. |
+| `phase` | yes | `running`, `done`, or `halted`. |
+| `label` | no | Replaces the active step's label in the status, such as `review 2/3` or `planning`. |
+| `steps` | yes | 1 to 50 steps, in order. Each has a unique `id`, a `label`, and a `status`: `pending`, `active`, `done`, `skipped`, or `blocked`. |
+| `steps[].weight` | no | The step's size relative to the others, 0 to 1000. Missing or 0 counts as 1. |
+| `steps[].stages`, `steps[].stage` | no | Up to 12 stages the step passes through, and the one it's in now. An active step counts the stages before its current one as finished. |
+| `updatedAt` | yes | When the file was last written, as an RFC 3339 time. paceline uses it rather than the file's modified time, so a copied file doesn't look fresh. |
+
+Text fields are at most 40 characters. paceline ignores a file that breaks any of these rules or is larger than 32 KB, and it strips control characters from every label before printing it. The percentage leaves out skipped and blocked steps, since the run won't do them.
 
 ## Loop and batch
 
@@ -242,7 +275,7 @@ test/               tests, and the Go paceline's fixtures copied as TypeScript
 Run a session with your working copy loaded:
 
 ```sh
-claude --plugin-dir ./paceline-mod
+claude --plugin-dir ./paceline
 ```
 
 If you also have paceline installed from the marketplace, that session loads the mod twice and can draw two bands. Disable the installed copy in `/plugin` while you test, then turn it back on.
@@ -257,7 +290,7 @@ tsc -p .                   # type check, once a session has loaded the mod and l
 
 [`docs/notes.md`](docs/notes.md) records what the mods platform can and can't do, where each figure comes from, and ideas not built yet. `.claude/CLAUDE.md` holds the working rules for agents.
 
-`test/fixtures/` holds the Go paceline's `parity.json` and `progress.json` as TypeScript modules. The parity tests prove the mod renders exactly the bytes the Go paceline prints for every case. When the Go fixtures change, copy them again rather than editing the cases by hand.
+`test/fixtures/` holds the Go paceline's `parity.json` and `progress.json` as TypeScript modules. The parity tests prove the mod renders exactly the bytes the Go paceline prints for every case. The Go repository is retired, so the fixtures are frozen: don't edit the cases by hand.
 
 ## License
 

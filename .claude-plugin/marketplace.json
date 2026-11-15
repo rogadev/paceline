@@ -1,5 +1,5 @@
 {
-  "name": "paceline-mod",
+  "name": "paceline",
   "description": "paceline for Claude Code as a mod: paces your usage limits in a line above the prompt",
   "owner": {
     "name": "Ryan Roga",
