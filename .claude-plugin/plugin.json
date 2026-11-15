@@ -1,7 +1,7 @@
 {
   "name": "paceline",
   "displayName": "paceline",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "Paces your Claude usage limits: today's budget, session and week limits, and where each session stands, in a line above the prompt",
   "author": { "name": "Ryan Roga", "url": "https://github.com/rogadev" },
   "homepage": "https://github.com/rogadev/paceline",
