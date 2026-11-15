@@ -92,7 +92,9 @@ Built for #7 (0.6.0): the mod serves the Go `paceline-mcp` server's seven tools 
 - **Two Go sentences reworded.** They named the feed file, which the mod doesn't have: "no reading in the feed" is now "no reading from Claude Code", and "The feed has no weekly reading..." is now "There is no weekly reading from Claude Code...". The rest of the text and every JSON field match the Go answers.
 - **No `instructions` text.** The Go server's MCP `instructions` (when to call each tool) has no place in the mods tool spec, so it isn't carried over. The tool descriptions still carry their own guidance.
 - **No pruning.** `$.fs` has no delete, so the mod doesn't remove other sessions' day-old progress files as the Go server does.
-- **Not atomic, and links are followed.** `$.fs` has no rename, so the write isn't Go's temp file and rename; a reader can catch a half-written file. `$.fs.write` follows links, so a link at the progress path is followed (#16).
+- **Not atomic.** `$.fs` has no rename, so the write isn't Go's temp file and rename; a reader can catch a half-written file.
+- **Walk-ups stop at trusted folders (#16).** Another account on a shared machine can plant a `.git` above your projects, at `C:\.git` or `/tmp/.git`. So when the `.git` is found by walking up rather than in the folder itself, the progress tools write only when the folder holding it is inside your home (`USERPROFILE` or `HOME`) or the session's folder (`mayWriteRepo` in `src/gitinfo.ts`). Otherwise they refuse and ask for the repository's own folder as `cwd`. A repository outside your home works when the session starts at its root or the agent passes that root.
+- **Links are refused, with a race left.** `$.fs.write` follows links, so before each write the tool checks that `<gitDir>/paceline` and the progress file are each missing or a plain folder and file. A link planted between that check and the write is still followed; without a rename or a no-follow write, the mod can't close that gap. The write is the run's validated JSON under a fixed name, so the impact is low.
 
 ## Ideas not built yet
 

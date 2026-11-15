@@ -110,12 +110,29 @@ function text(v: unknown): string | undefined {
   return typeof v === 'string' ? v : undefined
 }
 
+/**
+ * Gives an object's keys in lowercase, the way Go's `encoding/json` matches
+ * keys to struct fields in any case: the last match wins, except that a null
+ * leaves an earlier value alone unless the field is a slice, which null
+ * empties.
+ */
+function foldKeys(obj: Record<string, unknown>, sliceKeys: readonly string[]): Record<string, unknown> {
+  const out: Record<string, unknown> = {}
+  for (const [rawKey, value] of Object.entries(obj)) {
+    const key = rawKey.toLowerCase()
+    if (value === null && key in out && !sliceKeys.includes(key)) continue
+    out[key] = value
+  }
+  return out
+}
+
 // RFC 3339, as Go's time.Time decodes it.
 const RFC3339 = /^\d{4}-\d{2}-\d{2}[Tt]\d{2}:\d{2}:\d{2}(\.\d+)?([Zz]|[+-]\d{2}:\d{2})$/
 
 // Decodes a step's fields and their types; `validateRun` checks the format's rules.
-function parseStep(v: unknown): Step | null {
-  if (!isObject(v)) return null
+function parseStep(raw: unknown): Step | null {
+  if (!isObject(raw)) return null
+  const v = foldKeys(raw, ['stages'])
   const id = text(v.id)
   const label = text(v.label)
   const status = text(v.status)
@@ -140,20 +157,22 @@ function parseStep(v: unknown): Step | null {
  */
 export function parseRun(fileText: string): Run | null {
   if (new TextEncoder().encode(fileText).length > MAX_FILE_BYTES) return null
-  let doc: unknown
+  let parsed: unknown
   try {
-    doc = JSON.parse(fileText)
+    parsed = JSON.parse(fileText)
   } catch {
     return null
   }
-  if (!isObject(doc) || doc.version !== VERSION) return null
+  if (!isObject(parsed)) return null
+  const doc = foldKeys(parsed, ['steps'])
+  if (doc.version !== VERSION) return null
   const name = text(doc.name)
   const phase = text(doc.phase)
   const label = text(doc.label)
   if (name === undefined || phase === undefined || label === undefined || !isPhase(phase)) return null
   if (!Array.isArray(doc.steps)) return null
-  if (typeof doc.updatedAt !== 'string' || !RFC3339.test(doc.updatedAt)) return null
-  const updatedAtMs = Date.parse(doc.updatedAt)
+  if (typeof doc.updatedat !== 'string' || !RFC3339.test(doc.updatedat)) return null
+  const updatedAtMs = Date.parse(doc.updatedat)
   if (!Number.isFinite(updatedAtMs) || updatedAtMs === ZERO_TIME_MS) return null
 
   const steps: Step[] = []

@@ -1,6 +1,15 @@
 import { describe, expect, test } from 'claude-code/testing'
 
-import { absoluteDir, branchIn, commonDir, findRepo, readHead, resolveRef, type GitFs } from '../src/gitinfo.ts'
+import {
+  absoluteDir,
+  branchIn,
+  commonDir,
+  findRepo,
+  mayWriteRepo,
+  readHead,
+  resolveRef,
+  type GitFs,
+} from '../src/gitinfo.ts'
 
 const SHA_A = '941a425efb86dc5cc3a59082283721566108dbc8'
 const SHA_B = 'c69f8f68635e733b01b54cc7316e3248465374f3'
@@ -219,5 +228,37 @@ describe('absoluteDir', () => {
       gitDir: 'C:/r/app/.git',
       workTree: 'C:/r/app',
     })
+  })
+})
+
+describe('mayWriteRepo', () => {
+  const roots = ['C:\\Users\\me', '', 'C:/Users/me/proj/app']
+
+  test('allows a .git in the folder it was looked up from, wherever that is', () => {
+    expect(mayWriteRepo({ gitDir: 'C:/.git', workTree: 'C:/' }, 'C:\\', roots)).toBe(true)
+    expect(mayWriteRepo({ gitDir: 'D:/code/.git', workTree: 'D:/code' }, 'd:/Code/', roots)).toBe(true)
+  })
+
+  test('allows a walk-up that ends inside the home folder', () => {
+    expect(mayWriteRepo({ gitDir: 'C:/Users/me/proj/.git', workTree: 'C:/Users/me/proj' }, 'C:/Users/me/proj/src', roots)).toBe(true)
+    expect(mayWriteRepo({ gitDir: 'c:/users/ME/p/.git', workTree: 'c:/users/ME/p' }, 'c:/users/ME/p/x', roots)).toBe(true)
+  })
+
+  test('refuses a walk-up to a .git planted above the home folder', () => {
+    expect(mayWriteRepo({ gitDir: 'C:/.git', workTree: 'C:/' }, 'C:/Users/me/notes', roots)).toBe(false)
+    expect(mayWriteRepo({ gitDir: 'D:/evil', workTree: 'D:/' }, 'D:/scratch/a', roots)).toBe(false)
+    expect(mayWriteRepo({ gitDir: '/tmp/.git', workTree: '/tmp' }, '/tmp/work', ['/home/me'])).toBe(false)
+  })
+
+  test('does not take a sibling whose name starts with a trusted folder', () => {
+    expect(mayWriteRepo({ gitDir: 'C:/Users/me2/.git', workTree: 'C:/Users/me2' }, 'C:/Users/me2/x', roots)).toBe(false)
+  })
+
+  test('matches case only on Windows paths', () => {
+    expect(mayWriteRepo({ gitDir: '/Home/me/p/.git', workTree: '/Home/me/p' }, '/Home/me/p/x', ['/home/me'])).toBe(false)
+  })
+
+  test('ignores empty roots rather than trusting everything', () => {
+    expect(mayWriteRepo({ gitDir: '/srv/.git', workTree: '/srv' }, '/srv/a', [''])).toBe(false)
   })
 })

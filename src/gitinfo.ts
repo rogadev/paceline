@@ -126,6 +126,33 @@ export async function findRepo(fs: GitFs, dir: string): Promise<Repo | null> {
   }
 }
 
+// A Windows path (drive letter or UNC share), whose names match in any case.
+const WINDOWS_PATH = /^(?:[A-Za-z]:\/|\/\/)/
+
+// Folds the case of a Windows path, so two spellings of one folder compare equal.
+const foldPath = (p: string) => (WINDOWS_PATH.test(p) ? p.toLowerCase() : p)
+
+// Reports whether `path` is `root` or a folder under it.
+function isWithin(path: string, root: string): boolean {
+  const p = foldPath(slashPath(path))
+  const r = foldPath(slashPath(root))
+  return p === r || p.startsWith(r.endsWith('/') ? r : `${r}/`)
+}
+
+/**
+ * Checks whether a repository found from `startDir` may take a write. A `.git`
+ * in `startDir` itself always may. One found by walking up may only when the
+ * folder holding it sits inside one of `trustedRoots` (the user's home and the
+ * session's folder), because another account on the machine can plant a
+ * `.git` above them, for example at `C:\.git` or `/tmp/.git`.
+ *
+ * @param trustedRoots - Absolute folders; empty strings are ignored.
+ */
+export function mayWriteRepo(repo: Repo, startDir: string, trustedRoots: readonly string[]): boolean {
+  if (foldPath(slashPath(repo.workTree)) === foldPath(slashPath(startDir))) return true
+  return trustedRoots.some(root => root !== '' && isWithin(repo.workTree, root))
+}
+
 /**
  * Returns the branch checked out in `gitDir`, `detached <sha7>`, or `''`.
  * The result is raw repository data: clean it before drawing it.

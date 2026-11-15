@@ -1113,6 +1113,47 @@ function goSequences(): Sequence[] {
   ]
 }
 
+describe('parseRun', () => {
+  const lower = {
+    version: 1,
+    name: 'release',
+    phase: 'running',
+    label: 'tests',
+    updatedAt: '2026-10-06T12:00:00Z',
+    steps: [{ id: 'a', label: 'Build', status: 'active', weight: 2, stages: ['x', 'y'], stage: 'x' }],
+  }
+  const parsed = parseRun(JSON.stringify(lower))
+
+  test('reads keys in any case, as Go matches struct fields', () => {
+    const mixed = {
+      Version: 1,
+      NAME: 'release',
+      Phase: 'running',
+      label: 'tests',
+      UpdatedAt: '2026-10-06T12:00:00Z',
+      STEPS: [{ ID: 'a', Label: 'Build', status: 'active', Weight: 2, Stages: ['x', 'y'], STAGE: 'x' }],
+    }
+    expect(parsed).not.toBe(null)
+    expect(parseRun(JSON.stringify(mixed))).toEqual(parsed)
+  })
+
+  test('takes the last of two keys that differ only in case', () => {
+    const text = JSON.stringify(lower).replace('"name":"release"', '"name":"first","Name":"release"')
+    expect(parseRun(text)).toEqual(parsed)
+  })
+
+  test('keeps an earlier value when a later key in another case is null', () => {
+    const text = JSON.stringify(lower).replace('"name":"release"', '"name":"release","NAME":null')
+    expect(parseRun(text)).toEqual(parsed)
+  })
+
+  test('lets a later null empty a slice, as Go does', () => {
+    const run = { ...lower, steps: [{ ...lower.steps[0], stage: '' }] }
+    const text = JSON.stringify(run).replace('"stages":["x","y"]', '"stages":["x","y"],"Stages":null')
+    expect(parseRun(text)?.steps[0].stages).toEqual([])
+  })
+})
+
 describe('progressPath', () => {
   const GIT = '/repo/.git'
   // The guard hooks/register.ts applies before it picks the file to write.

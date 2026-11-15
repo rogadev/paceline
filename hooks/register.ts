@@ -20,7 +20,7 @@ import {
 } from '../src/batch.ts'
 import { defaultConfig, parseConfig } from '../src/config.ts'
 import { isActivity, migrateActivity, recordActivity } from '../src/forecast.ts'
-import { absoluteDir, branchIn, findRepo, readHead, resolveRef, type GitFs, type Repo } from '../src/gitinfo.ts'
+import { absoluteDir, branchIn, findRepo, mayWriteRepo, readHead, resolveRef, type GitFs, type Repo } from '../src/gitinfo.ts'
 import {
   ACTIVITY_KEY,
   LEGACY_ACTIVITY_KEY,
@@ -385,14 +385,39 @@ async function readProgressFile($: EngineInterface, path: string): Promise<strin
 /**
  * Finds the git directory a progress run belongs to, from the `cwd` argument
  * or the session's. A relative `cwd` is taken from the session's, as the MCP
- * server took it from its own working directory.
+ * server took it from its own working directory. A `.git` found by walking up
+ * to a folder outside the user's home and the session's folder is refused (see
+ * `mayWriteRepo`).
  */
 async function progressGitDir($: EngineInterface, cwdArg: string): Promise<{ gitDir: string } | { error: string }> {
-  const sessionCwd = await $.session.cwd()
+  const [sessionCwd, userProfile, home] = await Promise.all([
+    $.session.cwd(),
+    $.env.get('USERPROFILE'),
+    $.env.get('HOME'),
+  ])
   const cwd = cwdArg === '' ? sessionCwd : cwdArg
-  const repo = await findRepo(gitFsOf($), absoluteDir(sessionCwd, cwd))
+  const start = absoluteDir(sessionCwd, cwd)
+  const repo = await findRepo(gitFsOf($), start)
   if (repo === null) return { error: `${cwd} is not inside a git repository; pass cwd to name one` }
+  if (!mayWriteRepo(repo, start, [userProfile ?? '', home ?? '', sessionCwd])) {
+    return {
+      error:
+        `the .git found above ${cwd} is in ${repo.workTree}, outside your home folder and this session's folder; ` +
+        "pass the repository's own folder as cwd to use it",
+    }
+  }
   return { gitDir: repo.gitDir }
+}
+
+/**
+ * Checks that a progress file can be written without following a link: the
+ * `paceline` folder and the file are each absent or a plain folder and file.
+ */
+async function progressPathSafe($: EngineInterface, path: string): Promise<boolean> {
+  const dir = path.slice(0, path.lastIndexOf('/'))
+  const [dirStat, fileStat] = await Promise.all([statOf($, dir), statOf($, path)])
+  if (dirStat !== null && (dirStat.isLink || dirStat.kind !== 'dir')) return false
+  return fileStat === null || (!fileStat.isLink && fileStat.kind === 'file')
 }
 
 /**
@@ -408,6 +433,7 @@ async function serveProgress($: EngineInterface, tool: ProgressTool, args: unkno
   if ('error' in found) return { deny: found.error }
   const [sessionId, nowMs] = await Promise.all([$.session.id(), $.clock.now()])
   const path = progressPath(found.gitDir, isValidSession(sessionId) ? sessionId : '')
+  if (!(await progressPathSafe($, path))) return { deny: `${path} is a link or not a plain file; not writing to it` }
   const write = applyProgressCall(decoded.call, await readProgressFile($, path), nowMs)
   if ('error' in write) return { deny: write.error }
   await $.fs.write(path, write.text)
